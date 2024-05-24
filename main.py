@@ -7,7 +7,7 @@ def main():
     screen = pygame.display.set_mode((1280, 800))
     # width: 40 tiles, height: 25 tiles, 32 x 32 (px) tile size
     clock = pygame.time.Clock()
-    player = Player(screen, "data/images/dvdaruri.png")
+    player = Player(screen, "data/images/dude.png")
     map = Map("data/images/map.png")
     running = True
     
