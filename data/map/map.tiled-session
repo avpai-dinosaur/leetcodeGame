@@ -5,20 +5,21 @@
     },
     "activeFile": "map.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "exportAsImage.useCurrentScale": true,
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "map.tmx": {
-            "scale": 2,
+            "scale": 0.9366,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 857,
-                "y": 214.75
+                "x": 509.8227631859919,
+                "y": 358.21054879350845
             }
         },
         "spaceship.tsx": {
-            "scaleInDock": 1.5,
+            "scaleInDock": 1.306,
             "scaleInEditor": 1
         }
     },
