@@ -1,14 +1,12 @@
 import pygame
-from player import Player
-from map import Map
+import constants as c
+from world import World
 
 def main():
     pygame.init()
     screen = pygame.display.set_mode((1280, 800))
-    # width: 40 tiles, height: 25 tiles, 32 x 32 (px) tile size
     clock = pygame.time.Clock()
-    player = Player(screen, "data/images/dude.png")
-    map = Map("data/images/map.png")
+    world = World(screen)
     running = True
     
     # Game loop
@@ -23,10 +21,8 @@ def main():
         
         # fill the screen with a color to wipe away anything from last frame
         screen.fill("purple")
-        map.draw(screen)
-
-        player.update()
-        player.draw(screen)
+        world.update()
+        world.draw(screen)
         
         # flip() the display to put your work on screen
         pygame.display.flip()

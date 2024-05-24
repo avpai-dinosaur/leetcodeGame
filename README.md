@@ -19,6 +19,6 @@ python3 main.py
 # Project Structure
 The data/ folder contains files pertaining to the layout of the map and the visuals of game objects.
 
-## data/map/
-This folder contains the files which can be loaded into the Tiled map editor and used to edit the map.
+## data
+This folder contains Tiled and Krita project files.
 

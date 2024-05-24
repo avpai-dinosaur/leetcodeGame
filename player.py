@@ -4,13 +4,10 @@ import utils
 class Player(pygame.sprite.Sprite):
     """Represents the player."""
 
-    def __init__(self, screen, filename):
+    def __init__(self, filename, pos):
         super().__init__()
         self.speed = 0.01
-        self.pos = pygame.Vector2(
-            screen.get_width() / 2, 
-            screen.get_height() / 2
-        )
+        self.pos = pygame.Vector2(pos)
         self.image, self.rect = utils.load_png(filename)
     
     def update(self):
