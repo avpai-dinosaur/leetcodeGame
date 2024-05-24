@@ -7,13 +7,14 @@
     "expandedProjectPaths": [
     ],
     "exportAsImage.useCurrentScale": true,
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "map.tmx": {
             "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 261,
-                "y": 169.75
+                "x": 857,
+                "y": 214.75
             }
         },
         "spaceship.tsx": {
