@@ -7,3 +7,6 @@ class Map(pygame.sprite.Sprite):
     def __init__(self, filename):
         super().__init__()
         self.image, self.rect = utils.load_png(filename)
+    
+    def draw(self, surface):
+        surface.blit(self.image, (0, 0))

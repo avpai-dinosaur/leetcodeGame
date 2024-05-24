@@ -1,11 +1,14 @@
 import pygame
 from player import Player
+from map import Map
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((1280, 720))
+    screen = pygame.display.set_mode((1280, 800))
+    # width: 40 tiles, height: 25 tiles, 32 x 32 (px) tile size
     clock = pygame.time.Clock()
-    player = Player(screen, "images/dvdaruri.png")
+    player = Player(screen, "data/images/dvdaruri.png")
+    map = Map("data/images/map.png")
     running = True
     
     # Game loop
@@ -20,6 +23,7 @@ def main():
         
         # fill the screen with a color to wipe away anything from last frame
         screen.fill("purple")
+        map.draw(screen)
 
         player.update()
         player.draw(screen)
