@@ -7,7 +7,7 @@
     "expandedProjectPaths": [
         "."
     ],
-    "exportAsImage.useCurrentScale": true,
+    "exportAsImage.useCurrentScale": false,
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "map.tmx": {
@@ -23,8 +23,10 @@
             "scaleInEditor": 1
         }
     },
+    "last.exportedFilePath": "//wsl.localhost/Ubuntu/home/avpai/leetcodeGame/data/map",
     "last.imagePath": "//wsl.localhost/Ubuntu/home/avpai/leetcodeGame/data/images",
     "map.height": 25,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
     "map.width": 40,
     "openFiles": [

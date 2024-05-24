@@ -10,22 +10,28 @@ class Player(pygame.sprite.Sprite):
         self.pos = pygame.Vector2(pos)
         self.image, self.rect = utils.load_png(filename)
     
-    def update(self):
+    def update(self, walls):
         """Updates the player's position."""
+        new_pos = pygame.Vector2(self.pos)
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
-            self.pos.y -= 300 * self.speed
+            new_pos.y = self.pos.y - 300 * self.speed
         if keys[pygame.K_s]:
-            self.pos.y += 300 * self.speed
+            new_pos.y = self.pos.y + 300 * self.speed
         if keys[pygame.K_a]:
-            self.pos.x -= 300 * self.speed
+            new_pos.x = self.pos.x - 300 * self.speed
         if keys[pygame.K_d]:
-            self.pos.x += 300 * self.speed
+            new_pos.x = self.pos.x + 300 * self.speed
+        
+        self.rect.center = new_pos
+        for wall in walls:
+            if pygame.Rect.colliderect(wall, self.rect):
+                # dont update the position
+                self.rect.center = self.pos
+                return
+        self.pos = new_pos
     
     def draw(self, surface):
-        surface.blit(self.image,
-            pygame.Vector2(
-                surface.get_width() / 2,
-                surface.get_height() / 2
-            )
-        )
+        surface.blit(self.image, self.rect)
+        # pygame.draw.rect(surface, (0, 255, 0), self.rect)

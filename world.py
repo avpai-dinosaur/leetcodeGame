@@ -15,7 +15,7 @@ class World():
         )
     
     def update(self):
-        self.player.update()
+        self.player.update(self.map.walls)
         self.camera_pos = self.player.pos
     
     def draw(self, surface):
