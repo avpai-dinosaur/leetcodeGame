@@ -23,4 +23,9 @@ class Player(pygame.sprite.Sprite):
             self.pos.x += 300 * self.speed
     
     def draw(self, surface):
-        surface.blit(self.image, self.pos)
+        surface.blit(self.image,
+            pygame.Vector2(
+                surface.get_width() / 2,
+                surface.get_height() / 2
+            )
+        )

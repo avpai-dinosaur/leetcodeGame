@@ -11,8 +11,7 @@ class World():
         self.player = Player("data/images/dude.png", c.INIT_PLAYER_POS)
         self.map = Map("data/images/map.png", c.INIT_PLAYER_POS)
         self.camera_pos = pygame.Vector2(
-            screen.get_width() / 2,
-            screen.get_height() / 2
+            c.INIT_PLAYER_POS
         )
     
     def update(self):
