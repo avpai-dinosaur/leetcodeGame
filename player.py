@@ -10,7 +10,7 @@ class Player(pygame.sprite.Sprite):
         self.pos = pygame.Vector2(pos)
         self.image, self.rect = utils.load_png(filename)
     
-    def update(self, walls):
+    def update(self, walls, doors):
         """Updates the player's position."""
         new_pos = pygame.Vector2(self.pos)
 
@@ -29,6 +29,15 @@ class Player(pygame.sprite.Sprite):
             if pygame.Rect.colliderect(wall, self.rect):
                 # dont update the position
                 self.rect.center = self.pos
+                return
+        
+        for door in doors:
+            if door.toggle and pygame.sprite.collide_rect(door, self):
+                # dont update the positionmm
+                self.rect.center = self.pos
+                # present the button to press
+                if keys[pygame.K_m]:
+                    door.toggle = False
                 return
         self.pos = new_pos
     
