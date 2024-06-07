@@ -1,7 +1,7 @@
 import pygame
 import constants as c
 from world import World
-
+#hello world
 def main():
     pygame.init()
     screen = pygame.display.set_mode((1280, 800))
