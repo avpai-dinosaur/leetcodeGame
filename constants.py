@@ -1,3 +1,5 @@
+import pygame
+
 MAP_WIDTH = 40
 MAP_HEIGHT = 25
 TILE_SIZE = 64

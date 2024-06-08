@@ -23,6 +23,6 @@ def load_animation(filename, x_size, y_size, num_frames):
     """
     animation_list = []
     for frame in range(0, num_frames):
-        temp_img = sprite_sheet.subsurface(frame * x_size, 0, x_size, y_size)
+        temp_img = filename.subsurface(frame * x_size, 0, x_size, y_size)
         animation_list.append(temp_img)
     return animation_list

@@ -12,8 +12,8 @@ class World():
         self.map = Map("data/images/map.png")
     
     def update(self):
-        self.player.update(self.map.walls)
-        self.camera_pos = self.player.pos
+        self.player.update(self.map.walls, self.map.laser_doors)
+        self.map.laser_doors.update(self.player.rect)
     
     def draw(self, surface):
         self.map.draw(surface)

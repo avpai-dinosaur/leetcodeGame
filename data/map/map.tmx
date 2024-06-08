@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="39">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="70">
  <editorsettings>
   <export target="map.tmj" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="spaceship.tsx"/>
- <layer id="1" name="rooms" width="40" height="25" locked="1">
+ <layer id="1" name="rooms" width="40" height="25" visible="0" locked="1">
   <data encoding="csv">
 4,5,5,5,5,5,5,5,5,5,6,4,5,5,5,5,5,6,5,5,5,5,5,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,
 14,1,2,2,2,2,2,2,2,3,16,14,1,2,2,2,3,16,12,12,12,12,12,14,1,2,2,2,2,2,2,2,2,2,2,2,2,2,3,16,
@@ -33,6 +33,18 @@
 64,65,65,65,65,66,3221225477,3221225477,3221225477,3221225477,3221225477,3221225477,3221225477,3221225477,3221225477,3221225477,3221225476,24,25,25,25,25,26,24,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,26
 </data>
  </layer>
+ <objectgroup id="8" name="laserDoors">
+  <object id="59" x="64" y="640" width="64" height="32"/>
+  <object id="60" x="128" y="320" width="96" height="32"/>
+  <object id="61" x="544" y="128" width="32" height="96"/>
+  <object id="62" x="736" y="128" width="32" height="96"/>
+  <object id="63" x="992" y="320" width="96" height="32"/>
+  <object id="64" x="992" y="448" width="96" height="32"/>
+  <object id="66" x="704" y="576" width="32" height="96"/>
+  <object id="67" x="736" y="576" width="32" height="96"/>
+  <object id="68" x="512" y="576" width="32" height="96"/>
+  <object id="69" x="544" y="576" width="32" height="96"/>
+ </objectgroup>
  <layer id="6" name="objects" width="40" height="25">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -62,7 +74,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="7" name="walls">
+ <objectgroup id="7" name="walls" visible="0">
   <object id="8" x="0" y="0" width="1280" height="32"/>
   <object id="9" x="1248" y="32" width="32" height="320"/>
   <object id="10" x="0" y="768" width="1280" height="32"/>
