@@ -2,8 +2,8 @@ import pygame
 import utils
 
 
-    #healthbar stuff
 class HealthBar():
+    """Represents the player's healthbar."""
     def __init__(self,x,y,w,h,max_hp):
         self.x = x 
         self.y = y
@@ -11,6 +11,7 @@ class HealthBar():
         self.h = h
         self.hp = max_hp
         self.max_hp = max_hp
+    
     def draw(self, surface):
         self.hp -= 0.01
         ratio = self.hp/self.max_hp
@@ -60,6 +61,7 @@ class Player(pygame.sprite.Sprite):
             if door.toggle:
                 # dont update the position
                 self.rect.center = self.pos
+                self.health.hp -= 0.1
                 return
         self.pos = new_pos
 
