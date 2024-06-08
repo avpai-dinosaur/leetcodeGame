@@ -1,11 +1,28 @@
 import pygame
 import utils
 
+
+    #healthbar stuff
+class HealthBar():
+    def __init__(self,x,y,w,h,max_hp):
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.hp = max_hp
+        self.max_hp = max_hp
+    def draw(self, surface):
+        ratio = self.hp/self.max_hp
+        pygame.draw.rect(surface, "red", (self.x, self.y, self.w, self.h))
+        pygame.draw.rect(surface, "green", (self.x, self.y, self.w, self.h))
+        
+
 class Player(pygame.sprite.Sprite):
     """Represents the player."""
 
     def __init__(self, filename, pos):
         super().__init__()
+        self.health = HealthBar(pos[0], pos[1], 75, 20, 100)
         self.speed = 0.01
         self.pos = pygame.Vector2(pos)
         self.image, self.rect = utils.load_png(filename)
@@ -31,7 +48,22 @@ class Player(pygame.sprite.Sprite):
                 self.rect.center = self.pos
                 return
         self.pos = new_pos
+
+        self.health.x = self.pos[0]
+        self.health.y = self.pos[1]
+
+
+        #create functions that depreciate health
+        
+        #create functions that add health
     
     def draw(self, surface):
+        self.health.hp -= 50
+        self.health.draw(surface)
         surface.blit(self.image, self.rect)
         pygame.draw.rect(surface, (0, 255, 0), self.rect)
+
+
+
+
+
