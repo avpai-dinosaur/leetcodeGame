@@ -24,20 +24,24 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_d]:
             new_pos.x = self.pos.x + 300 * self.speed
         
+        # tentatively update to the new position
+        # might have to undo if it turns out new position
+        # collides with a barrier
         self.rect.center = new_pos
+
+        # check if the proposed position collides with walls
         for wall in walls:
             if pygame.Rect.colliderect(wall, self.rect):
                 # dont update the position
                 self.rect.center = self.pos
                 return
         
-        for door in doors:
-            if door.toggle and pygame.sprite.collide_rect(door, self):
-                # dont update the positionmm
+        # check if the proposed position collides with closed doors
+        door = pygame.sprite.spritecollideany(self, doors)
+        if door:
+            if door.toggle:
+                # dont update the position
                 self.rect.center = self.pos
-                # present the button to press
-                if keys[pygame.K_m]:
-                    door.toggle = False
                 return
         self.pos = new_pos
     

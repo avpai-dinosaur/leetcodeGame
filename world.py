@@ -13,7 +13,7 @@ class World():
     
     def update(self):
         self.player.update(self.map.walls, self.map.laser_doors)
-        self.camera_pos = self.player.pos
+        self.map.laser_doors.update(self.player.rect)
     
     def draw(self, surface):
         self.map.draw(surface)
