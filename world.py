@@ -14,6 +14,7 @@ class World():
     def update(self):
         self.player.update(self.map.walls, self.map.laser_doors)
         self.map.laser_doors.update(self.player.rect)
+        self.map.antidote_doors.update(self.player)
     
     def draw(self, surface):
         self.map.draw(surface)
