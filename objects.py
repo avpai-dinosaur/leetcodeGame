@@ -44,3 +44,12 @@ class LaserDoor(pygame.sprite.Sprite):
             pygame.draw.rect(surface, (252, 3, 3), self.rect)
         if self.present_button:
             surface.blit(self.text, self.textRect)
+
+class AntidoteVial(pygame.sprite.Sprite):
+    def __init__(self, hp):
+        """Constructor.
+            
+            hp: int representing how much health the vial will heal
+        """
+        super().__init__()
+        self.hp = hp

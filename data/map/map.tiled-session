@@ -12,10 +12,10 @@
     "fileStates": {
         "map.tmx": {
             "scale": 2,
-            "selectedLayer": 2,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 162.75,
-                "y": 137.75
+                "x": 161.75,
+                "y": 103.25
             }
         },
         "spaceship.tsx": {
