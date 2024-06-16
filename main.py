@@ -10,14 +10,6 @@ def main():
     clock = pygame.time.Clock()
     world = World(screen)
     running = True
-
-    #TEMPORARY
-
-    color = (0,0,0)
-    sheet = spritesheet.SpriteSheet('Oldhero.png', color)
-    last_update = pygame.time.get_ticks()
-    animation_cooldown = 200 #in milli secs
-    frame = 0
  
     # Game loop
     while running:
@@ -33,20 +25,6 @@ def main():
         screen.fill("black")
         world.update()
         world.draw(screen)
-
-        action = "run"
-        #current time
-        current_time = pygame.time.get_ticks()
-        if(current_time - last_update >= animation_cooldown):
-            #if #animation cooldown has passed between last update and current time, switch frame
-            frame += 1
-            last_update = current_time
-            #reset frame back to 0 so it doesn't index out of bounds
-            if(frame >= sheet.masteraction[action]):
-                frame = 0
-        screen.blit(sheet.animationrun[frame], (100,100))
-
-
 
         # flip() the display to put your work on screen
         pygame.display.flip()

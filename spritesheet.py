@@ -1,18 +1,26 @@
 import pygame
+import utils
 
 
 class SpriteSheet():
 
     def __init__(self, characterlink, color) -> None:
-        self.image = pygame.image.load(characterlink).convert_alpha()
-        self.sheet = self.image
+        self.sheet, _ = utils.load_png(characterlink)
         self.color = color
-        self.masteraction = {"idle": 2, "run" : 6 , "jump" : 4, "punch" : 3, "kick" : 4}
+        self.masteraction = {"idle": 2, "run" : 6 , "jump" : 4, "punch" : 3, "kick" : 4} # maps action to the number of frames
+        
         self.animationrun = self.animationruninit()
         self.animationidle = self.animationidleinit()
         self.animationjump = self.animationjumpinit()
         self.animationkick = self.animationkickinit()
         self.animationpunch = self.animationpunchinit()
+
+        self.image_dict = {
+            "run": self.animationrun,
+            "idle": self.animationidle,
+            "jump": self.animationjump,
+            "punch": self.animationpunch
+        }
 
     
     def get_image(self, frame_w, frame_h, width, height, scale, color):
