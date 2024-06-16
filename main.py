@@ -15,10 +15,6 @@ def main():
 
     color = (0,0,0)
     sheet = spritesheet.SpriteSheet('Oldhero.png', color)
-    animationjump = []
-    animationpunch = []
-    animationkick = []
-
     last_update = pygame.time.get_ticks()
     animation_cooldown = 200 #in milli secs
     frame = 0
