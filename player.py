@@ -61,7 +61,7 @@ class Player(pygame.sprite.Sprite):
     def draw(self, surface):
         self.health.draw(surface)
         surface.blit(self.image, self.rect)
-        pygame.draw.rect(surface, (0, 255, 0), self.rect)
+        #pygame.draw.rect(surface, (0, 255, 0), self.rect)
 
 
 
