@@ -1,6 +1,7 @@
 import pygame
 import constants as c
 from world import World
+import spritesheet
 #hello world
 #switch from health
 def main():
@@ -9,7 +10,7 @@ def main():
     clock = pygame.time.Clock()
     world = World(screen)
     running = True
-    
+ 
     # Game loop
     while running:
         # Poll for events.
@@ -24,7 +25,7 @@ def main():
         screen.fill("black")
         world.update()
         world.draw(screen)
-        
+
         # flip() the display to put your work on screen
         pygame.display.flip()
 
