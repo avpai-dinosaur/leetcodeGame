@@ -19,7 +19,8 @@ class SpriteSheet():
             "run": self.animationrun,
             "idle": self.animationidle,
             "jump": self.animationjump,
-            "punch": self.animationpunch
+            "punch": self.animationpunch,
+            "kick": self.animationkick
         }
 
     

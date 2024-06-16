@@ -61,6 +61,13 @@ class Player(pygame.sprite.Sprite):
             new_pos.x = self.pos.x + 300 * self.speed
             self.action = "run"
             self.face_left = False
+        # Redo to have these play all the way out
+        if keys[pygame.K_i]:
+            self.action = "punch"
+        if keys[pygame.K_k]:
+            self.action = "kick"
+        if keys[pygame.K_SPACE]:
+            self.action = "jump"
         
         # tentatively update to the new position
         # might have to undo if it turns out new position
