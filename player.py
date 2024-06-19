@@ -25,6 +25,11 @@ class Player(pygame.sprite.Sprite):
     """Represents the player."""
 
     def __init__(self, filename, pos):
+        """Constructor.
+
+            filename: location of png image of the player
+            pos: tuple representing players inital position
+        """
         super().__init__()
         self.health = HealthBar(pos[0], pos[1], 60, 10, 100)
         self.speed = 0.01
@@ -33,7 +38,13 @@ class Player(pygame.sprite.Sprite):
         
         # Animation variables
         self.last_update = pygame.time.get_ticks()
-        self.animation_cooldown = 200 #in milli secs
+        self.animation_cooldown = {
+            "idle": 500,
+            "run": 50,
+            "punch": 50,
+            "kick": 50,
+            "jump": 50
+        }
         self.current_frame = 0
         self.action = "idle"
         self.face_left = False
@@ -48,17 +59,17 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         self.action = "idle"
         if keys[pygame.K_w]:
-            new_pos.y = self.pos.y - 300 * self.speed
+            new_pos.y = self.pos.y - 150 * self.speed
             self.action = "run"
         if keys[pygame.K_s]:
-            new_pos.y = self.pos.y + 300 * self.speed
+            new_pos.y = self.pos.y + 150 * self.speed
             self.action = "run"
         if keys[pygame.K_a]:
-            new_pos.x = self.pos.x - 300 * self.speed
+            new_pos.x = self.pos.x - 150 * self.speed
             self.action = "run"
             self.face_left = True
         if keys[pygame.K_d]:
-            new_pos.x = self.pos.x + 300 * self.speed
+            new_pos.x = self.pos.x + 150 * self.speed
             self.action = "run"
             self.face_left = False
         # Redo to have these play all the way out
@@ -95,19 +106,14 @@ class Player(pygame.sprite.Sprite):
         self.health.y = self.pos[1] - 50
 
         current_time = pygame.time.get_ticks()
-        if(current_time - self.last_update >= self.animation_cooldown):
-            #if #animation cooldown has passed between last update and current time, switch frame
+        if(current_time - self.last_update >= self.animation_cooldown[self.action]):
+            #if animation cooldown has passed between last update and current time, switch frame
             self.current_frame += 1
             self.last_update = current_time
             #reset frame back to 0 so it doesn't index out of bounds
             if(self.current_frame >= self.spritesheet.masteraction[self.action]):
                 self.current_frame = 0
             self.image = self.spritesheet.image_dict[self.action][self.current_frame]
-
-
-        #create functions that depreciate health
-        
-        #create functions that add health
 
     def draw(self, surface):
         self.health.draw(surface)

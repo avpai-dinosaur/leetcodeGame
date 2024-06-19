@@ -46,9 +46,9 @@ class Door(pygame.sprite.Sprite):
         If the player is within the door's range, show the key needed to
         open the door.
             
-            player: pygame.Rect representing the player's area and position.
+            player: Player object.
         """
-        if self.scaled_rect.colliderect(player) and self.toggle:
+        if self.scaled_rect.colliderect(player.rect) and self.toggle:
             keys = pygame.key.get_pressed()
             self.present_button = True
             if (keys[self.open_button[1]]):

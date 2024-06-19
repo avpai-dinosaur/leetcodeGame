@@ -34,7 +34,7 @@
          "name":"rooms",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":40,
          "x":0,
          "y":0
@@ -42,6 +42,7 @@
         {
          "draworder":"topdown",
          "id":8,
+         "locked":true,
          "name":"laserDoors",
          "objects":[
                 {
@@ -163,6 +164,7 @@
         {
          "draworder":"topdown",
          "id":9,
+         "locked":true,
          "name":"antidoteDoors",
          "objects":[
                 {
@@ -221,6 +223,7 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":25,
          "id":6,
+         "locked":true,
          "name":"objects",
          "opacity":1,
          "type":"tilelayer",
@@ -232,6 +235,7 @@
         {
          "draworder":"topdown",
          "id":7,
+         "locked":true,
          "name":"walls",
          "objects":[
                 {
@@ -533,12 +537,47 @@
                 }],
          "opacity":1,
          "type":"objectgroup",
+         "visible":false,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":10,
+         "name":"guardPaths",
+         "objects":[
+                {
+                 "height":0,
+                 "id":74,
+                 "name":"",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":-32
+                        }, 
+                        {
+                         "x":512,
+                         "y":-32
+                        }, 
+                        {
+                         "x":512,
+                         "y":-352
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":128,
+                 "y":416
+                }],
+         "opacity":1,
+         "type":"objectgroup",
          "visible":true,
          "x":0,
          "y":0
         }],
- "nextlayerid":10,
- "nextobjectid":72,
+ "nextlayerid":11,
+ "nextobjectid":75,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",
