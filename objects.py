@@ -74,11 +74,19 @@ class AntidoteDoor(Door):
        super().__init__(rect)
        self.vials = pygame.sprite.Group()
        self.hp = hp
+       self.cooldown = 1000
+       self.last_dispense = pygame.time.get_ticks()
     
     def door_action(self):
         """Door should release an antidote health vial."""
-        vial_pos = (self.rect.centerx, self.rect.centery + random.randint(-20, 20))
-        self.vials.add(AntidoteVial(self.hp, vial_pos))
+        curr_time = pygame.time.get_ticks()
+        if (curr_time - self.last_dispense >= self.cooldown):
+            vial_pos = (
+                self.rect.centerx,
+                self.rect.centery + random.randint(-20, 20)
+            )
+            self.vials.add(AntidoteVial(self.hp, vial_pos))
+            self.last_dispense = curr_time
 
     def draw_door(self, surface):
         """Logic to draw the door image.
@@ -110,6 +118,7 @@ class AntidoteVial(pygame.sprite.Sprite):
         self.hp = hp
         self.image, self.rect = utils.load_png("data/images/antidote.png")
         self.rect.center = pos
+        self.spawn_time = pygame.time.get_ticks()
     
     def update(self, player):
         """Allows antidote to be picked up by player.
@@ -118,11 +127,10 @@ class AntidoteVial(pygame.sprite.Sprite):
             
             player: Player object.
         """
-        if self.rect.colliderect(player.rect):
+        time_delta = pygame.time.get_ticks() - self.spawn_time
+        if time_delta > 100 and self.rect.colliderect(player.rect):
             player.health.hp = min(100, player.health.hp + self.hp)
             self.kill()
-        else:
-            self.present_button = False
 
     def draw(self, surface):
         """Draw a vial to the screen."""
