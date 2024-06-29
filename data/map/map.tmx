@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="75">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="76">
  <editorsettings>
   <export target="map.tmj" format="json"/>
  </editorsettings>
@@ -110,6 +110,9 @@
  <objectgroup id="10" name="guardPaths">
   <object id="74" x="128" y="416">
    <polyline points="0,-32 512,-32 512,-352"/>
+  </object>
+  <object id="75" x="896" y="544">
+   <polyline points="0,0 224,0"/>
   </object>
  </objectgroup>
 </map>

@@ -569,6 +569,26 @@
                  "width":0,
                  "x":128,
                  "y":416
+                }, 
+                {
+                 "height":0,
+                 "id":75,
+                 "name":"",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":224,
+                         "y":0
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":896,
+                 "y":544
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -577,7 +597,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":75,
+ "nextobjectid":76,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",
