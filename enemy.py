@@ -12,6 +12,8 @@ class Enemy(pygame.sprite.Sprite):
                   which the enemy will walk.
             imglink: path to enemy sprite image.
         """
+        super().__init__()
+
         #This is all the enemy sprite stuff
         self.sheet, _ = utils.load_png(imglink)
         self.color = (0,0,0)
@@ -37,14 +39,12 @@ class Enemy(pygame.sprite.Sprite):
         self.current_frame = 0
         self.action = "walk"
         self.face_left = False
-        self.rect = pygame.Rect(self.pos[0], self.pos[1], 16 * 3, 16 * 3)
         self.image = self.image_dict[self.action][self.current_frame]
         
         #TEMPORARY VARIABLE
         self.temp = 0
     
 
-        super().__init__()
         self.health = 100
         self.speed = 1
 
@@ -58,7 +58,6 @@ class Enemy(pygame.sprite.Sprite):
         # Image Stuff
         self.rect = pygame.Rect(self.pos[0], self.pos[0], 16 * 3, 16 * 3)
         self.rect.center = self.pos
-        self.image = pygame.Surface((16 * 3, 16 * 3))
     
     def update(self):
         """Update function to run each game tick.
