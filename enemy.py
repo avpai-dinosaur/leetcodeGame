@@ -32,7 +32,7 @@ class Enemy(pygame.sprite.Sprite):
         }
         self.last_update = pygame.time.get_ticks()
         self.current_frame = 0
-        self.action = "idle"
+        self.action = "walk"
         self.face_left = False
         self.rect = pygame.Rect(pos[0], pos[0], 16 * 3, 16 * 3)
         self.image = self.image_dict[self.action][self.current_frame]
@@ -118,52 +118,52 @@ class Enemy(pygame.sprite.Sprite):
     def walkinit(self):
         temp = []
         for _ in range(self.masteraction["walk"]):
-            temp.append(self.get_image(0, 5, 64, 64, 1, self.color))
-            temp.append(self.get_image(1, 5, 64, 64, 1, self.color))
-            temp.append(self.get_image(2, 5, 64, 64, 1, self.color))
-            temp.append(self.get_image(3, 5, 64, 64, 1, self.color))
-            temp.append(self.get_image(4, 5, 64, 64, 1, self.color))
-            temp.append(self.get_image(5, 5, 64, 64, 1, self.color))
-            temp.append(self.get_image(6, 5, 64, 64, 1, self.color))
+            temp.append(self.get_image(0, 5, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(1, 5, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(2, 5, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(3, 5, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(4, 5, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(5, 5, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(6, 5, 64, 64, 0.75, self.color))
         return temp
 
     def jumpinit(self):
         temp = []
         for _ in range(self.masteraction["jump"]):
-            temp.append(self.get_image(0, 3, 64, 64, 1, self.color))
-            temp.append(self.get_image(1, 3, 64, 64, 1, self.color))
-            temp.append(self.get_image(2, 3, 64, 64, 1, self.color))
-            temp.append(self.get_image(3, 3, 64, 64, 1, self.color))
+            temp.append(self.get_image(0, 3, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(1, 3, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(2, 3, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(3, 3, 64, 64, 0.75, self.color))
         return temp
     
     def sidejumpinit(self):
         temp = []
         for _ in range(self.masteraction["sidejump"]):
-            temp.append(self.get_image(0, 4, 64, 64, 1, self.color))
-            temp.append(self.get_image(1, 4, 64, 64, 1, self.color))
-            temp.append(self.get_image(2, 4, 64, 64, 1, self.color))
-            temp.append(self.get_image(3, 4, 64, 64, 1, self.color))
+            temp.append(self.get_image(0, 4, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(1, 4, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(2, 4, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(3, 4, 64, 64, 0.75, self.color))
         return temp
 
     def deadinit(self):
         temp = []
         for _ in range(self.masteraction["dead"]):
-            temp.append(self.get_image(0, 0, 64, 64, 1, self.color))
-            temp.append(self.get_image(1, 0, 64, 64, 1, self.color))
-            temp.append(self.get_image(2, 0, 64, 64, 1, self.color))
-            temp.append(self.get_image(3, 0, 64, 64, 1, self.color))
-            temp.append(self.get_image(4, 0, 64, 64, 1, self.color))
+            temp.append(self.get_image(0, 0, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(1, 0, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(2, 0, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(3, 0, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(4, 0, 64, 64, 0.75, self.color))
         return temp
 
     def idle2init(self):
         temp = []
         for _ in range(self.masteraction["idle2"]):
-            temp.append(self.get_image(0, 2, 64, 64, 1, self.color))
-            temp.append(self.get_image(1, 2, 64, 64, 1, self.color))
-            temp.append(self.get_image(2, 2, 64, 64, 1, self.color))
-            temp.append(self.get_image(3, 2, 64, 64, 1, self.color))
-            temp.append(self.get_image(4, 2, 64, 64, 1, self.color))
-            temp.append(self.get_image(5, 2, 64, 64, 1, self.color))
+            temp.append(self.get_image(0, 2, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(1, 2, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(2, 2, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(3, 2, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(4, 2, 64, 64, 0.75, self.color))
+            temp.append(self.get_image(5, 2, 64, 64, 0.75, self.color))
         return temp
 
 
