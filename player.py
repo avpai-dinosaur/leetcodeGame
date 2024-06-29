@@ -34,23 +34,17 @@ class Player(pygame.sprite.Sprite):
         self.health = HealthBar(pos[0], pos[1], 60, 10, 100)
         self.speed = 0.01
         self.pos = pygame.Vector2(pos)
-        self.spritesheet = SpriteSheet(filename, (0, 0, 0))
+        self.spritesheet = SpriteSheet(filename, c.PLAYER_SHEET_METADATA)
         
         # Animation variables
         self.last_update = pygame.time.get_ticks()
-        self.animation_cooldown = {
-            "idle": 500,
-            "run": 50,
-            "punch": 50,
-            "kick": 50,
-            "jump": 50
-        }
         self.current_frame = 0
         self.action = "idle"
         self.face_left = False
         
-        self.rect = pygame.Rect(pos[0], pos[0], 16 * 3, 16 * 3)
-        self.image = self.spritesheet.image_dict[self.action][self.current_frame]
+        self.image = self.spritesheet.get_image(self.action, self.current_frame)
+        self.rect = self.image.get_rect()
+        self.rect.center = pos
     
     def update(self, walls, doors):
         """Updates the player's position."""
@@ -106,14 +100,14 @@ class Player(pygame.sprite.Sprite):
         self.health.y = self.pos[1] - 50
 
         current_time = pygame.time.get_ticks()
-        if(current_time - self.last_update >= self.animation_cooldown[self.action]):
+        if(current_time - self.last_update >= self.spritesheet.cooldown(self.action)):
             #if animation cooldown has passed between last update and current time, switch frame
             self.current_frame += 1
             self.last_update = current_time
             #reset frame back to 0 so it doesn't index out of bounds
-            if(self.current_frame >= self.spritesheet.masteraction[self.action]):
+            if(self.current_frame >= self.spritesheet.num_frames(self.action)):
                 self.current_frame = 0
-            self.image = self.spritesheet.image_dict[self.action][self.current_frame]
+            self.image = self.spritesheet.get_image(self.action, self.current_frame)
 
     def draw(self, surface):
         self.health.draw(surface)
@@ -121,8 +115,3 @@ class Player(pygame.sprite.Sprite):
             pygame.transform.flip(self.image, self.face_left, False),
             self.rect
         )
-
-
-
-
-

@@ -1,91 +1,73 @@
 import pygame
 import utils
-
+import pprint
 
 class SpriteSheet():
+    """Represents a sprite sheet."""
 
-    def __init__(self, characterlink, color) -> None:
-        self.sheet, _ = utils.load_png(characterlink)
-        self.color = color
-        self.masteraction = {"idle": 2, "run" : 6 , "jump" : 4, "punch" : 3, "kick" : 4} # maps action to the number of frames
+    def __init__(self, sheet, metadata):
+        """Constructor.
         
-        self.animationrun = self.animationruninit()
-        self.animationidle = self.animationidleinit()
-        self.animationjump = self.animationjumpinit()
-        self.animationkick = self.animationkickinit()
-        self.animationpunch = self.animationpunchinit()
-
-        self.image_dict = {
-            "run": self.animationrun,
-            "idle": self.animationidle,
-            "jump": self.animationjump,
-            "punch": self.animationpunch,
-            "kick": self.animationkick
-        }
+            sheet: png image of the sprite sheet.
+            metadata: dictionary of metadata to help load the spritesheet.
+        """
+        self.sheet, _ = utils.load_png(sheet)
+        self.metadata = metadata
+        self.animations = {}
+        self.parse_animations()
 
     
-    def get_image(self, frame_w, frame_h, width, height, scale, color):
-        image = pygame.Surface((width,height)).convert_alpha()
-        image.blit(self.sheet, (0,0), ((frame_w * width),(frame_h * height), width, height))
+    def parse_frame(self, row, col):
+        """Grabs an individual frame from the spritesheet.
+        
+            row, col: the row and column of the image in the spritsheet
+        """
+        width = self.metadata["frame_width"]
+        height = self.metadata["frame_height"]
+        color = self.metadata["colorkey"]
+        scale = self.metadata["scale"]
+
+        image = pygame.Surface((width, height)).convert_alpha()
+        image.blit(
+            self.sheet,
+            (0,0),
+            ((col * width), (row * height), width, height)
+        )
         image = pygame.transform.scale(image, (width * scale, height * scale))
         image.set_colorkey(color)
         return image
     
 
-    def animationruninit(self):
-        temp = []
-        for _ in range(self.masteraction["run"]):
-            temp.append(self.get_image(0, 1, 16, 16, 3, self.color))
-            temp.append(self.get_image(1, 1, 16, 16, 3, self.color))
-            temp.append(self.get_image(2, 1, 16, 16, 3, self.color))
-            temp.append(self.get_image(3, 1, 16, 16, 3, self.color))
-            temp.append(self.get_image(4, 1, 16, 16, 3, self.color))
-            temp.append(self.get_image(5, 1, 16, 16, 3, self.color))
-        return temp
+    def parse_animations(self):
+        """Parses all animations from the sprite sheet into self.animations."""
+        for key, val in self.metadata["actions"].items():
+            self.animations[key] = {}
+            self.animations[key]["num_frames"] = val["num_frames"]
+            self.animations[key]["images"] = []
+            for i in range(val["num_frames"]):
+                self.animations[key]["images"].append(
+                    self.parse_frame(val["row"], i)
+                )
+        pprint.pprint(self.animations)
     
-    def animationidleinit(self):
-        temp = []
-        for _ in range(self.masteraction["idle"]):
-            temp.append(self.get_image(0, 0, 16, 16, 3, self.color))
-            temp.append(self.get_image(1, 0, 16, 16, 3, self.color))
-        return temp
+    def get_image(self, action, frame):
+        """Returns the image for the given action and frame.
+        
+            action: str
+            frame: int
+        """
+        return self.animations[action]["images"][frame]
     
-    def animationjumpinit(self):
-        temp = []
-        for _ in range(self.masteraction["idle"]):
-            temp.append(self.get_image(1, 0, 16, 16, 3, self.color))
-            temp.append(self.get_image(2, 0, 16, 16, 3, self.color))
-            temp.append(self.get_image(3, 0, 16, 16, 3, self.color))
-            temp.append(self.get_image(4, 0, 16, 16, 3, self.color))
-        return temp
+    def num_frames(self, action):
+        """Returns the number of frames for this action.
+        
+            action: str
+        """
+        return self.animations[action]["num_frames"]
 
-    def animationjumpinit(self):
-        temp = []
-        for _ in range(self.masteraction["jump"]):
-            temp.append(self.get_image(1, 0, 16, 16, 3, self.color))
-            temp.append(self.get_image(2, 0, 16, 16, 3, self.color))
-            temp.append(self.get_image(3, 0, 16, 16, 3, self.color))
-            temp.append(self.get_image(4, 0, 16, 16, 3, self.color))
-        return temp
-    
-    def animationpunchinit(self):
-        temp = []
-        for _ in range(self.masteraction["punch"]):
-            temp.append(self.get_image(0, 4, 16, 16, 3, self.color))
-            temp.append(self.get_image(1, 4, 16, 16, 3, self.color))
-            temp.append(self.get_image(2, 4, 16, 16, 3, self.color))
-        return temp
-
-    def animationkickinit(self):
-        temp = []
-        for _ in range(self.masteraction["kick"]):
-            temp.append(self.get_image(0, 2, 16, 16, 3, self.color))
-            temp.append(self.get_image(1, 2, 16, 16, 3, self.color))
-            temp.append(self.get_image(2, 2, 16, 16, 3, self.color))
-            temp.append(self.get_image(3, 2, 16, 16, 3, self.color))
-        return temp
-
-    
-
-
-
+    def cooldown(self, action):
+        """Returns the cooldown for the action.
+        
+            action: str
+        """
+        return self.metadata["actions"][action]["cooldown"]
