@@ -13,7 +13,7 @@ class World():
         self.enemies = pygame.sprite.Group()
         self.map = Map("data/images/map.png")
         for path in self.map.enemy_paths:
-            self.enemies.add(Enemy(path))
+            self.enemies.add(Enemy("robot.png", path))
     
     def update(self):
         self.player.update(self.map.walls, self.map.laser_doors)

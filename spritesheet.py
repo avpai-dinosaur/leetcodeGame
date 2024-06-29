@@ -46,43 +46,43 @@ class SpriteSheet():
     def animationidleinit(self):
         temp = []
         for _ in range(self.masteraction["idle"]):
-            temp.append(self.get_image(0, 0, 16 ,16, 3, self.color))
-            temp.append(self.get_image(1, 0, 16,16, 3, self.color))
+            temp.append(self.get_image(0, 0, 16, 16, 3, self.color))
+            temp.append(self.get_image(1, 0, 16, 16, 3, self.color))
         return temp
     
     def animationjumpinit(self):
         temp = []
         for _ in range(self.masteraction["idle"]):
-            temp.append(self.get_image(1, 0, 16,16, 3, self.color))
-            temp.append(self.get_image(2, 0, 16,16, 3, self.color))
-            temp.append(self.get_image(3, 0, 16,16, 3, self.color))
-            temp.append(self.get_image(4, 0, 16,16, 3, self.color))
+            temp.append(self.get_image(1, 0, 16, 16, 3, self.color))
+            temp.append(self.get_image(2, 0, 16, 16, 3, self.color))
+            temp.append(self.get_image(3, 0, 16, 16, 3, self.color))
+            temp.append(self.get_image(4, 0, 16, 16, 3, self.color))
         return temp
 
     def animationjumpinit(self):
         temp = []
         for _ in range(self.masteraction["jump"]):
-            temp.append(self.get_image(1, 0, 16,16, 3, self.color))
-            temp.append(self.get_image(2, 0, 16,16, 3, self.color))
-            temp.append(self.get_image(3, 0, 16,16, 3, self.color))
-            temp.append(self.get_image(4, 0, 16,16, 3, self.color))
+            temp.append(self.get_image(1, 0, 16, 16, 3, self.color))
+            temp.append(self.get_image(2, 0, 16, 16, 3, self.color))
+            temp.append(self.get_image(3, 0, 16, 16, 3, self.color))
+            temp.append(self.get_image(4, 0, 16, 16, 3, self.color))
         return temp
     
     def animationpunchinit(self):
         temp = []
         for _ in range(self.masteraction["punch"]):
-            temp.append(self.get_image(0, 4, 16,16, 3, self.color))
-            temp.append(self.get_image(1, 4, 16,16, 3, self.color))
-            temp.append(self.get_image(2, 4, 16,16, 3, self.color))
+            temp.append(self.get_image(0, 4, 16, 16, 3, self.color))
+            temp.append(self.get_image(1, 4, 16, 16, 3, self.color))
+            temp.append(self.get_image(2, 4, 16, 16, 3, self.color))
         return temp
 
     def animationkickinit(self):
         temp = []
         for _ in range(self.masteraction["kick"]):
-            temp.append(self.get_image(0, 2, 16,16, 3, self.color))
-            temp.append(self.get_image(1, 2, 16,16, 3, self.color))
-            temp.append(self.get_image(2, 2, 16,16, 3, self.color))
-            temp.append(self.get_image(3, 2, 16,16, 3, self.color))
+            temp.append(self.get_image(0, 2, 16, 16, 3, self.color))
+            temp.append(self.get_image(1, 2, 16, 16, 3, self.color))
+            temp.append(self.get_image(2, 2, 16, 16, 3, self.color))
+            temp.append(self.get_image(3, 2, 16, 16, 3, self.color))
         return temp
 
     
