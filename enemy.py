@@ -2,44 +2,66 @@ import pygame
 import utils
 import constants as c
 import random
+import math
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, pos):
+    def __init__(self, path):
         """Constructor.
 
-            pos: tuple representing enemy's inital position
+            path: List of Vector2 objects specifying path along 
+                  which the enemy will walk.
         """
         super().__init__()
         self.health = 100
-        self.speed = 0.01
-        self.pos = pygame.Vector2(pos)
-        self.rect = pygame.Rect(pos[0], pos[0], 16 * 3, 16 * 3)
+        self.speed = 1
+
+        # Path following
+        self.path = path
+        self.pos = self.path[0].copy() # This NEEDS to be a copy to avoid modifying path!
+        self.target_point = 1
+        self.target = self.path[self.target_point]
+        self.direction = 1
+
+        # Image Stuff
+        self.rect = pygame.Rect(self.pos[0], self.pos[0], 16 * 3, 16 * 3)
+        self.rect.center = self.pos
+        self.image = pygame.Surface((16 * 3, 16 * 3))
     
-    def update(self, walls):
+    def update(self):
         """Update function to run each game tick.
         
         Enemy should move randomly and reverse direction if it bounces off a wall.
 
             walls: list of pygame.Rects representing walls in the map.
         """
-        new_pos = self.pos
-        x_dir = random.randint(-1, 1)
-        y_dir = random.randint(-1, 1)
-        new_pos.x = self.pos.x + 300 * self.speed * x_dir
-        new_pos.y = self.pos.y + 300 * self.speed * y_dir
+        self.move()
+        self.rect.center = self.pos
 
-        # tentatively update to the new position
-        # might have to undo if it turns out new position
-        # collides with a barrier
-        self.rect.center = new_pos
+    def move(self):
+        """Move the enemy towards next target point.
+        
+        Enemy should reverse direction upon reaching either end of path.
+        """
+        movement = self.target - self.pos
+        distance = movement.length()
+        
+        if distance >= self.speed:
+            self.pos += movement.normalize() * self.speed
+        else:
+            if distance != 0:
+                self.pos += movement.normalize() * distance
+            if self.target_point == len(self.path) - 1 or self.target_point == 0:
+                self.direction *= -1
+            self.target_point += self.direction
+            self.target = self.path[self.target_point]
 
-        # check if the proposed position collides with walls
-        for wall in walls:
-            if pygame.Rect.colliderect(wall, self.rect):
-                # dont update the position
-                self.rect.center = self.pos
-                return
-
+    # def rotate(self):
+    #     #use distance to calculate angle
+    #     distance = self.target - self.pos
+    #     self.angle = math.degrees(math.atan2(-distance[1], distance[0]))
+    #     self.image = pygame.transform.rotate(self.original_image, self.angle)
+    #     self.rect = self.image.get_rect()
+    #     self.rect.center = self.pos
     
     def draw(self, surface):
         pygame.draw.rect(surface, "green", self.rect)
