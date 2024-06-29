@@ -38,7 +38,7 @@ class Enemy(pygame.sprite.Sprite):
         self.last_update = pygame.time.get_ticks()
         self.current_frame = 0
         self.action = "walk"
-        self.face_left = False
+        self.face_left = True
         self.image = self.image_dict[self.action][self.current_frame]
         
         #TEMPORARY VARIABLE
@@ -84,6 +84,7 @@ class Enemy(pygame.sprite.Sprite):
                 self.pos += movement.normalize() * distance
             if self.target_point == len(self.path) - 1 or self.target_point == 0:
                 self.direction *= -1
+                self.face_left = not self.face_left
             self.target_point += self.direction
             self.target = self.path[self.target_point]
 
@@ -96,7 +97,11 @@ class Enemy(pygame.sprite.Sprite):
             #reset frame back to 0 so it doesn't index out of bounds
             if(self.current_frame >= self.masteraction[self.action]):
                 self.current_frame = 0
-            self.image = self.image_dict[self.action][self.current_frame]
+            self.image = pygame.transform.flip(
+                self.image_dict[self.action][self.current_frame], 
+                self.face_left,
+                False
+            )
 
     # def rotate(self):
     #     #use distance to calculate angle
