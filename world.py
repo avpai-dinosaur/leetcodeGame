@@ -10,7 +10,7 @@ class World():
    
     def __init__(self, screen):
         self.player = Player("Oldhero.png", c.INIT_PLAYER_POS)
-        self.enemy = Enemy((100, 100))
+        self.enemy = Enemy((100, 100), "robot.png")
         self.map = Map("data/images/map.png")
     
     def update(self):
