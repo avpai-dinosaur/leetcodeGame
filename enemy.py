@@ -1,6 +1,7 @@
 import pygame
 import utils
 import constants as c
+import objects as o
 import random
 import math
 from spritesheet import SpriteSheet
@@ -8,30 +9,26 @@ from spritesheet import SpriteSheet
 class Enemy(pygame.sprite.Sprite):
     """Represents an enemy."""
 
-    def __init__(self, imglink, path):
+    def __init__(self, image, path):
         """Constructor.
 
             path: List of Vector2 objects specifying path along 
                   which the enemy will walk.
-            imglink: path to enemy sprite image.
+            image: enemy sprite PNG file.
         """
         super().__init__()
 
         # Animation Variables
-        self.spritesheet = SpriteSheet("robot.png", c.ENEMY_SHEET_METADATA)
+        self.spritesheet = SpriteSheet(image, c.ENEMY_SHEET_METADATA)
         self.action = "walk"
         self.current_frame = 0
-        
-        self.image = self.spritesheet.get_image(self.action, self.current_frame)
-        self.rect = self.image.get_rect()
-        self.face_left = True
-        
         self.last_update = pygame.time.get_ticks()
         self.cooldown = 100
         
-        # Enemy characteristics
-        self.health = 100
-        self.speed = 0.5
+        # Image variables
+        self.image = self.spritesheet.get_image(self.action, self.current_frame)
+        self.rect = self.image.get_rect()
+        self.face_left = True
 
         # Path following
         self.path = path
@@ -40,8 +37,12 @@ class Enemy(pygame.sprite.Sprite):
         self.target_point = 1
         self.target = self.path[self.target_point]
         self.direction = 1
+
+        # Enemy characteristics
+        self.health = o.HealthBar(self.rect.left, self.rect.top, 60, 10, 100)
+        self.speed = 0.5
     
-    def update(self):
+    def update(self, player):
         """Update function to run each game tick.
         
         Enemy should move randomly and reverse direction if it bounces off a wall.
@@ -49,6 +50,12 @@ class Enemy(pygame.sprite.Sprite):
             walls: list of pygame.Rects representing walls in the map.
         """
         self.move()
+
+        if pygame.Rect.colliderect(player.rect, self.rect) and player.action == "punch":
+            self.health.lose(10)
+            if self.health.hp <= 0:
+                self.kill()
+
 
         # Update the animation
         current_time = pygame.time.get_ticks()
@@ -87,3 +94,8 @@ class Enemy(pygame.sprite.Sprite):
             self.target = self.path[self.target_point]
         
         self.rect.center = self.pos
+        self.health.update(self.rect.left - 10, self.rect.top - 15)
+    
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
+        self.health.draw(surface)

@@ -5,6 +5,38 @@ import utils
 import random
 import constants as c
 
+class HealthBar():
+    """Represents a healthbar."""
+    def __init__(self, x, y, w, h, max_hp):
+        self.x = x 
+        self.y = y
+        self.w = w 
+        self.h = h
+        self.hp = max_hp
+        self.max_hp = max_hp
+    
+    def update(self, x, y):
+        self.x = x
+        self.y = y
+
+    def draw(self, surface):
+        ratio = self.hp/self.max_hp
+        pygame.draw.rect(surface, "red", (self.x, self.y, self.w, self.h))
+        pygame.draw.rect(surface, "green", (self.x, self.y, self.w * ratio, self.h))
+    
+    def lose(self, hp):
+        self.hp -= hp
+
+
+class PlayerHealthBar(HealthBar):
+    """Represents the player's health bar."""
+    def __init__(self, x, y, w, h, max_hp):
+        super().__init__(x, y, w, h, max_hp)
+    
+    def draw(self, surface):
+        self.hp -= 0.01
+        super().draw(surface)
+
 
 class Door(pygame.sprite.Sprite):
     """Class to represent doors in the game."""

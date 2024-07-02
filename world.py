@@ -17,13 +17,14 @@ class World():
     
     def update(self):
         self.player.update(self.map.walls, self.map.laser_doors)
-        self.enemies.update()
+        self.enemies.update(self.player)
         self.map.laser_doors.update(self.player)
         self.map.antidote_doors.update(self.player)
     
     def draw(self, surface):
         self.map.draw(surface)
         self.player.draw(surface)
-        self.enemies.draw(surface)
+        for enemy in self.enemies:
+            enemy.draw(surface)
         
 

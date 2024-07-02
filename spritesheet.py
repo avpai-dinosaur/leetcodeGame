@@ -16,7 +16,6 @@ class SpriteSheet():
         self.animations = {}
         self.parse_animations()
 
-    
     def parse_frame(self, row, col):
         """Grabs an individual frame from the spritesheet.
         
@@ -36,7 +35,6 @@ class SpriteSheet():
         image = pygame.transform.scale(image, (width * scale, height * scale))
         image.set_colorkey(color)
         return image
-    
 
     def parse_animations(self):
         """Parses all animations from the sprite sheet into self.animations."""
@@ -48,7 +46,6 @@ class SpriteSheet():
                 self.animations[key]["images"].append(
                     self.parse_frame(val["row"], i)
                 )
-        pprint.pprint(self.animations)
     
     def get_image(self, action, frame):
         """Returns the image for the given action and frame.

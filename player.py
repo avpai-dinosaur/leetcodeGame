@@ -2,23 +2,7 @@ import pygame
 import utils
 from spritesheet import SpriteSheet
 import constants as c
-
-
-class HealthBar():
-    """Represents the player's healthbar."""
-    def __init__(self,x,y,w,h,max_hp):
-        self.x = x 
-        self.y = y
-        self.w = w 
-        self.h = h
-        self.hp = max_hp
-        self.max_hp = max_hp
-    
-    def draw(self, surface):
-        self.hp -= 0.01
-        ratio = self.hp/self.max_hp
-        pygame.draw.rect(surface, "red", (self.x, self.y, self.w, self.h))
-        pygame.draw.rect(surface, "green", (self.x, self.y, self.w * ratio, self.h))
+import objects as o
         
 
 class Player(pygame.sprite.Sprite):
@@ -31,7 +15,7 @@ class Player(pygame.sprite.Sprite):
             pos: tuple representing players inital position
         """
         super().__init__()
-        self.health = HealthBar(pos[0], pos[1], 60, 10, 100)
+        self.health = o.PlayerHealthBar(pos[0], pos[1], 60, 10, 100)
         self.speed = 0.01
         self.pos = pygame.Vector2(pos)
         self.spritesheet = SpriteSheet(filename, c.PLAYER_SHEET_METADATA)
@@ -67,10 +51,8 @@ class Player(pygame.sprite.Sprite):
             self.action = "run"
             self.face_left = False
         # Redo to have these play all the way out
-        if keys[pygame.K_i]:
+        if keys[pygame.K_p]:
             self.action = "punch"
-        if keys[pygame.K_k]:
-            self.action = "kick"
         if keys[pygame.K_SPACE]:
             self.action = "jump"
         
@@ -92,12 +74,11 @@ class Player(pygame.sprite.Sprite):
             if door.toggle:
                 # dont update the position
                 self.rect.center = self.pos
-                self.health.hp -= 0.1
+                self.health.lose(0.1)
                 return
         self.pos = new_pos
 
-        self.health.x = self.pos[0] - 30
-        self.health.y = self.pos[1] - 50
+        self.health.update(self.pos[0] - 30, self.pos[1] - 50)
 
         current_time = pygame.time.get_ticks()
         if(current_time - self.last_update >= self.spritesheet.cooldown(self.action)):
