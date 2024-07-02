@@ -7,9 +7,9 @@ If you don't have a virtual environment create one with
 ```
 python3 -m venv env
 ```
-Install pygame-ce
+Install dependencies (make sure your virtual environemnt is activated!)
 ```
-pip install pygame-ce
+pip install -r requirements.txt
 ```
 Run with
 ```

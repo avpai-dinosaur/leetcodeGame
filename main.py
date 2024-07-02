@@ -1,10 +1,12 @@
 import pygame
-import constants as c
 from world import World
-import spritesheet
-#hello world
-#switch from health
+import requests as re
+
 def main():
+    data = re.get("https://leetcode-stats-api.herokuapp.com/avpai-dinosaur")
+    print(data.text)
+
+
     pygame.init()
     screen = pygame.display.set_mode((1280, 800))
     clock = pygame.time.Clock()
