@@ -50,9 +50,9 @@ class Enemy(pygame.sprite.Sprite):
 
         # Enemy characteristics
         self.health = o.HealthBar(self.rect.left, self.rect.top, 60, 10, 100)
-        self.speed = 0.5
+        self.speed = c.ENEMY_SPEED
     
-    def update(self, player):
+    def update(self, player, walls):
         """Update function to run each game tick.
         
         Enemy should move randomly and reverse direction if it bounces off a wall.
@@ -60,17 +60,19 @@ class Enemy(pygame.sprite.Sprite):
             walls: list of pygame.Rects representing walls in the map.
         """
         if self.move_state == Enemy.MoveState.PATH:
-            self.pathmove()
+            self.pathmove(walls)
         elif self.move_state == Enemy.MoveState.CHASE:
-            self.chasemove(player)
+            self.chasemove(player, walls)
         else:
-            self.recovermove()
+            self.recovermove(walls)
 
         if pygame.sprite.collide_circle(player, self):
             self.move_state = Enemy.MoveState.CHASE
+            self.speed = c.ENEMY_CHASE_SPEED
         else:
             if self.move_state == Enemy.MoveState.CHASE:
                 self.move_state = Enemy.MoveState.RECOVER
+                self.speed = c.ENEMY_SPEED
         
 
         if pygame.Rect.colliderect(player.rect, self.rect) and player.action == "punch":
@@ -96,34 +98,35 @@ class Enemy(pygame.sprite.Sprite):
                 False
             )
 
-    def pathmove(self):
+    def pathmove(self, walls):
         """Move the enemy towards next path point.
         
         Enemy should reverse direction upon reaching either end of path.
         """
-        if self.move(self.target):
+        if self.move(self.target, walls):
             if self.target_point == len(self.path) - 1 or self.target_point == 0:
                 self.direction *= -1
                 self.face_left = not self.face_left
             self.target_point += self.direction
             self.target = self.path[self.target_point]
     
-    def chasemove(self, player):
+    def chasemove(self, player, walls):
         """Chase the player."""
-        self.move(player.pos)
+        self.move(player.pos, walls)
     
-    def recovermove(self):
+    def recovermove(self, walls):
         """Recover back to patrol."""
-        if self.move(self.target):
+        if self.move(self.target, walls):
             self.move_state = Enemy.MoveState.PATH
 
-    def move(self, target):
+    def move(self, target, walls):
         """Move enemy to the target point.
 
         Returns true if target was reached.
         
             target: Vector2.
         """
+        old_pos = self.pos
         reached = False
         movement = target - self.pos
         distance = movement.length()
@@ -135,6 +138,10 @@ class Enemy(pygame.sprite.Sprite):
             reached = True
         
         self.rect.center = self.pos
+        if self.rect.collidelist(walls):
+            self.rect.center = old_pos
+            self.pos = old_pos
+            
         self.health.update(self.rect.left - 10, self.rect.top - 15)
         return reached
 

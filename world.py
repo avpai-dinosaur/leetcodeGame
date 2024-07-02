@@ -17,7 +17,7 @@ class World():
     
     def update(self):
         self.player.update(self.map.walls, self.map.laser_doors)
-        self.enemies.update(self.player)
+        self.enemies.update(self.player, self.map.walls)
         self.map.laser_doors.update(self.player)
         self.map.antidote_doors.update(self.player)
     
