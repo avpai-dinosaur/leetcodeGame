@@ -57,7 +57,7 @@ class Door(pygame.sprite.Sprite):
         self.toggle = True
         self.present_button = False
     
-    def door_action(self):
+    def door_action(self, player=None):
         """Runs the action specific to the door.
         
         Default is to turn self.toggle to False.
@@ -67,7 +67,7 @@ class Door(pygame.sprite.Sprite):
     def draw_door(self, surface):
         """Logic to draw the door image.
         
-        Default is to not draw the toor if toggle is False.
+        Default is to not draw the door if toggle is False.
         """
         if self.toggle:
             pygame.draw.rect(surface, (252, 3, 3), self.rect)
@@ -84,7 +84,7 @@ class Door(pygame.sprite.Sprite):
             keys = pygame.key.get_pressed()
             self.present_button = True
             if (keys[self.open_button[1]]):
-                self.door_action()
+                self.door_action(player)
         else:
             self.present_button = False
     
@@ -108,9 +108,13 @@ class AntidoteDoor(Door):
        self.hp = hp
        self.cooldown = 1000
        self.last_dispense = pygame.time.get_ticks()
+       self.cost = 1
     
-    def door_action(self):
+    def door_action(self, player):
         """Door should release an antidote health vial."""
+        if player.solved < self.cost:
+            return
+
         curr_time = pygame.time.get_ticks()
         if (curr_time - self.last_dispense >= self.cooldown):
             vial_pos = (
@@ -119,6 +123,7 @@ class AntidoteDoor(Door):
             )
             self.vials.add(AntidoteVial(self.hp, vial_pos))
             self.last_dispense = curr_time
+            self.cost *=2
 
     def draw_door(self, surface):
         """Logic to draw the door image.
@@ -130,6 +135,12 @@ class AntidoteDoor(Door):
     def update(self, player):
         """Update all vials that this door owns."""
         super().update(player)
+        self.text = self.font.render(
+            f"{self.open_button[0]}\n{player.solved}/{self.cost}",
+            True, (250, 250, 250), (0, 0, 0)
+        )
+        self.textRect = self.text.get_rect()
+        self.textRect.center = (self.rect.centerx + 50, self.rect.centery + 50)
         self.vials.update(player)
 
     def draw(self, surface):

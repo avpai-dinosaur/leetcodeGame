@@ -3,6 +3,8 @@ import utils
 from spritesheet import SpriteSheet
 import constants as c
 import objects as o
+import requests
+import json
         
 
 class Player(pygame.sprite.Sprite):
@@ -29,6 +31,12 @@ class Player(pygame.sprite.Sprite):
         self.image = self.spritesheet.get_image(self.action, self.current_frame)
         self.rect = self.image.get_rect()
         self.rect.center = pos
+
+        self.solved = json.loads(
+            requests.get(
+                "https://leetcode-stats-api.herokuapp.com/avpai-dinosaur"
+            ).text
+        )["totalSolved"]
     
     def update(self, walls, doors):
         """Updates the player's position."""
