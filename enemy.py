@@ -5,9 +5,16 @@ import objects as o
 import random
 import math
 from spritesheet import SpriteSheet
+from enum import Enum
 
 class Enemy(pygame.sprite.Sprite):
     """Represents an enemy."""
+
+    class MoveState(Enum):
+        """State of the enemy's movement."""
+        PATH = 0
+        CHASE = 1
+        RECOVER = 2
 
     def __init__(self, image, path):
         """Constructor.
@@ -38,6 +45,9 @@ class Enemy(pygame.sprite.Sprite):
         self.target = self.path[self.target_point]
         self.direction = 1
 
+        self.move_state = Enemy.MoveState.PATH
+        self.radius = 50
+
         # Enemy characteristics
         self.health = o.HealthBar(self.rect.left, self.rect.top, 60, 10, 100)
         self.speed = 0.5
@@ -49,7 +59,19 @@ class Enemy(pygame.sprite.Sprite):
 
             walls: list of pygame.Rects representing walls in the map.
         """
-        self.move()
+        if self.move_state == Enemy.MoveState.PATH:
+            self.pathmove()
+        elif self.move_state == Enemy.MoveState.CHASE:
+            self.chasemove(player)
+        else:
+            self.recovermove()
+
+        if pygame.sprite.collide_circle(player, self):
+            self.move_state = Enemy.MoveState.CHASE
+        else:
+            if self.move_state == Enemy.MoveState.CHASE:
+                self.move_state = Enemy.MoveState.RECOVER
+        
 
         if pygame.Rect.colliderect(player.rect, self.rect) and player.action == "punch":
             self.health.lose(10)
@@ -74,28 +96,48 @@ class Enemy(pygame.sprite.Sprite):
                 False
             )
 
-    def move(self):
-        """Move the enemy towards next target point.
+    def pathmove(self):
+        """Move the enemy towards next path point.
         
         Enemy should reverse direction upon reaching either end of path.
         """
-        movement = self.target - self.pos
-        distance = movement.length()
-        
-        if distance >= self.speed:
-            self.pos += movement.normalize() * self.speed
-        else:
-            if distance != 0:
-                self.pos += movement.normalize() * distance
+        if self.move(self.target):
             if self.target_point == len(self.path) - 1 or self.target_point == 0:
                 self.direction *= -1
                 self.face_left = not self.face_left
             self.target_point += self.direction
             self.target = self.path[self.target_point]
+    
+    def chasemove(self, player):
+        """Chase the player."""
+        self.move(player.pos)
+    
+    def recovermove(self):
+        """Recover back to patrol."""
+        if self.move(self.target):
+            self.move_state = Enemy.MoveState.PATH
+
+    def move(self, target):
+        """Move enemy to the target point.
+
+        Returns true if target was reached.
+        
+            target: Vector2.
+        """
+        reached = False
+        movement = target - self.pos
+        distance = movement.length()
+        if distance >= self.speed:
+            self.pos += movement.normalize() * self.speed
+        else:
+            if distance != 0:
+                self.pos += movement.normalize() * distance
+            reached = True
         
         self.rect.center = self.pos
         self.health.update(self.rect.left - 10, self.rect.top - 15)
-    
+        return reached
+
     def draw(self, surface):
         surface.blit(self.image, self.rect)
         self.health.draw(surface)
