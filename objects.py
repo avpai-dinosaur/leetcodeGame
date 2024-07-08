@@ -37,6 +37,22 @@ class PlayerHealthBar(HealthBar):
         self.hp -= 0.01
         super().draw(surface)
 
+class EnemyHealthBar(HealthBar):
+    """Represents the enemy's health bar."""
+    def __init__(self, x, y, w, h, max_hp):
+        super().__init__(x, y, w, h, max_hp)
+        self.last_shown = None
+        self.cooldown = 2000
+    
+    def lose(self, hp):
+        super().lose(hp)
+        self.last_shown = pygame.time.get_ticks()
+    
+    def draw(self, surface):
+        if self.last_shown and pygame.time.get_ticks() - self.last_shown < self.cooldown:
+            super().draw(surface)
+
+
 
 class Door(pygame.sprite.Sprite):
     """Class to represent doors in the game."""

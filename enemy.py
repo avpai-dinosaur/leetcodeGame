@@ -49,7 +49,7 @@ class Enemy(pygame.sprite.Sprite):
         self.radius = 50
 
         # Enemy characteristics
-        self.health = o.HealthBar(self.rect.left, self.rect.top, 60, 10, 100)
+        self.health = o.EnemyHealthBar(self.rect.left, self.rect.top, 60, 10, 100)
         self.speed = c.ENEMY_SPEED
     
     def update(self, player, walls):
@@ -74,14 +74,16 @@ class Enemy(pygame.sprite.Sprite):
                 self.move_state = Enemy.MoveState.RECOVER
                 self.speed = c.ENEMY_SPEED
         
-
+        # receive hits from player
         if pygame.Rect.colliderect(player.rect, self.rect) and player.action == "punch":
             self.health.lose(10)
             if self.health.hp <= 0:
                 self.kill()
+        
+        self.update_animation()
 
-
-        # Update the animation
+    def update_animation(self):
+        """Update animation of enemy."""
         current_time = pygame.time.get_ticks()
         if(current_time - self.last_update >= self.cooldown):
             #if animation cooldown has passed between last update and current time, switch frame
