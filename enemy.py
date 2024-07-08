@@ -35,7 +35,7 @@ class Enemy(pygame.sprite.Sprite):
         # Image variables
         self.image = self.spritesheet.get_image(self.action, self.current_frame)
         self.rect = self.image.get_rect()
-        self.face_left = True
+        self.face_right = True
 
         # Path following
         self.path = path
@@ -94,7 +94,7 @@ class Enemy(pygame.sprite.Sprite):
             
             self.image = pygame.transform.flip(
                 self.spritesheet.get_image(self.action, self.current_frame), 
-                self.face_left,
+                self.face_right,
                 False
             )
 
@@ -106,7 +106,7 @@ class Enemy(pygame.sprite.Sprite):
         if self.move(self.target, walls):
             if self.target_point == len(self.path) - 1 or self.target_point == 0:
                 self.direction *= -1
-                self.face_left = not self.face_left
+                self.face_right = not self.face_right
             self.target_point += self.direction
             self.target = self.path[self.target_point]
     
@@ -130,6 +130,14 @@ class Enemy(pygame.sprite.Sprite):
         reached = False
         movement = target - self.pos
         distance = movement.length()
+
+        if movement[0] < 0:
+            self.face_right = False
+        elif movement[0] == 0:
+            pass
+        else:
+            self.face_right = True
+
         if distance >= self.speed:
             self.pos += movement.normalize() * self.speed
         else:

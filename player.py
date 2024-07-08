@@ -32,11 +32,14 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = pos
 
-        self.solved = json.loads(
-            requests.get(
-                "https://leetcode-stats-api.herokuapp.com/avpai-dinosaur"
-            ).text
-        )["totalSolved"]
+        try:
+            self.solved = json.loads(
+                requests.get(
+                    "https://leetcode-stats-api.herokuapp.com/dakdaruri"
+                ).text
+            )["totalSolved"]
+        except:
+            self.solved = 100
     
     def update(self, walls, doors):
         """Updates the player's position."""
