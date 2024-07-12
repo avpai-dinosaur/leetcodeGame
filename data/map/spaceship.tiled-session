@@ -8,17 +8,33 @@
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "level0.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 420.6666666666667,
+                "y": 268.66666666666674
+            }
+        },
+        "outer_world.tmx": {
+            "scale": 0.47974999999999995,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 834.8097967691507,
+                "y": 801.4590932777488
+            }
+        },
         "spaceship.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1.5
         }
     },
     "last.imagePath": "//wsl.localhost/Ubuntu/home/avpai/leetcodeGame/data/images",
-    "map.height": 20,
+    "map.height": 50,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 32,
     "map.tileWidth": 32,
-    "map.width": 30,
+    "map.width": 50,
     "openFiles": [
     ],
     "project": "spaceship.tiled-project",
