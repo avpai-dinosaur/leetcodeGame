@@ -28,7 +28,6 @@ class HealthBar():
     def lose(self, hp):
         self.hp -= hp
 
-
 class PlayerHealthBar(HealthBar):
     """Represents the player's health bar."""
     def __init__(self, x, y, w, h, max_hp):

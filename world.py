@@ -6,23 +6,29 @@ from enemy import Enemy
 from map import Map
 import constants as c
 
-class CameraGroup(pygame.sprite.Group):
+class Camera(pygame.sprite.Group):
     """Represents the world's camera"""
 
-    def __init__(self, surface):
+    def __init__(self):
         super().__init__()
-        self.surface = surface
+
+    def draw(self, surface):
+        for sprite in sorted(self.sprites(), key=lambda s : s.rect.centery):
+            sprite.draw(surface)
 
 class World():
     """Top level class to keep track of all game objects."""
 
     def __init__(self):
-        TileSet()
+        TileSet() # have to wait to initialize here b/c dependencies on pygame.display
+        self.camera = Camera()
         self.player = Player("Oldhero.png", c.INIT_PLAYER_POS)
         self.enemies = pygame.sprite.Group()
-        self.map = Map("data/images/outer_world.png")
+        self.map = Map("data/images/outer_world.png", self.camera)
         for path in self.map.enemy_paths:
             self.enemies.add(Enemy("robot.png", path))
+        
+        self.camera.add(self.player)
     
     def update(self):
         self.player.update(self.map.walls, self.map.laser_doors)
@@ -33,6 +39,7 @@ class World():
     
     def draw(self, surface):
         self.map.draw(surface)
-        self.player.draw(surface)
+        self.camera.draw(surface)
+        #self.player.draw(surface)
         # for enemy in self.enemies:
         #     enemy.draw(surface)
