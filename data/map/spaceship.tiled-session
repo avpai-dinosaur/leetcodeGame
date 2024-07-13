@@ -5,6 +5,7 @@
     },
     "activeFile": "outer_world.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "fileStates": {
         "l_room.tmx": {
@@ -18,8 +19,8 @@
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 702,
-                "y": -33
+                "x": 639,
+                "y": 193
             }
         },
         "level0.tmx": {
@@ -31,11 +32,11 @@
             }
         },
         "outer_world.tmx": {
-            "scale": 0.5,
+            "scale": 0.33,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1271,
-                "y": 567
+                "x": 1171.2121212121212,
+                "y": 707.5757575757577
             }
         },
         "small_room.tmx": {
@@ -49,8 +50,8 @@
             "scale": 2.2146874999999997,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 208.60730915761258,
-                "y": 155.10088895160152
+                "x": 191.67489770001413,
+                "y": 159.61619867362776
             }
         },
         "spaceship.tsx": {

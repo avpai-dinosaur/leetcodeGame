@@ -1,5 +1,6 @@
 import pygame
 import utils
+from tileset import TileSet
 from player import Player
 from enemy import Enemy
 from map import Map
@@ -14,8 +15,9 @@ class CameraGroup(pygame.sprite.Group):
 
 class World():
     """Top level class to keep track of all game objects."""
-   
+
     def __init__(self):
+        TileSet()
         self.player = Player("Oldhero.png", c.INIT_PLAYER_POS)
         self.enemies = pygame.sprite.Group()
         self.map = Map("data/images/outer_world.png")
@@ -24,12 +26,13 @@ class World():
     
     def update(self):
         self.player.update(self.map.walls, self.map.laser_doors)
-        self.enemies.update(self.player, self.map.walls)
-        self.map.laser_doors.update(self.player)
-        self.map.antidote_doors.update(self.player)
+        self.map.rooms.update(self.player)
+        # self.enemies.update(self.player, self.map.walls)
+        # self.map.laser_doors.update(self.player)
+        # self.map.antidote_doors.update(self.player)
     
     def draw(self, surface):
         self.map.draw(surface)
         self.player.draw(surface)
-        for enemy in self.enemies:
-            enemy.draw(surface)
+        # for enemy in self.enemies:
+        #     enemy.draw(surface)

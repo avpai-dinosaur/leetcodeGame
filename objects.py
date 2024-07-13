@@ -4,6 +4,7 @@ import pygame
 import utils
 import random
 import constants as c
+from tileset import TileSet
 
 class HealthBar():
     """Represents a healthbar."""
@@ -51,8 +52,6 @@ class EnemyHealthBar(HealthBar):
     def draw(self, surface):
         if self.last_shown and pygame.time.get_ticks() - self.last_shown < self.cooldown:
             super().draw(surface)
-
-
 
 class Door(pygame.sprite.Sprite):
     """Class to represent doors in the game."""
@@ -164,6 +163,25 @@ class AntidoteDoor(Door):
        super().draw(surface)
        self.vials.draw(surface)
 
+class PinPad(Door):
+    """Class to represent a pin pad."""
+    
+    def __init__(self, pos):
+        """Constructor.
+        
+            pos: Vec2 determining location of PinPad
+        """
+        rect = TileSet.PIN_PAD_RED.get_rect()
+        rect.topleft = pos
+        super().__init__(rect)
+
+    def draw_door(self, surface):
+        """Draw the pin pad."""
+        if self.toggle:
+            surface.blit(TileSet.PIN_PAD_RED, self.rect)
+        else:
+            surface.blit(TileSet.PIN_PAD_GREEN, self.rect)
+
 
 class AntidoteVial(pygame.sprite.Sprite):
     """Class to represent an AntidoteVial."""
@@ -194,3 +212,72 @@ class AntidoteVial(pygame.sprite.Sprite):
     def draw(self, surface):
         """Draw a vial to the screen."""
         surface.blit(self.image, self.rect)
+
+class Room(pygame.sprite.Sprite):
+    """Class to represent a room (viewd from the outside.)"""
+    tilesheet = None
+    open_image = None
+    closed_image = None
+
+    def __init__(self, filename, pos):
+        """Constructor.
+            
+            filename: png file for the image of the room
+            pos: Vec2 specifying coordinates of the room
+        """
+        super().__init__()
+        # image stuff
+        Room.tilesheet, rect = utils.load_png(filename)
+        Room.open_image, Room.closed_image = self.parse_img_file(rect.width / 2, rect.height)
+        self.image = Room.closed_image
+
+        # positioning stuff
+        self.pos = pos
+        self.rect = self.image.get_rect()
+        self.rect.topleft = pos
+
+        self.pin_pad = PinPad(self.pos + (4 * c.TILE_SIZE, 9 * c.TILE_SIZE))
+    
+    def parse_img_file(self, width, height):
+        """Parses the image file to get the room while open and room while closed.
+        
+            width: width of the room
+            height: height of the room
+        """
+        open_image = pygame.Surface((width, height)).convert_alpha()
+        closed_image = pygame.Surface((width, height)).convert_alpha()
+        open_image.blit(
+            self.tilesheet, (0, 0),
+            (width, 0, width, height)
+        )
+        closed_image.blit(
+            self.tilesheet, (0, 0),
+            (0, 0, width, height)
+        )
+        return open_image, closed_image
+
+    def update(self, player):
+        """See if player wants to open the room.
+            
+            player: Player object.
+        """
+        self.pin_pad.update(player)
+        if not self.pin_pad.toggle:
+            self.image = Room.open_image
+
+    def draw(self, surface):
+        """Draw room to the screen."""
+        surface.blit(self.image, self.rect)
+        self.pin_pad.draw(surface)
+
+class SmallRoom(Room):
+    """Class to represent a small room (viewd from the outside.)"""
+    
+    def __init__(self, filename, pos):
+        """Constructor.
+            
+            filename: png file for the image of the room
+            pos: Vec2 specifying coordinates of the room
+        """
+        super().__init__(filename, pos)
+        

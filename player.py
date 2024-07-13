@@ -32,14 +32,14 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = pos
 
-        try:
-            self.solved = json.loads(
-                requests.get(
-                    "https://leetcode-stats-api.herokuapp.com/dakdaruri"
-                ).text
-            )["totalSolved"]
-        except:
-            self.solved = 100
+        # try:
+        #     self.solved = json.loads(
+        #         requests.get(
+        #             "https://leetcode-stats-api.herokuapp.com/dakdaruri"
+        #         ).text
+        #     )["totalSolved"]
+        # except:
+        #     self.solved = 100
     
     def update(self, walls, doors):
         """Updates the player's position."""
@@ -80,16 +80,17 @@ class Player(pygame.sprite.Sprite):
                 return
         
         # check if the proposed position collides with closed doors
-        door = pygame.sprite.spritecollideany(self, doors)
-        if door:
-            if door.toggle:
-                # dont update the position
-                self.rect.center = self.pos
-                self.health.lose(0.1)
-                return
+        # door = pygame.sprite.spritecollideany(self, doors)
+        # if door:
+        #     if door.toggle:
+        #         # dont update the position
+        #         self.rect.center = self.pos
+        #         self.health.lose(0.1)
+        #         return
+        
         self.pos = new_pos
 
-        self.health.update(self.pos[0] - 30, self.pos[1] - 50)
+        # self.health.update(self.pos[0] - 30, self.pos[1] - 50)
 
         current_time = pygame.time.get_ticks()
         if(current_time - self.last_update >= self.spritesheet.cooldown(self.action)):
@@ -102,7 +103,7 @@ class Player(pygame.sprite.Sprite):
             self.image = self.spritesheet.get_image(self.action, self.current_frame)
 
     def draw(self, surface):
-        self.health.draw(surface)
+        # self.health.draw(surface)
         surface.blit(
             pygame.transform.flip(self.image, self.face_left, False),
             self.rect
