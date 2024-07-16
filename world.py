@@ -16,7 +16,9 @@ class Camera(pygame.sprite.Group):
         self.half_w = surface.get_size()[0] // 2
         self.half_h = surface.get_size()[1] // 2
 
+        # Camera positioning
         self.center_camera_on_target(init_pos)
+        self.zoom = 1
     
     def center_camera_on_target(self, target):
         """Centers the camera on the target rect.
@@ -37,7 +39,7 @@ class World():
 
     def __init__(self, screen):
         TileSet() # have to wait to initialize here b/c dependencies on pygame.display
-        self.player = Player("Oldhero.png", c.INIT_PLAYER_POS)
+        self.player = Player("hero.png", c.INIT_PLAYER_POS)
         self.enemies = pygame.sprite.Group()
         self.map = Map("data/images/outer_world.png")
         for path in self.map.enemy_paths:
