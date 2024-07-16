@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="12" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="9">
  <tileset firstgid="1" source="spaceship.tsx"/>
- <layer id="1" name="outer" width="40" height="12" locked="1">
+ <layer id="1" name="outer" width="40" height="12">
   <data encoding="csv">
 13,1073741834,1073741834,1073741834,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,1073741834,1073741834,1073741834,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 8,9,9,9,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,9,9,9,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

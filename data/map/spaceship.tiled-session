@@ -16,11 +16,11 @@
                 5,
                 4
             ],
-            "scale": 0.5,
+            "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 639,
-                "y": 193
+                "x": 496.5,
+                "y": 40.5
             }
         },
         "level0.tmx": {
@@ -32,11 +32,11 @@
             }
         },
         "outer_world.tmx": {
-            "scale": 0.33,
-            "selectedLayer": 0,
+            "scale": 2,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 1171.2121212121212,
-                "y": 707.5757575757577
+                "x": 2492.25,
+                "y": 1174.25
             }
         },
         "small_room.tmx": {
@@ -48,10 +48,10 @@
                 4
             ],
             "scale": 2.2146874999999997,
-            "selectedLayer": 1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 208.38154367151122,
-                "y": 154.6493579793989
+                "x": 186.70805700578524,
+                "y": 167.2922252010724
             }
         },
         "spaceship.tsx": {

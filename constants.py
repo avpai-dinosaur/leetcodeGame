@@ -9,9 +9,9 @@ ENEMY_CHASE_SPEED = 0.7
 
 # Animation constants
 PLAYER_SHEET_METADATA = {
-    "frame_width": 16,
-    "frame_height": 16,
-    "scale": 3,
+    "frame_width": 64,
+    "frame_height": 64,
+    "scale": 0.75,
     "actions": {
         "idle": {
             "row": 0,
