@@ -6,7 +6,7 @@ import objects as o
 class Map(pygame.sprite.Sprite):
     """Represents a map in the game."""
 
-    def __init__(self, filename, camera):
+    def __init__(self, filename):
         super().__init__()
         self.image, self.rect = utils.load_png(filename)
         self.walls = [] # List of Rects
@@ -15,7 +15,6 @@ class Map(pygame.sprite.Sprite):
         self.laser_doors = pygame.sprite.Group()
         self.antidote_doors = pygame.sprite.Group()
         self.load_json(f"data/map/outer_world.tmj")
-        [camera.add(room) for room in self.rooms]
     
     def draw(self, surface):
         surface.blit(self.image, (0, 0))

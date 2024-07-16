@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "outer_world.tmx",
+    "activeFile": "small_room.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -50,13 +50,13 @@
             "scale": 2.2146874999999997,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 191.67489770001413,
-                "y": 159.61619867362776
+                "x": 208.38154367151122,
+                "y": 154.6493579793989
             }
         },
         "spaceship.tsx": {
             "scaleInDock": 1.5,
-            "scaleInEditor": 1.5
+            "scaleInEditor": 2
         }
     },
     "last.exportedFilePath": "//wsl.localhost/Ubuntu/home/avpai/leetcodeGame/data/map",
@@ -75,8 +75,8 @@
     "recentFiles": [
         "spaceship.tsx",
         "level0.tmx",
+        "outer_world.tmx",
         "l_room.tmx",
-        "small_room.tmx",
-        "outer_world.tmx"
+        "small_room.tmx"
     ]
 }

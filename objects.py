@@ -78,13 +78,13 @@ class Door(pygame.sprite.Sprite):
         """
         self.toggle = False
 
-    def draw_door(self, surface):
+    def draw_door(self, surface, offset):
         """Logic to draw the door image.
         
         Default is to not draw the door if toggle is False.
         """
         if self.toggle:
-            pygame.draw.rect(surface, (252, 3, 3), self.rect)
+            pygame.draw.rect(surface, (252, 3, 3), self.rect.topleft + offset)
     
     def update(self, player):
         """Updates the door based on player position.
@@ -102,11 +102,11 @@ class Door(pygame.sprite.Sprite):
         else:
             self.present_button = False
     
-    def draw(self, surface):
+    def draw(self, surface, offset):
         """Draw the door to the surface."""
         if self.present_button:
-            surface.blit(self.text, self.textRect)
-        self.draw_door(surface)
+            surface.blit(self.text, self.textRect.topleft + offset)
+        self.draw_door(surface, offset)
 
 
 class LaserDoor(Door):
@@ -174,12 +174,12 @@ class PinPad(Door):
         rect.topleft = pos
         super().__init__(rect)
 
-    def draw_door(self, surface):
+    def draw_door(self, surface, offset):
         """Draw the pin pad."""
         if self.toggle:
-            surface.blit(TileSet.PIN_PAD_RED, self.rect)
+            surface.blit(TileSet.PIN_PAD_RED, self.rect.topleft + offset)
         else:
-            surface.blit(TileSet.PIN_PAD_GREEN, self.rect)
+            surface.blit(TileSet.PIN_PAD_GREEN, self.rect.topleft + offset)
 
 
 class AntidoteVial(pygame.sprite.Sprite):
@@ -264,10 +264,10 @@ class Room(pygame.sprite.Sprite):
         if not self.pin_pad.toggle:
             self.image = Room.open_image
 
-    def draw(self, surface):
+    def draw(self, surface, offset):
         """Draw room to the screen."""
-        surface.blit(self.image, self.rect)
-        self.pin_pad.draw(surface)
+        surface.blit(self.image, self.rect.topleft + offset)
+        self.pin_pad.draw(surface, offset)
 
 class SmallRoom(Room):
     """Class to represent a small room (viewd from the outside.)"""
