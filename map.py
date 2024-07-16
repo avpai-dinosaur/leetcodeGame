@@ -16,14 +16,8 @@ class Map(pygame.sprite.Sprite):
         self.antidote_doors = pygame.sprite.Group()
         self.load_json(f"data/map/outer_world.tmj")
     
-    def draw(self, surface):
-        surface.blit(self.image, (0, 0))
-        for room in self.rooms:
-            room.draw(surface)
-        for door in self.laser_doors:
-            door.draw(surface)
-        for door in self.antidote_doors:
-            door.draw(surface)
+    def draw(self, surface, offset):
+        surface.blit(self.image, offset)
     
     def load_json(self, filename):
         """Load all JSON data for the map."""
