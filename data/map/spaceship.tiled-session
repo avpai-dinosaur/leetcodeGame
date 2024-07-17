@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "small_room.tmx",
+    "activeFile": "spaceship.tsx",
     "expandedProjectPaths": [
         "."
     ],
@@ -13,30 +13,33 @@
                 3
             ],
             "expandedObjectLayers": [
-                5,
-                4
+                4,
+                5
             ],
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 496.5,
-                "y": 40.5
+                "x": 639.5,
+                "y": 192.5
             }
         },
         "level0.tmx": {
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1154,
-                "y": 1096.6666666666665
+                "x": 680,
+                "y": 157.99999999999994
             }
         },
         "outer_world.tmx": {
+            "expandedObjectLayers": [
+                12
+            ],
             "scale": 2,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 2492.25,
-                "y": 1174.25
+                "x": 1279.75,
+                "y": 799.75
             }
         },
         "small_room.tmx": {
@@ -44,14 +47,14 @@
                 3
             ],
             "expandedObjectLayers": [
-                5,
-                4
+                4,
+                5
             ],
             "scale": 2.2146874999999997,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 186.70805700578524,
-                "y": 167.2922252010724
+                "x": 191.67489770001413,
+                "y": 159.61619867362776
             }
         },
         "spaceship.tsx": {
@@ -73,10 +76,10 @@
     ],
     "project": "spaceship.tiled-project",
     "recentFiles": [
-        "spaceship.tsx",
-        "level0.tmx",
-        "outer_world.tmx",
         "l_room.tmx",
-        "small_room.tmx"
+        "small_room.tmx",
+        "outer_world.tmx",
+        "level0.tmx",
+        "spaceship.tsx"
     ]
 }

@@ -4,7 +4,7 @@ import requests as re
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((1280, 800))
+    screen = pygame.display.set_mode((980, 600))
     clock = pygame.time.Clock()
     world = World(screen)
     running = True

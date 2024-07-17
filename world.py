@@ -18,7 +18,16 @@ class Camera(pygame.sprite.Group):
 
         # Camera positioning
         self.center_camera_on_target(init_pos)
-        self.zoom = 1
+
+        # Zoom
+        self.zoom = 2
+        self.internal_surface_size = (surface.get_size()[0], surface.get_size()[1]) # tune to what looks good w/o excessively slowing game
+        self.internal_surface = pygame.Surface(self.internal_surface_size, pygame.SRCALPHA)
+        self.internal_rect = self.internal_surface.get_rect(center=(self.half_w, self.half_h))
+        self.internal_surface_size_vector = pygame.math.Vector2(self.internal_surface_size)
+        self.internal_offset = pygame.math.Vector2()
+        self.internal_offset.x = self.internal_surface_size[0] // 2 - self.half_w
+        self.internal_offset.y = self.internal_surface_size[1] // 2 - self.half_h
     
     def center_camera_on_target(self, target):
         """Centers the camera on the target rect.
@@ -28,11 +37,32 @@ class Camera(pygame.sprite.Group):
         self.offset.x = target.centerx - self.half_w
         self.offset.y = target.centery - self.half_h
 
+    def zoom_keyboard_control(self):
+        """Control the zoom level with keyboard."""
+        keys = pygame.key.get_just_pressed()
+        if keys[pygame.K_q]:
+            if self.zoom < 2.5:
+                self.zoom += 0.5 
+        if keys[pygame.K_e]:
+            if self.zoom > 1:
+                self.zoom -= 0.5
+
+    def update(self, player_rect):
+        """Update the camera."""
+        self.zoom_keyboard_control()
+        self.center_camera_on_target(player_rect)
+
     def draw(self, surface):
         """Draw the sprites belonging to the camera group to surface."""
-        surface.blit(self.background, -self.offset)
+        self.internal_surface.fill((0, 0, 0))
+        self.internal_surface.blit(self.background, -self.offset + self.internal_offset)
         for sprite in sorted(self.sprites(), key=lambda s : s.rect.centery):
-            sprite.draw(surface, -self.offset)
+            sprite.draw(self.internal_surface, -self.offset + self.internal_offset)
+        
+        scaled_surface = pygame.transform.scale(self.internal_surface, self.zoom * self.internal_surface_size_vector)
+        scaled_rect = scaled_surface.get_rect(center=(self.half_w, self.half_h))
+
+        surface.blit(scaled_surface, scaled_rect)
 
 class World():
     """Top level class to keep track of all game objects."""
@@ -52,7 +82,7 @@ class World():
     def update(self):
         self.player.update(self.map.walls, self.map.laser_doors)
         self.map.rooms.update(self.player)
-        self.camera.center_camera_on_target(self.player.rect)
+        self.camera.update(self.player.rect)
         # self.enemies.update(self.player, self.map.walls)
         # self.map.laser_doors.update(self.player)
         # self.map.antidote_doors.update(self.player)
