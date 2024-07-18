@@ -21,7 +21,7 @@ class Camera(pygame.sprite.Group):
 
         # Zoom
         self.zoom = 1
-        self.internal_surface_size = (surface.get_size()[0] * 2, surface.get_size()[1] * 2) # tune to what looks good w/o excessively slowing game
+        self.internal_surface_size = (surface.get_size()[0], surface.get_size()[1])
         self.internal_surface = pygame.Surface(self.internal_surface_size, pygame.SRCALPHA)
         self.internal_rect = self.internal_surface.get_rect(center=(self.half_w, self.half_h))
         self.internal_surface_size_vector = pygame.math.Vector2(self.internal_surface_size)
@@ -49,7 +49,7 @@ class Camera(pygame.sprite.Group):
                 self.zoom += 0.5 
         if keys[pygame.K_e]:
             pressed_key = True
-            if self.zoom > 0.5:
+            if self.zoom > 1:
                 self.zoom -= 0.5
         if pressed_key:
             self.x_bound_distance = self.half_w / self.zoom
@@ -62,9 +62,14 @@ class Camera(pygame.sprite.Group):
 
     def draw_filter(self, player_rect, sprite_rect):
         """Filter out sprites outside of game window."""
-        if abs(player_rect.centerx - sprite_rect.centerx) > self.x_bound_distance:
+        if player_rect.left - sprite_rect.right > self.x_bound_distance:
+            print("not drawing something to the left")
             return False
-        if abs(player_rect.centery - sprite_rect.centery) > self.y_bound_distance:
+        if sprite_rect.left - player_rect.right > self.x_bound_distance:
+            return False
+        if player_rect.top - sprite_rect.bottom > self.y_bound_distance:
+            return False
+        if sprite_rect.top - player_rect.bottom > self.y_bound_distance:
             return False
         return True
 
