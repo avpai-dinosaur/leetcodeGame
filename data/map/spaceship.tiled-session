@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "spaceship.tsx",
+    "activeFile": "outer_world.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -38,8 +38,8 @@
             "scale": 2,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 1279.75,
-                "y": 799.75
+                "x": 2756.5,
+                "y": 1465.75
             }
         },
         "small_room.tmx": {
@@ -76,10 +76,10 @@
     ],
     "project": "spaceship.tiled-project",
     "recentFiles": [
+        "spaceship.tsx",
+        "level0.tmx",
         "l_room.tmx",
         "small_room.tmx",
-        "outer_world.tmx",
-        "level0.tmx",
-        "spaceship.tsx"
+        "outer_world.tmx"
     ]
 }
