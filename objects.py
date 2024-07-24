@@ -19,10 +19,10 @@ class HealthBar():
         self.x = x
         self.y = y
 
-    def draw(self, surface):
+    def draw(self, surface, offset):
         ratio = self.hp/self.max_hp
-        pygame.draw.rect(surface, "red", (self.x, self.y, self.w, self.h))
-        pygame.draw.rect(surface, "green", (self.x, self.y, self.w * ratio, self.h))
+        pygame.draw.rect(surface, "red", pygame.Rect(self.x, self.y, self.w, self.h).move(offset.x, offset.y))
+        pygame.draw.rect(surface, "green", pygame.Rect(self.x, self.y, self.w * ratio, self.h).move(offset.x, offset.y))
     
     def lose(self, hp):
         self.hp -= hp
@@ -33,9 +33,9 @@ class PlayerHealthBar(HealthBar):
     def __init__(self, x, y, w, h, max_hp):
         super().__init__(x, y, w, h, max_hp)
     
-    def draw(self, surface):
+    def draw(self, surface, offset):
         self.hp -= 0.01
-        super().draw(surface)
+        super().draw(surface, offset)
 
 class EnemyHealthBar(HealthBar):
     """Represents the enemy's health bar."""
@@ -48,11 +48,9 @@ class EnemyHealthBar(HealthBar):
         super().lose(hp)
         self.last_shown = pygame.time.get_ticks()
     
-    def draw(self, surface):
+    def draw(self, surface, offset):
         if self.last_shown and pygame.time.get_ticks() - self.last_shown < self.cooldown:
-            super().draw(surface)
-
-
+            super().draw(surface, offset)
 
 class Door(pygame.sprite.Sprite):
     """Class to represent doors in the game."""
@@ -80,13 +78,13 @@ class Door(pygame.sprite.Sprite):
         """
         self.toggle = False
 
-    def draw_door(self, surface):
+    def draw_door(self, surface, offset):
         """Logic to draw the door image.
         
         Default is to not draw the door if toggle is False.
         """
         if self.toggle:
-            pygame.draw.rect(surface, (252, 3, 3), self.rect)
+            pygame.draw.rect(surface, (252, 3, 3), self.rect.move(offset.x, offset.y))
     
     def update(self, player):
         """Updates the door based on player position.
@@ -104,11 +102,11 @@ class Door(pygame.sprite.Sprite):
         else:
             self.present_button = False
     
-    def draw(self, surface):
+    def draw(self, surface, offset):
         """Draw the door to the surface."""
         if self.present_button:
-            surface.blit(self.text, self.textRect)
-        self.draw_door(surface)
+            surface.blit(self.text, self.textRect.topleft + offset)
+        self.draw_door(surface, offset)
 
 
 class LaserDoor(Door):
@@ -141,12 +139,12 @@ class AntidoteDoor(Door):
             self.last_dispense = curr_time
             self.cost *=2
 
-    def draw_door(self, surface):
+    def draw_door(self, surface, offset):
         """Logic to draw the door image.
         
         Default is to not draw the toor if toggle is False.
         """
-        pygame.draw.rect(surface, (252, 40, 40), self.rect)
+        pygame.draw.rect(surface, (252, 40, 40), self.rect.move(offset.x, offset.y))
 
     def update(self, player):
         """Update all vials that this door owns."""
@@ -159,10 +157,10 @@ class AntidoteDoor(Door):
         self.textRect.center = (self.rect.centerx + 50, self.rect.centery + 50)
         self.vials.update(player)
 
-    def draw(self, surface):
+    def draw(self, surface, offset):
        """Draw door and all vials belonging to door."""
-       super().draw(surface)
-       self.vials.draw(surface)
+       super().draw(surface, offset)
+       [vial.draw(surface, offset) for vial in self.vials]
 
 
 class AntidoteVial(pygame.sprite.Sprite):
@@ -191,6 +189,6 @@ class AntidoteVial(pygame.sprite.Sprite):
             player.health.hp = min(100, player.health.hp + self.hp)
             self.kill()
 
-    def draw(self, surface):
+    def draw(self, surface, offset):
         """Draw a vial to the screen."""
-        surface.blit(self.image, self.rect)
+        surface.blit(self.image, self.rect.topleft + offset)

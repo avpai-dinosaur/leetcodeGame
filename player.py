@@ -101,9 +101,9 @@ class Player(pygame.sprite.Sprite):
                 self.current_frame = 0
             self.image = self.spritesheet.get_image(self.action, self.current_frame)
 
-    def draw(self, surface):
-        self.health.draw(surface)
+    def draw(self, surface, offset):
+        self.health.draw(surface, offset)
         surface.blit(
             pygame.transform.flip(self.image, self.face_left, False),
-            self.rect
+            self.rect.topleft + offset
         )

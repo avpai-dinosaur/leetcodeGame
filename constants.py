@@ -11,7 +11,7 @@ ENEMY_CHASE_SPEED = 0.7
 PLAYER_SHEET_METADATA = {
     "frame_width": 16,
     "frame_height": 16,
-    "scale": 3,
+    "scale": 2,
     "actions": {
         "idle": {
             "row": 0,

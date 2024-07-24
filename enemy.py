@@ -155,6 +155,6 @@ class Enemy(pygame.sprite.Sprite):
         self.health.update(self.rect.left - 10, self.rect.top - 15)
         return reached
 
-    def draw(self, surface):
-        surface.blit(self.image, self.rect)
-        self.health.draw(surface)
+    def draw(self, surface, offset):
+        surface.blit(self.image, self.rect.topleft + offset)
+        self.health.draw(surface, offset)
