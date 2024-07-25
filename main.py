@@ -95,6 +95,7 @@ def input():
     pygame.display.set_caption("Leet User Name")
     background = pygame.image.load("data/images/menu_background.png")
     font = pygame.font.SysFont("cambria", 50)
+    headingfont = pygame.font.SysFont("cambria", 40)
     errorfont = pygame.font.SysFont("cambria", 20)
     #accurate center
     input_width = 200
@@ -104,10 +105,12 @@ def input():
     color_active = pygame.Color('darkgoldenrod4')
     color = color_inactive
     Titlefont=pygame.font.SysFont("cambria", 75)
-    menu_text = Titlefont.render("Enter Your LeetCode Username", True, "#bcbcbc")
+    menu_text = Titlefont.render("Locked Escaped: E.T.", True, "#bcbcbc")
     menu_rect = menu_text.get_rect(center = (640, 150))
-    in_text = font.render("Enter: (Please make sure it is correct!)", True, 'darkgoldenrod4')
-    in_rect = in_text.get_rect(center = (640, 350))
+    in_text = headingfont.render("Enter Your LeetCode Username", True, 'lightsalmon4')
+    in_rect = in_text.get_rect(center = (640, 300))
+    warning_text = errorfont.render("Make sure it is correct!", True, 'lightsalmon4')
+    warning_rect = warning_text.get_rect(center = (640, 350))
     
 
     active = False
@@ -131,6 +134,7 @@ def input():
         screen.blit(menu_text, menu_rect)
         screen.blit(txt_surface, input_box)
         screen.blit(in_text, in_rect)
+        screen.blit(warning_text, warning_rect)
         if(width > 200):
             fake = font.render("ahhh its so long", True, "#bcbcbc")
             fake_rect = fake.get_rect(center = (width, 440))
