@@ -165,9 +165,9 @@ def input():
                 if active:
                     if event.key == pygame.K_RETURN:
                         print(text)
-                        check = verify(text)
-                        if(check):
-                            main()
+                        playerStats = verify(text)
+                        if(playerStats):
+                            main(playerStats)
                             
                         text = ''
 
@@ -201,15 +201,14 @@ def verify(text):
             ).text
         )
     if(playerDict["status"] != "success"):
-        return False
-    print(playerDict)
+        return None
     
-    return True
+    return playerDict
 
-def main():
-    
+def main(playerDict):
+    pygame.display.set_caption("Leetcode game")
     clock = pygame.time.Clock()
-    world = World(screen)
+    world = World(screen, playerDict)
     running = True
     #menu stuff
     

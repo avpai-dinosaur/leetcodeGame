@@ -87,8 +87,8 @@ class Camera(pygame.sprite.Group):
 class World():
     """Top level class to keep track of all game objects."""
    
-    def __init__(self, screen):
-        self.player = Player("Oldhero.png", c.INIT_PLAYER_POS)
+    def __init__(self, screen, playerStats):
+        self.player = Player("Oldhero.png", c.INIT_PLAYER_POS, playerStats)
         self.enemies = pygame.sprite.Group()
         self.map = Map("data/images/map.png")
         for path in self.map.enemy_paths:

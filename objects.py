@@ -150,7 +150,7 @@ class AntidoteDoor(Door):
         """Update all vials that this door owns."""
         super().update(player)
         self.text = self.font.render(
-            f"{self.open_button[0]}\n{player.solved}/{self.cost}",
+            f"{self.open_button[0]}\n{player.stats['totalSolved']}/{self.cost}",
             True, (250, 250, 250), (0, 0, 0)
         )
         self.textRect = self.text.get_rect()

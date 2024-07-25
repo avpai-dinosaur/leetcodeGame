@@ -10,7 +10,7 @@ import json
 class Player(pygame.sprite.Sprite):
     """Represents the player."""
 
-    def __init__(self, filename, pos):
+    def __init__(self, filename, pos, stats):
         """Constructor.
 
             filename: location of png image of the player
@@ -31,15 +31,8 @@ class Player(pygame.sprite.Sprite):
         self.image = self.spritesheet.get_image(self.action, self.current_frame)
         self.rect = self.image.get_rect()
         self.rect.center = pos
+        self.stats = stats
 
-        try:
-            self.solved = json.loads(
-                requests.get(
-                    "https://leetcode-stats-api.herokuapp.com/dakdaruri"
-                ).text
-            )["totalSolved"]
-        except:
-            self.solved = 100
     
     def update(self, walls, doors):
         """Updates the player's position."""
