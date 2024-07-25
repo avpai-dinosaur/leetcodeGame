@@ -1,5 +1,7 @@
 import pygame
 import sys
+import requests
+import json
 from world import World
 from button import Button
 
@@ -44,9 +46,9 @@ def menu(Start):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if main_button.checkForInput(menu_mouse_pos):
-                    pygame.display.set_caption("Game Time!")
+
                     if(Start == True):   
-                        main()
+                        input()
                     else:
                         return
                 if option_button.checkForInput(menu_mouse_pos):
@@ -55,7 +57,7 @@ def menu(Start):
                     pygame.quit()
                     sys.exit()
 
-        pygame.display.update()
+        pygame.display.flip()
 
 def options():
     pygame.display.set_caption("options")
@@ -86,6 +88,123 @@ def options():
 
         pygame.display.update()
 
+def input():
+    #FIND RANDOM BOX SHOWING UP
+
+    #setup
+    pygame.display.set_caption("Leet User Name")
+    background = pygame.image.load("data/images/menu_background.png")
+    font = pygame.font.SysFont("cambria", 50)
+    errorfont = pygame.font.SysFont("cambria", 20)
+    #accurate center
+    input_width = 200
+    input_height = 50
+    input_box = pygame.Rect(540, 420, input_width, input_height)
+    color_inactive = pygame.Color('azure3')
+    color_active = pygame.Color('darkgoldenrod4')
+    color = color_inactive
+    Titlefont=pygame.font.SysFont("cambria", 75)
+    menu_text = Titlefont.render("Enter Your LeetCode Username", True, "#bcbcbc")
+    menu_rect = menu_text.get_rect(center = (640, 150))
+    in_text = font.render("Enter:", True, 'darkgoldenrod4')
+    in_rect = in_text.get_rect(center = (640, 350))
+    
+
+    active = False
+    check = True
+    text = ''
+    block_img = pygame.image.load("data/images/Play.png")
+
+   
+    while True:
+        screen.fill((30, 30, 30))
+
+        #input text rendering/adjustment
+        txt_surface = font.render(text, True, color)
+        width = max(200, txt_surface.get_width()+10)
+        input_box.w = width
+        
+
+        # Blit the text and background.
+        screen.blit(background,(0,0))
+        #screen.blit(txt_surface, (input_box.x+5, input_box.y+5))
+        screen.blit(menu_text, menu_rect)
+        screen.blit(txt_surface, input_box)
+        screen.blit(in_text, in_rect)
+        if(width > 200):
+            fake = font.render("ahhh its so long", True, "#bcbcbc")
+            fake_rect = fake.get_rect(center = (width, 440))
+            screen.blit(fake, fake_rect)
+
+
+        #Back Button
+        mouse_pos = pygame.mouse.get_pos()
+        back_button = Button(block_img, pos=(640, 600), 
+                text_input="BACK", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
+        buttons = [back_button]
+        for button in buttons:
+            button.changeColor(mouse_pos)
+            button.update(screen)
+            
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if back_button.checkForInput(mouse_pos):
+                    return
+                if input_box.collidepoint(event.pos):
+                    # Toggle the active variable.
+                    active = not active
+                else:
+                    active = False
+                # Change the current color of the input box.
+                color = color_active if active else color_inactive
+            if event.type == pygame.KEYDOWN:
+                if active:
+                    if event.key == pygame.K_RETURN:
+                        #print(text)
+                        check = verify(text)
+                        if(check):
+                            main()
+                            
+                        text = ''
+
+                    elif event.key == pygame.K_BACKSPACE:
+                        text = text[:-1]
+                    else:
+                        text += event.unicode
+            
+        #verification blit
+        if(not check):
+            fake = errorfont.render("Username not found, please try again", True, 'firebrick2')
+            fake_rect = fake.get_rect(center = (640, 500))
+            screen.blit(fake, fake_rect)
+
+        # Blit the input_box rect.
+        pygame.draw.rect(screen, color, input_box, 2)
+        pygame.display.flip()
+        #clock.tick(30)
+        
+        #main()
+
+
+def verify(text):
+
+    url = "https://leetcode-stats-api.herokuapp.com/" + text
+    #print(url)
+
+    playerDict = json.loads(
+            requests.get(
+                "https://leetcode-stats-api.herokuapp.com/avpai-dinosaur"
+            ).text
+        )
+    if(playerDict["status"] != "success"):
+        return False
+    
+    return True
+
 def main():
     
     clock = pygame.time.Clock()
@@ -112,9 +231,6 @@ def main():
 
         world.update()
         world.draw(screen)
-
-        
-
 
         # flip() the display to put your work on screen
         pygame.display.flip()
