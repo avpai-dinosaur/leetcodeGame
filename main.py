@@ -106,7 +106,7 @@ def input():
     Titlefont=pygame.font.SysFont("cambria", 75)
     menu_text = Titlefont.render("Enter Your LeetCode Username", True, "#bcbcbc")
     menu_rect = menu_text.get_rect(center = (640, 150))
-    in_text = font.render("Enter:", True, 'darkgoldenrod4')
+    in_text = font.render("Enter: (Please make sure it is correct!)", True, 'darkgoldenrod4')
     in_rect = in_text.get_rect(center = (640, 350))
     
 
@@ -164,7 +164,7 @@ def input():
             if event.type == pygame.KEYDOWN:
                 if active:
                     if event.key == pygame.K_RETURN:
-                        #print(text)
+                        print(text)
                         check = verify(text)
                         if(check):
                             main()
@@ -197,11 +197,12 @@ def verify(text):
 
     playerDict = json.loads(
             requests.get(
-                "https://leetcode-stats-api.herokuapp.com/avpai-dinosaur"
+                url
             ).text
         )
     if(playerDict["status"] != "success"):
         return False
+    print(playerDict)
     
     return True
 
