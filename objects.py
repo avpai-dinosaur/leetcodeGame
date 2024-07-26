@@ -126,7 +126,7 @@ class AntidoteDoor(Door):
     
     def door_action(self, player):
         """Door should release an antidote health vial."""
-        if player.solved < self.cost:
+        if player.stats['totalSolved'] < self.cost:
             return
 
         curr_time = pygame.time.get_ticks()
@@ -192,3 +192,31 @@ class AntidoteVial(pygame.sprite.Sprite):
     def draw(self, surface, offset):
         """Draw a vial to the screen."""
         surface.blit(self.image, self.rect.topleft + offset)
+
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, pos, speed, direction, range):
+        """Constructor.
+            
+            pos: Vec2() showing position of the bullet. 
+            speed: the speed of the bullet
+            direction: Vec2() showing direction of bullet.
+            range: how far the bullet can travel
+        """
+        super().__init__()
+        self.pos = pygame.Vector2(pos)
+        self.image = pygame.Surface((5, 5))
+        pygame.draw.rect(self.image, (0, 0, 0), pygame.Rect(pos.x, pos.y, 5, 5))
+        self.rect = self.image.get_rect()
+        self.speed = speed
+        self.direction = pygame.Vector2(direction)
+        self.damage = 2
+        print("made a bullet")
+    
+    def update(self):
+        self.pos = self.pos + self.direction * self.speed
+        self.rect.topleft = self.pos
+        print("bullet position:", self.pos)
+    
+    def draw(self, surface, offset):
+        surface.blit(self.image, self.rect.topleft + offset)
+    
