@@ -114,6 +114,7 @@ class World():
         for path in self.map.enemy_paths:
             self.enemies.add(Enemy("robot.png", path))
         self.bullets = pygame.sprite.Group()
+        self.last_shot = pygame.time.get_ticks()
         
         self.camera = Camera(screen, self.map.image, self.player.rect)
         self.camera.add(self.player)
@@ -129,9 +130,12 @@ class World():
         self.camera.update(self.player.rect)
 
         mouse = pygame.mouse.get_pressed()
-        mouse_pos = pygame.mouse.get_pos()
-        if mouse[0]:
-            self.camera.bullets.add(o.Bullet(self.player.pos, 2, (0, 1), 10))
+        if mouse[0] and pygame.time.get_ticks() - self.last_shot > 200:
+            self.last_shot = pygame.time.get_ticks()
+            mouse_pos = pygame.Vector2(pygame.mouse.get_pos())
+            center_pos = pygame.Vector2(self.camera.half_w, self.camera.half_h)
+            direction = (mouse_pos - center_pos).normalize()
+            self.camera.bullets.add(o.Bullet(self.player.pos, 10, direction, 200))
     
     def draw(self, surface):
         self.camera.draw(self.player.rect, surface)

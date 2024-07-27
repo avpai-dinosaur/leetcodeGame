@@ -199,7 +199,7 @@ class Bullet(pygame.sprite.Sprite):
             
             pos: Vec2() showing position of the bullet. 
             speed: the speed of the bullet
-            direction: Vec2() showing direction of bullet.
+            direction: normalized Vec2() showing direction of bullet.
             range: how far the bullet can travel
         """
         super().__init__()
@@ -210,12 +210,15 @@ class Bullet(pygame.sprite.Sprite):
         self.speed = speed
         self.direction = pygame.Vector2(direction)
         self.damage = 2
-        print("made a bullet")
+        self.distance_traveled = 0
+        self.range = range
     
     def update(self):
+        self.distance_traveled += self.speed
         self.pos = self.pos + self.direction * self.speed
         self.rect.topleft = self.pos
-        print("bullet position:", self.pos)
+        if (self.distance_traveled >= self.range):
+            self.kill()
     
     def draw(self, surface, offset):
         surface.blit(self.image, self.rect.topleft + offset)
