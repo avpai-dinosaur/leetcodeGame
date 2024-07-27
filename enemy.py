@@ -50,9 +50,11 @@ class Enemy(pygame.sprite.Sprite):
 
         # Enemy characteristics
         self.health = o.EnemyHealthBar(self.rect.left, self.rect.top, 60, 10, 100)
+        self.melee_lose_cooldown = 200
+        self.last_melee_hit = pygame.time.get_ticks()
         self.speed = c.ENEMY_SPEED
     
-    def update(self, player, walls):
+    def update(self, player, bullets, walls):
         """Update function to run each game tick.
         
         Enemy should move randomly and reverse direction if it bounces off a wall.
@@ -76,10 +78,19 @@ class Enemy(pygame.sprite.Sprite):
         
         # receive hits from player
         if pygame.Rect.colliderect(player.rect, self.rect) and player.action == "punch":
-            self.health.lose(10)
-            if self.health.hp <= 0:
-                self.kill()
+            if pygame.time.get_ticks() - self.last_melee_hit > self.melee_lose_cooldown:
+                self.last_melee_hit = pygame.time.get_ticks()
+                self.health.lose(2)
         
+        # receive hits from bullets
+        hit_bullet = pygame.sprite.spritecollideany(self, bullets)
+        if hit_bullet:
+            hit_bullet.kill()
+            self.health.lose(hit_bullet.damage)
+
+        if self.health.hp <= 0:
+            self.kill()
+            
         self.update_animation()
 
     def update_animation(self):

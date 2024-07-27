@@ -213,12 +213,15 @@ class Bullet(pygame.sprite.Sprite):
         self.distance_traveled = 0
         self.range = range
     
-    def update(self):
+    def update(self, walls):
         self.distance_traveled += self.speed
         self.pos = self.pos + self.direction * self.speed
         self.rect.topleft = self.pos
-        if (self.distance_traveled >= self.range):
+        if self.distance_traveled >= self.range:
             self.kill()
+        for wall in walls:
+            if pygame.Rect.colliderect(wall, self.rect):
+                self.kill()
     
     def draw(self, surface, offset):
         surface.blit(self.image, self.rect.topleft + offset)
