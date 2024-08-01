@@ -247,7 +247,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.speed = speed
         self.direction = pygame.Vector2(direction)
-        self.damage = 2
+        self.damage = 20
         self.distance_traveled = 0
         self.range = range
     

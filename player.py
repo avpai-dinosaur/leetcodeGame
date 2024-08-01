@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite):
         """
         super().__init__()
         self.health = o.PlayerHealthBar(pos[0], pos[1], 60, 10, 100)
-        self.speed = 0.01
+        self.speed = 0.05
         self.pos = pygame.Vector2(pos)
         self.spritesheet = SpriteSheet(filename, c.PLAYER_SHEET_METADATA)
         # self.gun = o.Gun(self, "data/images/gun.png")
