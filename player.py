@@ -21,6 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = 0.01
         self.pos = pygame.Vector2(pos)
         self.spritesheet = SpriteSheet(filename, c.PLAYER_SHEET_METADATA)
+        # self.gun = o.Gun(self, "data/images/gun.png")
         
         # Animation variables
         self.last_update = pygame.time.get_ticks()
@@ -83,6 +84,7 @@ class Player(pygame.sprite.Sprite):
         self.pos = new_pos
 
         self.health.update(self.pos[0] - 30, self.pos[1] - 50)
+        # self.gun.update(self)
 
         current_time = pygame.time.get_ticks()
         if(current_time - self.last_update >= self.spritesheet.cooldown(self.action)):
@@ -100,3 +102,4 @@ class Player(pygame.sprite.Sprite):
             pygame.transform.flip(self.image, self.face_left, False),
             self.rect.topleft + offset
         )
+        # self.gun.draw(surface, offset)

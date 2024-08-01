@@ -193,7 +193,45 @@ class AntidoteVial(pygame.sprite.Sprite):
         """Draw a vial to the screen."""
         surface.blit(self.image, self.rect.topleft + offset)
 
+
+class Gun(pygame.sprite.Sprite):
+    """Class to represent a player's gun."""
+
+    def __init__(self, player, filename):
+        """Constructor.
+
+            player: player who owns the gun
+            filename: png image of gun
+        """
+        super().__init__()
+        self.pos = player.pos
+        self.all_guns, _ = utils.load_png(filename)
+        width = 90
+        height = 48
+        scale = 0.6
+        self.x_offset = 20
+        self.y_offset = 15
+        self.image = pygame.Surface((width, height)).convert_alpha()
+        self.rect = self.image.get_rect()
+        self.image.blit(
+            self.all_guns,
+            (0,0),
+            (width * 0, height * 1, width, height)
+        )
+        self.image = pygame.transform.scale(self.image, (width * scale, height * scale))
+        self.image.set_colorkey((0, 0, 0))
+
+    def update(self, player):
+        self.pos = player.pos
+        self.rect.center = (self.pos.x + self.x_offset, self.pos.y + self.y_offset)
+
+    def draw(self, surface, offset):
+        surface.blit(self.image, self.rect.topleft + offset)
+
+
 class Bullet(pygame.sprite.Sprite):
+    """Class to represent a bullet."""
+
     def __init__(self, pos, speed, direction, range):
         """Constructor.
             

@@ -215,7 +215,6 @@ def main(playerDict):
     clock = pygame.time.Clock()
     world = World(screen, playerDict)
     running = True
-    #menu stuff
     
     # Game loop
     while running:
