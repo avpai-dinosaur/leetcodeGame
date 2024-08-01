@@ -9,7 +9,7 @@ import constants as c
 class Camera(pygame.sprite.Group):
     """Represents the world's camera"""
 
-    def __init__(self, surface, background, init_pos):
+    def __init__(self, surface, background, foreground_objects, init_pos):
         super().__init__()
         self.background = background
         self.offset = pygame.math.Vector2()
@@ -35,7 +35,7 @@ class Camera(pygame.sprite.Group):
         self.light_radius = 100
 
         # Bullets
-        self.bullets = pygame.sprite.Group()
+        self.foreground_objects = foreground_objects
     
     def center_camera_on_target(self, target):
         """Centers the camera on the target rect.
@@ -65,7 +65,6 @@ class Camera(pygame.sprite.Group):
         """Update the camera."""
         self.zoom_keyboard_control()
         self.center_camera_on_target(player_rect)
-        self.bullets.update()
 
     def draw_filter(self, player_rect, sprite_rect):
         """Filter out sprites outside of game window."""
@@ -96,7 +95,8 @@ class Camera(pygame.sprite.Group):
         for sprite in sorted(self.sprites(), key=lambda s : s.rect.centery):
             if self.draw_filter(player_rect, sprite.rect):
                 sprite.draw(self.internal_surface, -self.offset + self.internal_offset)
-        [bullet.draw(self.internal_surface, -self.offset + self.internal_offset) for bullet in self.bullets]
+        [obj.draw(self.internal_surface, -self.offset + self.internal_offset) 
+         for obj in self.foreground_objects]
         
         scaled_surface = pygame.transform.scale(self.internal_surface, self.zoom * self.internal_surface_size_vector)
         scaled_rect = scaled_surface.get_rect(center=(self.half_w, self.half_h))
@@ -114,8 +114,9 @@ class World():
         for path in self.map.enemy_paths:
             self.enemies.add(Enemy("robot.png", path))
         self.bullets = pygame.sprite.Group()
+        self.last_shot = pygame.time.get_ticks()
         
-        self.camera = Camera(screen, self.map.image, self.player.rect)
+        self.camera = Camera(screen, self.map.image, self.bullets, self.player.rect)
         self.camera.add(self.player)
         [self.camera.add(laser_door) for laser_door in self.map.laser_doors]
         [self.camera.add(antidote_door) for antidote_door in self.map.antidote_doors]
@@ -123,15 +124,19 @@ class World():
     
     def update(self):
         self.player.update(self.map.walls, self.map.laser_doors)
-        self.enemies.update(self.player, self.map.walls)
+        self.enemies.update(self.player, self.bullets, self.map.walls)
+        self.bullets.update(self.map.walls)
         self.map.laser_doors.update(self.player)
         self.map.antidote_doors.update(self.player)
         self.camera.update(self.player.rect)
 
         mouse = pygame.mouse.get_pressed()
-        mouse_pos = pygame.mouse.get_pos()
-        if mouse[0]:
-            self.camera.bullets.add(o.Bullet(self.player.pos, 2, (0, 1), 10))
+        if mouse[0] and pygame.time.get_ticks() - self.last_shot > 200:
+            self.last_shot = pygame.time.get_ticks()
+            mouse_pos = pygame.Vector2(pygame.mouse.get_pos())
+            center_pos = pygame.Vector2(self.camera.half_w, self.camera.half_h)
+            direction = (mouse_pos - center_pos).normalize()
+            self.bullets.add(o.Bullet(self.player.pos, 10, direction, 200))
     
     def draw(self, surface):
         self.camera.draw(self.player.rect, surface)
