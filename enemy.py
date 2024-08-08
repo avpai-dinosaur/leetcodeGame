@@ -139,7 +139,7 @@ class Enemy(pygame.sprite.Sprite):
         
             target: Vector2.
         """
-        old_pos = self.pos
+        old_pos = self.pos.copy()
         reached = False
         movement = target - self.pos
         distance = movement.length()
@@ -157,11 +157,12 @@ class Enemy(pygame.sprite.Sprite):
             if distance != 0:
                 self.pos += movement.normalize() * distance
             reached = True
-        
         self.rect.center = self.pos
-        if self.rect.collidelist(walls):
-            self.rect.center = old_pos
-            self.pos = old_pos
+        for wall in walls:
+            if pygame.Rect.colliderect(wall, self.rect):
+                self.rect.center = old_pos
+                self.pos = old_pos
+                return
             
         self.health.update(self.rect.left - 10, self.rect.top - 15)
         return reached
