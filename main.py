@@ -10,8 +10,12 @@ def menu(Start):
     pygame.display.set_caption("Menu")
     Titlefont=pygame.font.SysFont("cambria", 75)
     play_img = pygame.image.load("data/images/Play.png")
-    option_img = pygame.image.load("data/images/Play.png")
-    quit_img = pygame.image.load("data/images/Play.png")
+    #play_img dimentions: 370 x 109 px
+    leaderboard_img = pygame.image.load("data/images/Options.png")
+    #leaderboard_img dimentions: 585 x 109 px
+    leadersize = (200, 50)
+    leaderboard_img = pygame.transform.scale(leaderboard_img, leadersize)
+
     background = pygame.image.load("data/images/menu_background.png")
      
     while True: 
@@ -27,16 +31,16 @@ def menu(Start):
                 text_input="RESUME", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
 
         menu_rect = menu_text.get_rect(center = (640, 150))
-
-
         
-        option_button = Button(option_img, pos=(640, 420), 
+        option_button = Button(play_img, pos=(640, 420), 
                 text_input="OPTIONS", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
-        quit_button = Button(quit_img, pos=(640, 540), 
+        quit_button = Button(play_img, pos=(640, 540), 
                 text_input="QUIT", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
+        leaderboard_button = Button(leaderboard_img, pos=(640, 680),
+                text_input = "LEADERBOARD", font = pygame.font.SysFont("cambria", 20), base_color="azure4", hovering_color="White")
   
         screen.blit(menu_text, menu_rect)
-        buttons = [main_button, option_button, quit_button]
+        buttons = [main_button, option_button, quit_button, leaderboard_button]
         for button in buttons:
             button.changeColor(menu_mouse_pos)
             button.update(screen)
@@ -49,7 +53,8 @@ def menu(Start):
                 if main_button.checkForInput(menu_mouse_pos):
 
                     if(Start == True):   
-                        input()
+                        #input
+                        main(c.TEST_PLAYER_DICT)
                     else:
                         return
                 if option_button.checkForInput(menu_mouse_pos):
@@ -57,6 +62,8 @@ def menu(Start):
                 if quit_button.checkForInput(menu_mouse_pos):
                     pygame.quit()
                     sys.exit()
+                if leaderboard_button.checkForInput(menu_mouse_pos):
+                    leaderboard()
 
         pygame.display.flip()
 
@@ -68,7 +75,7 @@ def options():
     while True:
         screen.blit(background,(0,0))
         mouse_pos = pygame.mouse.get_pos()
-        option_text = Titlefont.render("MAIN MENU", True, "#bcbcbc")
+        option_text = Titlefont.render("OPTIONS", True, "#bcbcbc")
         option_rect = option_text.get_rect(center = (640, 150))
         back_button = Button(block_img, pos=(640, 600), 
                 text_input="BACK", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
@@ -142,11 +149,11 @@ def input():
             screen.blit(fake, fake_rect)
 
 
-        #Back Button
+        #Quit Button
         mouse_pos = pygame.mouse.get_pos()
-        back_button = Button(block_img, pos=(640, 600), 
-                text_input="BACK", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
-        buttons = [back_button]
+        quit_button = Button(block_img, pos=(640, 600), 
+                text_input="QUIT", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
+        buttons = [quit_button]
         for button in buttons:
             button.changeColor(mouse_pos)
             button.update(screen)
@@ -157,8 +164,10 @@ def input():
                 sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if back_button.checkForInput(mouse_pos):
-                    return
+                if quit_button.checkForInput(mouse_pos):
+
+                    pygame.quit()
+                    sys.exit()
                 if input_box.collidepoint(event.pos):
                     # Toggle the active variable.
                     active = not active
@@ -172,7 +181,8 @@ def input():
                         print(text)
                         playerStats = verify(text)
                         if(playerStats):
-                            main(playerStats)
+                            menu(True)
+                            #main(c.TEST_PLAYER_DICT)
                             
                         text = ''
 
@@ -191,9 +201,6 @@ def input():
         pygame.draw.rect(screen, color, input_box, 2)
         pygame.display.flip()
         #clock.tick(30)
-        
-        #main()
-
 
 def verify(text):
 
@@ -209,6 +216,70 @@ def verify(text):
         return None
     
     return playerDict
+
+def leaderboard():
+    pygame.display.set_caption("Leaderboard")
+    Titlefont=pygame.font.SysFont("cambria", 75)
+    block_img = pygame.image.load("data/images/Play.png")
+    background = pygame.image.load("data/images/menu_background.png")
+    while True:
+        screen.blit(background,(0,0))
+        mouse_pos = pygame.mouse.get_pos()
+        ltext = Titlefont.render("LEADERBOARD", True, "#bcbcbc")
+        leader_rect = ltext.get_rect(center = (640, 150))
+        back_button = Button(block_img, pos=(640, 600), 
+                text_input="BACK", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
+        
+        screen.blit(ltext, leader_rect)
+        
+        buttons = [back_button]
+        for button in buttons:
+            button.changeColor(mouse_pos)
+            button.update(screen)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if back_button.checkForInput(mouse_pos):
+                    return
+
+        pygame.display.update()
+
+def endscreen():
+    pygame.display.set_caption("End Screen")
+    Titlefont=pygame.font.SysFont("cambria", 75)
+    block_img = pygame.image.load("data/images/Play.png")
+    background = pygame.image.load("data/images/menu_background.png")
+    while True:
+        screen.blit(background,(0,0))
+        mouse_pos = pygame.mouse.get_pos()
+        ltext = Titlefont.render("YOU LOSE", True, "#bcbcbc")
+        leader_rect = ltext.get_rect(center = (640, 150))
+        quit_button = Button(block_img, pos=(640, 660), 
+                text_input="QUIT", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
+        continue_button = Button(block_img, pos=(640, 540), 
+                text_input="CONTINUE", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
+        screen.blit(ltext, leader_rect)
+        
+        buttons = [quit_button, continue_button]
+        for button in buttons:
+            button.changeColor(mouse_pos)
+            button.update(screen)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if quit_button.checkForInput(mouse_pos):
+                    pygame.quit()
+                    sys.exit()
+                if continue_button.checkForInput(mouse_pos):
+                    return
+
+        pygame.display.update()
+
+
 
 def main(playerDict):
     pygame.display.set_caption("Leetcode game")
@@ -226,10 +297,17 @@ def main(playerDict):
             # pygame.QUIT event means the user clicked X to close the window
             if event.type == pygame.QUIT:
                 running = False
+                pygame.quit()
+                sys.exit()
+
             keys = pygame.key.get_pressed()
             
             if(keys[pygame.K_ESCAPE]):
                 menu(False)
+            
+            
+            if(world.player.health.number() <= 0):
+                running = False
         
         # fill the screen with a color to wipe away anything from last frame
         screen.fill("black")
@@ -242,10 +320,14 @@ def main(playerDict):
 
         clock.tick(60)  # limits FPS to 60
 
-    pygame.quit()
+
+    print("here")
+    endscreen()
+
 
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((1280, 800))
-    main(c.TEST_PLAYER_DICT)
-    # menu(True)
+    #main(c.TEST_PLAYER_DICT)
+    #menu(True)
+    input()

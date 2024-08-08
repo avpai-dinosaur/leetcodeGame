@@ -32,7 +32,7 @@ class Camera(pygame.sprite.Group):
         self.y_bound_distance = self.half_h
 
         # Lighting
-        self.light_radius = 100
+        self.light_radius = 300
 
         # Bullets
         self.foreground_objects = foreground_objects
@@ -115,6 +115,7 @@ class World():
             self.enemies.add(Enemy("robot.png", path))
         self.bullets = pygame.sprite.Group()
         self.last_shot = pygame.time.get_ticks()
+        self.enemy_spawn_count = 0
         
         self.camera = Camera(screen, self.map.image, self.bullets, self.player.rect)
         self.camera.add(self.player)
@@ -122,6 +123,11 @@ class World():
         [self.camera.add(antidote_door) for antidote_door in self.map.antidote_doors]
         self.camera.add(self.enemies)
     
+    def spawn_enemies(self):
+        for path in self.map.enemy_paths:
+            self.enemies.add(Enemy("robot.png", path))
+        self.camera.add(self.enemies)
+
     def update(self):
         self.player.update(self.map.walls, self.map.laser_doors)
         self.enemies.update(self.player, self.bullets, self.map.walls)
@@ -137,6 +143,10 @@ class World():
             center_pos = pygame.Vector2(self.camera.half_w, self.camera.half_h)
             direction = (mouse_pos - center_pos).normalize()
             self.bullets.add(o.Bullet(self.player.pos, 10, direction, 200))
-    
+
+        if len(self.enemies.sprites()) == self.enemy_spawn_count:
+            self.spawn_enemies()
+            self.enemy_spawn_count += 1
+
     def draw(self, surface):
         self.camera.draw(self.player.rect, surface)

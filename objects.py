@@ -26,6 +26,9 @@ class HealthBar():
     
     def lose(self, hp):
         self.hp -= hp
+    
+    def number(self):
+        return self.hp
 
 
 class PlayerHealthBar(HealthBar):
