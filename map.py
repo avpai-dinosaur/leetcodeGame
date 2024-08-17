@@ -59,7 +59,6 @@ class Graph():
                         dist[neighbor] = alt
                         prev[neighbor] = node
         return dist, prev
-        
 
 class Map(pygame.sprite.Sprite):
     """Represents a map in the game."""
@@ -92,7 +91,6 @@ class Map(pygame.sprite.Sprite):
             self.enemy_paths.append(
                 [pygame.Vector2(datum.get("x") + path["x"], datum.get("y") + path["y"]) for datum in path["polyline"]]
             )
-            break
         for door in laser_door_data:
             door_rect = pygame.Rect((door["x"], door["y"]), (door["width"], door["height"]))
             self.laser_doors.add(o.LaserDoor(door_rect))

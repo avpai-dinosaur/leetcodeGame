@@ -38,6 +38,7 @@ class Enemy(pygame.sprite.Sprite):
         self.face_right = True
 
         # Path following
+        self.route = None
         self.path = path
         self.pos = self.path[0].copy() # This NEEDS to be a copy to avoid modifying path!
         self.rect.center = self.pos
@@ -54,44 +55,76 @@ class Enemy(pygame.sprite.Sprite):
         self.last_melee_hit = pygame.time.get_ticks()
         self.speed = c.ENEMY_SPEED
     
-    def update(self, player, bullets, walls):
+    def get_route(self, route):
+        r = []
+        for node in route:
+            row = node // c.MAP_WIDTH
+            col = node - row * c.MAP_WIDTH
+            r.append(pygame.rect.Rect(
+                col * c.TILE_SIZE,
+                row * c.TILE_SIZE,
+                c.TILE_SIZE,
+                c.TILE_SIZE
+            ))
+        return r
+
+    def update(self, player, bullets, map):
         """Update function to run each game tick.
         
         Enemy should move randomly and reverse direction if it bounces off a wall.
 
             walls: list of pygame.Rects representing walls in the map.
         """
-        if self.move_state == Enemy.MoveState.PATH:
-            self.pathmove(walls)
-        elif self.move_state == Enemy.MoveState.CHASE:
-            self.chasemove(player, walls)
-        else:
-            self.recovermove(walls)
+        tile_y = int(self.pos.y // c.TILE_SIZE)
+        tile_x = int(self.pos.x // c.TILE_SIZE)
+        my_node = tile_y * c.MAP_WIDTH + tile_x
 
-        if pygame.sprite.collide_circle(player, self):
-            self.move_state = Enemy.MoveState.CHASE
-            self.speed = c.ENEMY_CHASE_SPEED
-        else:
-            if self.move_state == Enemy.MoveState.CHASE:
-                self.move_state = Enemy.MoveState.RECOVER
-                self.speed = c.ENEMY_SPEED
-        
-        # receive hits from player
-        if pygame.Rect.colliderect(player.rect, self.rect) and player.action == "punch":
-            if pygame.time.get_ticks() - self.last_melee_hit > self.melee_lose_cooldown:
-                self.last_melee_hit = pygame.time.get_ticks()
-                self.health.lose(2)
-        
-        # receive hits from bullets
-        hit_bullet = pygame.sprite.spritecollideany(self, bullets)
-        if hit_bullet:
-            hit_bullet.kill()
-            self.health.lose(hit_bullet.damage)
+        target_node = int(player.pos.y // c.TILE_SIZE) * c.MAP_WIDTH + int(player.pos.x // c.TILE_SIZE)
+        dist, prev = map.graph.dijkstra(my_node, target_node)
 
-        if self.health.hp <= 0:
-            self.kill()
+        route = []
+        node = target_node
+        while node:
+            route.append(node)
+            node = prev[node]
+        self.route = self.get_route(route)
+        
             
-        self.update_animation()
+
+
+        
+
+        # if self.move_state == Enemy.MoveState.PATH:
+        #     self.pathmove(walls)
+        # elif self.move_state == Enemy.MoveState.CHASE:
+        #     self.chasemove(player, walls)
+        # else:
+        #     self.recovermove(walls)
+
+        # if pygame.sprite.collide_circle(player, self):
+        #     self.move_state = Enemy.MoveState.CHASE
+        #     self.speed = c.ENEMY_CHASE_SPEED
+        # else:
+        #     if self.move_state == Enemy.MoveState.CHASE:
+        #         self.move_state = Enemy.MoveState.RECOVER
+        #         self.speed = c.ENEMY_SPEED
+        
+        # # receive hits from player
+        # if pygame.Rect.colliderect(player.rect, self.rect) and player.action == "punch":
+        #     if pygame.time.get_ticks() - self.last_melee_hit > self.melee_lose_cooldown:
+        #         self.last_melee_hit = pygame.time.get_ticks()
+        #         self.health.lose(2)
+        
+        # # receive hits from bullets
+        # hit_bullet = pygame.sprite.spritecollideany(self, bullets)
+        # if hit_bullet:
+        #     hit_bullet.kill()
+        #     self.health.lose(hit_bullet.damage)
+
+        # if self.health.hp <= 0:
+        #     self.kill()
+            
+        # self.update_animation()
 
     def update_animation(self):
         """Update animation of enemy."""
@@ -168,5 +201,9 @@ class Enemy(pygame.sprite.Sprite):
         return reached
 
     def draw(self, surface, offset):
+        for r in self.route:
+            r.move_ip(offset.x, offset.y)
+        for r in self.route:
+            pygame.draw.rect(surface, (0, 0, 0), r)
         surface.blit(self.image, self.rect.topleft + offset)
         self.health.draw(surface, offset)
