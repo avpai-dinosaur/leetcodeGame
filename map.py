@@ -1,6 +1,7 @@
 import pygame
 import utils
 import json
+import queue
 import objects as o
 import constants as c
 
@@ -24,6 +25,41 @@ class Graph():
         for n in neighbors:
             if data[n] in c.WALKABLE_TILES:
                 self.adj_list[nodeid].append(n)
+    
+    def dijkstra(self, src, dest):
+        def next_node(tovisit, dist):
+            min_node = tovisit[0]
+            min_dist = dist[min_node] 
+            for node in tovisit:
+                if dist[node] < min_dist:
+                    min_dist = dist[node]
+                    min_node = node
+            return min_node
+        
+        tovisit = []
+        dist = {}
+        prev = {}
+        for k in self.adj_list.keys():
+            if k == src:
+                dist[k] = 0
+            else:
+                dist[k] = float('inf')
+            prev[k] = None
+            tovisit.append(k)
+        
+        while len(tovisit) > 0:
+            node = next_node(tovisit, dist)
+            if node == dest:
+                break
+            tovisit.remove(node)
+            for neighbor in self.adj_list[node]:
+                if neighbor in tovisit:
+                    alt = dist[node] + 1
+                    if alt < dist[neighbor]:
+                        dist[neighbor] = alt
+                        prev[neighbor] = node
+        return dist, prev
+        
 
 class Map(pygame.sprite.Sprite):
     """Represents a map in the game."""
@@ -56,6 +92,7 @@ class Map(pygame.sprite.Sprite):
             self.enemy_paths.append(
                 [pygame.Vector2(datum.get("x") + path["x"], datum.get("y") + path["y"]) for datum in path["polyline"]]
             )
+            break
         for door in laser_door_data:
             door_rect = pygame.Rect((door["x"], door["y"]), (door["width"], door["height"]))
             self.laser_doors.add(o.LaserDoor(door_rect))
