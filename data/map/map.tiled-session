@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "map.tmx",
+    "activeFile": "spaceship.tsx",
     "expandedProjectPaths": [
         "."
     ],
@@ -12,10 +12,10 @@
     "fileStates": {
         "map.tmx": {
             "scale": 0.75,
-            "selectedLayer": 5,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 606.6666666666665,
-                "y": 453.99999999999994
+                "x": 528,
+                "y": 296.66666666666674
             }
         },
         "spaceship.tsx": {
@@ -35,8 +35,8 @@
     ],
     "project": "map.tiled-project",
     "recentFiles": [
-        "spaceship.tsx",
-        "map.tmx"
+        "map.tmx",
+        "spaceship.tsx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

@@ -7,6 +7,8 @@ INIT_PLAYER_POS = (256, 256)
 ENEMY_SPEED = 0.5
 ENEMY_CHASE_SPEED = 0.7
 
+WALKABLE_TILES = [12, 31, 32, 33]
+
 # Animation constants
 PLAYER_SHEET_METADATA = {
     "frame_width": 16,
