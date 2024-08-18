@@ -39,16 +39,8 @@ class Graph():
     
     def dijkstra(self, src, dest):
         """Run dijkstras on graph, stopping when path to dest is found."""
-        def next_node(tovisit, dist):
-            min_node = tovisit[0]
-            min_dist = dist[min_node] 
-            for node in tovisit:
-                if dist[node] < min_dist:
-                    min_dist = dist[node]
-                    min_node = node
-            return min_node
-        
         tovisit = []
+        pq = queue.PriorityQueue()
         dist = {}
         prev = {}
         for k in self.adj_list.keys():
@@ -58,9 +50,13 @@ class Graph():
                 dist[k] = float('inf')
             prev[k] = None
             tovisit.append(k)
+        pq.put((dist[src], src))
         
-        while len(tovisit) > 0:
-            node = next_node(tovisit, dist)
+        while not pq.empty():
+            _, node = pq.get()
+            print(node)
+            if node not in tovisit:
+                continue
             if node == dest:
                 break
             tovisit.remove(node)
@@ -70,6 +66,7 @@ class Graph():
                     if alt < dist[neighbor.id]:
                         dist[neighbor.id] = alt
                         prev[neighbor.id] = node
+                        pq.put((dist[neighbor.id], neighbor.id))
         return dist, prev
 
 class Map(pygame.sprite.Sprite):
