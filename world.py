@@ -80,21 +80,21 @@ class Camera(pygame.sprite.Group):
 
     def draw(self, player_rect, surface):
         """Draw the sprites belonging to the camera group to surface."""
-        radius = self.light_radius * self.zoom
-        cover_surf = pygame.Surface((radius*2, radius*2))
-        cover_surf.fill(0)
-        cover_surf.set_colorkey((255, 255, 255))
-        pygame.draw.circle(cover_surf, (255, 255, 255), (radius, radius), radius)
+        # radius = self.light_radius * self.zoom
+        # cover_surf = pygame.Surface((radius*2, radius*2))
+        # cover_surf.fill(0)
+        # cover_surf.set_colorkey((255, 255, 255))
+        # pygame.draw.circle(cover_surf, (255, 255, 255), (radius, radius), radius)
 
-        clip_rect = pygame.Rect(self.half_w - radius, self.half_h - radius, radius*2, radius*2)
-        surface.set_clip(clip_rect)
+        # clip_rect = pygame.Rect(self.half_w - radius, self.half_h - radius, radius*2, radius*2)
+        # surface.set_clip(clip_rect)
 
 
         self.internal_surface.fill((0, 0, 0))
         self.internal_surface.blit(self.background, -self.offset + self.internal_offset)
         for sprite in sorted(self.sprites(), key=lambda s : s.rect.centery):
-            if self.draw_filter(player_rect, sprite.rect):
-                sprite.draw(self.internal_surface, -self.offset + self.internal_offset)
+            # if self.draw_filter(player_rect, sprite.rect):
+            sprite.draw(self.internal_surface, -self.offset + self.internal_offset)
         [obj.draw(self.internal_surface, -self.offset + self.internal_offset) 
          for obj in self.foreground_objects]
         
@@ -102,7 +102,7 @@ class Camera(pygame.sprite.Group):
         scaled_rect = scaled_surface.get_rect(center=(self.half_w, self.half_h))
 
         surface.blit(scaled_surface, scaled_rect)
-        surface.blit(cover_surf, clip_rect)
+        # surface.blit(cover_surf, clip_rect)
 
 class World():
     """Top level class to keep track of all game objects."""

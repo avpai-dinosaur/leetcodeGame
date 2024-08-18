@@ -80,18 +80,16 @@ class Enemy(pygame.sprite.Sprite):
         my_node = tile_y * c.MAP_WIDTH + tile_x
 
         target_node = int(player.pos.y // c.TILE_SIZE) * c.MAP_WIDTH + int(player.pos.x // c.TILE_SIZE)
-        dist, prev = map.graph.dijkstra(my_node, target_node)
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_f]:
+            dist, prev = map.graph.dijkstra(my_node, target_node)
 
-        route = []
-        node = target_node
-        while node:
-            route.append(node)
-            node = prev[node]
-        self.route = self.get_route(route)
-        
-            
-
-
+            route = []
+            node = target_node
+            while node:
+                route.append(node)
+                node = prev[node]
+            self.route = self.get_route(route)
         
 
         # if self.move_state == Enemy.MoveState.PATH:
@@ -201,9 +199,8 @@ class Enemy(pygame.sprite.Sprite):
         return reached
 
     def draw(self, surface, offset):
-        for r in self.route:
-            r.move_ip(offset.x, offset.y)
-        for r in self.route:
-            pygame.draw.rect(surface, (0, 0, 0), r)
+        if self.route:
+            for r in self.route:
+                pygame.draw.rect(surface, (0, 0, 0), r.move(offset.x, offset.y))
         surface.blit(self.image, self.rect.topleft + offset)
         self.health.draw(surface, offset)

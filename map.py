@@ -5,6 +5,11 @@ import queue
 import objects as o
 import constants as c
 
+class Edge():
+    def __init__(self, id, weight):
+        self.id = id
+        self.weight = weight
+
 class Graph():
     """Represents a graph. Used to model where sprites can move on map."""
     
@@ -19,14 +24,21 @@ class Graph():
     def add_node(self, nodeid, data):
         self.adj_list[nodeid] = []
         neighbors = [
-            nodeid - c.MAP_WIDTH, nodeid + c.MAP_WIDTH,
-            nodeid - 1, nodeid + 1
+            Edge(nodeid - c.MAP_WIDTH - 1, 1.4), 
+            Edge(nodeid - c.MAP_WIDTH + 1, 1.4), 
+            Edge(nodeid - c.MAP_WIDTH, 1), 
+            Edge(nodeid + c.MAP_WIDTH, 1), 
+            Edge(nodeid + c.MAP_WIDTH + 1, 1.4),
+            Edge(nodeid + c.MAP_WIDTH - 1, 1.4),
+            Edge(nodeid - 1, 1),
+            Edge(nodeid + 1, 1)
         ] # walkable tiles are never on the edge
         for n in neighbors:
-            if data[n] in c.WALKABLE_TILES:
+            if data[n.id] in c.WALKABLE_TILES:
                 self.adj_list[nodeid].append(n)
     
     def dijkstra(self, src, dest):
+        """Run dijkstras on graph, stopping when path to dest is found."""
         def next_node(tovisit, dist):
             min_node = tovisit[0]
             min_dist = dist[min_node] 
@@ -53,11 +65,11 @@ class Graph():
                 break
             tovisit.remove(node)
             for neighbor in self.adj_list[node]:
-                if neighbor in tovisit:
-                    alt = dist[node] + 1
-                    if alt < dist[neighbor]:
-                        dist[neighbor] = alt
-                        prev[neighbor] = node
+                if neighbor.id in tovisit:
+                    alt = dist[node] + neighbor.weight
+                    if alt < dist[neighbor.id]:
+                        dist[neighbor.id] = alt
+                        prev[neighbor.id] = node
         return dist, prev
 
 class Map(pygame.sprite.Sprite):
@@ -91,6 +103,7 @@ class Map(pygame.sprite.Sprite):
             self.enemy_paths.append(
                 [pygame.Vector2(datum.get("x") + path["x"], datum.get("y") + path["y"]) for datum in path["polyline"]]
             )
+            break
         for door in laser_door_data:
             door_rect = pygame.Rect((door["x"], door["y"]), (door["width"], door["height"]))
             self.laser_doors.add(o.LaserDoor(door_rect))
