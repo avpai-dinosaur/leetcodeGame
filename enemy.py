@@ -36,13 +36,10 @@ class Enemy(pygame.sprite.Sprite):
         self.face_right = True
 
         # Path following
-        self.route = None
         self.path = [] # list of Vector2 objects specifying path for enemy to follow
         self.pos = pygame.Vector2((600, 200))
         self.rect.center = self.pos
         self.direction = 1
-
-        self.last_search = pygame.time.get_ticks()
         self.search = True
 
         self.move_state = Enemy.MoveState.PATH
@@ -53,27 +50,12 @@ class Enemy(pygame.sprite.Sprite):
         self.melee_lose_cooldown = 200
         self.last_melee_hit = pygame.time.get_ticks()
         self.speed = c.ENEMY_SPEED
-    
-    def get_route(self, route):
-        """Show route enemy has calculated for debugging purposes."""
-        r = []
-        for node in route:
-            row = node // c.MAP_WIDTH
-            col = node - row * c.MAP_WIDTH
-            r.append(pygame.rect.Rect(
-                col * c.TILE_SIZE,
-                row * c.TILE_SIZE,
-                c.TILE_SIZE,
-                c.TILE_SIZE
-            ))
-        return r
 
     def get_path(self, route):
         path = []
         for node in route:
             row = node // c.MAP_WIDTH
             col = node - row * c.MAP_WIDTH
-            print(col, row)
             coord = pygame.Vector2(col * c.TILE_SIZE + c.TILE_SIZE / 2, row * c.TILE_SIZE + c.TILE_SIZE / 2)
             path.append(coord)
         return path
@@ -93,9 +75,7 @@ class Enemy(pygame.sprite.Sprite):
             route.append(node)
             node = prev[node]
         self.path = self.get_path(route)
-        self.route = self.get_route(route)
         self.search = False
-        print(self.path)
 
     def update(self, player, bullets, map):
         """Update function to run each game tick.
@@ -219,9 +199,6 @@ class Enemy(pygame.sprite.Sprite):
         return reached
 
     def draw(self, surface, offset):
-        if self.route:
-            for r in self.route:
-                pygame.draw.rect(surface, (0, 0, 0), r.move(offset.x, offset.y))
         for p in self.path:
             pygame.draw.circle(surface, (255, 0, 0), p + offset, 10)
         surface.blit(self.image, self.rect.topleft + offset)
