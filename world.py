@@ -112,7 +112,7 @@ class World():
         self.enemies = pygame.sprite.Group()
         self.map = Map("data/images/map.png")
         for path in self.map.enemy_paths:
-            self.enemies.add(Enemy("robot.png", path))
+            self.enemies.add(Enemy("robot.png"))
         self.bullets = pygame.sprite.Group()
         self.last_shot = pygame.time.get_ticks()
         self.enemy_spawn_count = 0

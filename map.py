@@ -54,7 +54,6 @@ class Graph():
         
         while not pq.empty():
             _, node = pq.get()
-            print(node)
             if node not in tovisit:
                 continue
             if node == dest:
