@@ -4,7 +4,7 @@ import requests
 import json
 from world import World
 from button import Button
-from menu import LevelMenu
+from menu import LevelMenu, EndMenu
 import constants as c
 
 def menu(Start):
@@ -174,6 +174,7 @@ def input():
                         playerStats = verify(text)
                         if(playerStats):
                             main(playerStats)
+                            return
                             
                         text = ''
 
@@ -192,8 +193,6 @@ def input():
         pygame.draw.rect(screen, color, input_box, 2)
         pygame.display.flip()
         #clock.tick(30)
-        
-        #main()
 
 
 def verify(text):
@@ -216,6 +215,7 @@ def main(playerDict):
     clock = pygame.time.Clock()
     world = World(screen, playerDict)
     levelMenu = LevelMenu(screen)
+    endMenu = EndMenu(screen)
     running = True
     
     # Game loop
@@ -226,11 +226,11 @@ def main(playerDict):
         for event in pygame.event.get():
             # pygame.QUIT event means the user clicked X to close the window
             if event.type == pygame.QUIT:
-                running = False
-            keys = pygame.key.get_pressed()
-            
-            if(keys[pygame.K_ESCAPE]):
-                menu(False)
+                pygame.quit()
+        
+        keys = pygame.key.get_pressed()
+        if(keys[pygame.K_ESCAPE]):
+            menu(False)
         
         # fill the screen with a color to wipe away anything from last frame
         screen.fill("black")
@@ -239,15 +239,16 @@ def main(playerDict):
             levelMenu.takeover(screen, clock)
         world.draw(screen)
 
+        if world.endGame():
+            endMenu.takeover(screen, clock)
+            running = False
+
         # flip() the display to put your work on screen
         pygame.display.flip()
 
         clock.tick(60)  # limits FPS to 60
 
-    pygame.quit()
-
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((1280, 800))
-    main(c.TEST_PLAYER_DICT)
-    # menu(True)
+    menu(True)

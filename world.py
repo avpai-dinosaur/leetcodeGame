@@ -151,6 +151,9 @@ class World():
             self.spawn_enemies()
             return False
         return True
+    
+    def endGame(self):
+        return self.player.health.hp <= 0
 
     def draw(self, surface):
         self.camera.draw(self.player.rect, surface)
