@@ -3,6 +3,7 @@ import utils
 from player import Player
 from enemy import Enemy
 from map import Map
+from button import Button
 import objects as o
 import constants as c
 
@@ -104,18 +105,20 @@ class Camera(pygame.sprite.Group):
         surface.blit(scaled_surface, scaled_rect)
         # surface.blit(cover_surf, clip_rect)
 
+
+
 class World():
     """Top level class to keep track of all game objects."""
    
     def __init__(self, screen, playerStats):
-        self.player = Player("Oldhero.png", c.INIT_PLAYER_POS, playerStats)
-        self.enemies = pygame.sprite.Group()
+        self.screen = screen
         self.map = Map("data/images/map.png")
-        for path in self.map.enemy_paths:
-            self.enemies.add(Enemy("robot.png"))
+        self.player = Player("Oldhero.png", self.map.player_spawn, playerStats)
+        self.enemies = pygame.sprite.Group()
+        self.level = 1
+        [self.enemies.add(Enemy("robot.png", self.map.enemy_spawn[i])) for i in range(self.level * 5)]
         self.bullets = pygame.sprite.Group()
         self.last_shot = pygame.time.get_ticks()
-        self.enemy_spawn_count = 0
         
         self.camera = Camera(screen, self.map.image, self.bullets, self.player.rect)
         self.camera.add(self.player)
@@ -124,8 +127,7 @@ class World():
         self.camera.add(self.enemies)
     
     def spawn_enemies(self):
-        for path in self.map.enemy_paths:
-            self.enemies.add(Enemy("robot.png", path))
+        [self.enemies.add(Enemy("robot.png", self.map.enemy_spawn[i])) for i in range(self.level * 5)]
         self.camera.add(self.enemies)
 
     def update(self):
@@ -144,9 +146,11 @@ class World():
             direction = (mouse_pos - center_pos).normalize()
             self.bullets.add(o.Bullet(self.player.pos, 10, direction, 200))
 
-        if len(self.enemies.sprites()) == self.enemy_spawn_count:
+        if len(self.enemies.sprites()) == 0:
+            self.level += 1
             self.spawn_enemies()
-            self.enemy_spawn_count += 1
+            return False
+        return True
 
     def draw(self, surface):
         self.camera.draw(self.player.rect, surface)

@@ -4,6 +4,7 @@ import json
 import queue
 import objects as o
 import constants as c
+import random
 
 class Edge():
     def __init__(self, id, weight):
@@ -75,7 +76,8 @@ class Map(pygame.sprite.Sprite):
         super().__init__()
         self.image, self.rect = utils.load_png(filename)
         self.walls = [] # List of Rects
-        self.enemy_paths = [] # List of polylines
+        self.enemy_spawn = None
+        self.player_spawn = None
         self.laser_doors = pygame.sprite.Group()
         self.antidote_doors = pygame.sprite.Group()
         self.graph = Graph()
@@ -89,17 +91,17 @@ class Map(pygame.sprite.Sprite):
 
         f = open(filename)
         map_data = json.load(f)
-        room_data = map_data["layers"][0]["data"]
-        wall_data = map_data["layers"][4]["objects"]
-        enemy_path_data = map_data["layers"][5]["objects"]
-        laser_door_data = map_data["layers"][1]["objects"]
-        antidote_door_data = map_data["layers"][2]["objects"]
+        layers = map_data["layers"]
+        room_data = layers[0]["data"]
+        laser_door_data = layers[1]["objects"]
+        antidote_door_data = layers[2]["objects"]
+        # layer 3 is objects
+        wall_data = layers[4]["objects"]
+        self.enemy_spawn = [(point["x"], point["y"]) for point in layers[5]["objects"]]
+        random.shuffle(self.enemy_spawn)
+        self.player_spawn = (layers[6]["objects"][0]["x"], layers[6]["objects"][0]["y"])
+
         self.graph.populate(room_data)
-        for path in enemy_path_data:
-            self.enemy_paths.append(
-                [pygame.Vector2(datum.get("x") + path["x"], datum.get("y") + path["y"]) for datum in path["polyline"]]
-            )
-            break
         for door in laser_door_data:
             door_rect = pygame.Rect((door["x"], door["y"]), (door["width"], door["height"]))
             self.laser_doors.add(o.LaserDoor(door_rect))

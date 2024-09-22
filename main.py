@@ -4,6 +4,7 @@ import requests
 import json
 from world import World
 from button import Button
+from menu import LevelMenu
 import constants as c
 
 def menu(Start):
@@ -214,6 +215,7 @@ def main(playerDict):
     pygame.display.set_caption("Leetcode game")
     clock = pygame.time.Clock()
     world = World(screen, playerDict)
+    levelMenu = LevelMenu(screen)
     running = True
     
     # Game loop
@@ -233,7 +235,8 @@ def main(playerDict):
         # fill the screen with a color to wipe away anything from last frame
         screen.fill("black")
 
-        world.update()
+        if not world.update():
+            levelMenu.takeover(screen, clock)
         world.draw(screen)
 
         # flip() the display to put your work on screen

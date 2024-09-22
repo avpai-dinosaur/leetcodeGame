@@ -5,18 +5,11 @@ import objects as o
 import random
 import math
 from spritesheet import SpriteSheet
-from enum import Enum
 
 class Enemy(pygame.sprite.Sprite):
     """Represents an enemy."""
 
-    class MoveState(Enum):
-        """State of the enemy's movement."""
-        PATH = 0
-        CHASE = 1
-        RECOVER = 2
-
-    def __init__(self, image):
+    def __init__(self, image, pos):
         """Constructor.
 
             image: enemy sprite PNG file.
@@ -37,13 +30,10 @@ class Enemy(pygame.sprite.Sprite):
 
         # Path following
         self.path = [] # list of Vector2 objects specifying path for enemy to follow
-        self.pos = pygame.Vector2((600, 200))
+        self.pos = pygame.Vector2(pos)
         self.rect.center = self.pos
         self.direction = 1
         self.search = True
-
-        self.move_state = Enemy.MoveState.PATH
-        self.radius = 50
 
         # Enemy characteristics
         self.health = o.EnemyHealthBar(self.rect.left, self.rect.top, 60, 10, 100)
@@ -64,7 +54,6 @@ class Enemy(pygame.sprite.Sprite):
         tile_y = int(self.pos.y // c.TILE_SIZE)
         tile_x = int(self.pos.x // c.TILE_SIZE)
         my_node = tile_y * c.MAP_WIDTH + tile_x
-
      
         target_node = int(player.pos.y // c.TILE_SIZE) * c.MAP_WIDTH + int(player.pos.x // c.TILE_SIZE)
         dist, prev = map.graph.dijkstra(my_node, target_node)
@@ -80,7 +69,7 @@ class Enemy(pygame.sprite.Sprite):
     def update(self, player, bullets, map):
         """Update function to run each game tick.
         
-        Enemy should move randomly and reverse direction if it bounces off a wall.
+        Enemy should move towards player using djikstra's.
 
             walls: list of pygame.Rects representing walls in the map.
         """
@@ -89,23 +78,6 @@ class Enemy(pygame.sprite.Sprite):
             self.update_path(player, map)
         if self.move(self.path[-2] if len(self.path) > 1 else self.path[0], []):
             self.search = True
-        
-        
-
-        # if self.move_state == Enemy.MoveState.PATH:
-        #     self.pathmove(map.walls)
-        # elif self.move_state == Enemy.MoveState.CHASE:
-        #     self.chasemove(player, map.walls)
-        # else:
-        #     self.recovermove(map.walls)
-
-        # if pygame.sprite.collide_circle(player, self):
-        #     self.move_state = Enemy.MoveState.CHASE
-        #     self.speed = c.ENEMY_CHASE_SPEED
-        # else:
-        #     if self.move_state == Enemy.MoveState.CHASE:
-        #         self.move_state = Enemy.MoveState.RECOVER
-        #         self.speed = c.ENEMY_SPEED
         
         # receive hits from player
         if pygame.Rect.colliderect(player.rect, self.rect) and player.action == "punch":
@@ -141,27 +113,6 @@ class Enemy(pygame.sprite.Sprite):
                 self.face_right,
                 False
             )
-
-    def pathmove(self, walls):
-        """Move the enemy towards next path point.
-        
-        Enemy should reverse direction upon reaching either end of path.
-        """
-        if self.move(self.target, walls):
-            if self.target_point == len(self.path) - 1 or self.target_point == 0:
-                self.direction *= -1
-                self.face_right = not self.face_right
-            self.target_point += self.direction
-            self.target = self.path[self.target_point]
-    
-    def chasemove(self, player, walls):
-        """Chase the player."""
-        self.move(player.pos, walls)
-    
-    def recovermove(self, walls):
-        """Recover back to patrol."""
-        if self.move(self.target, walls):
-            self.move_state = Enemy.MoveState.PATH
 
     def move(self, target, walls):
         """Move enemy to the target point.
@@ -199,7 +150,7 @@ class Enemy(pygame.sprite.Sprite):
         return reached
 
     def draw(self, surface, offset):
-        for p in self.path:
-            pygame.draw.circle(surface, (255, 0, 0), p + offset, 10)
+        # for p in self.path:
+        #     pygame.draw.circle(surface, (255, 0, 0), p + offset, 10)
         surface.blit(self.image, self.rect.topleft + offset)
         self.health.draw(surface, offset)
