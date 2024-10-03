@@ -58,6 +58,9 @@ class EndMenu:
         self.rect.center = (center_x, center_y)
         self.exitButton = Button(None, pos=(center_x , center_y), 
                 text_input="Back to Menu", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
+        # self.scoreButton = Button(None, pos=(center_x, center_y - 10),
+        #     text_input=response["score"], font=pygame.font.SysFont("cambria", 40),
+        #     base_color=("#24b345" if response["highScore"] else "#b32424"), hovering_color="White")
     
     def takeover(self, screen, clock):
         running = True

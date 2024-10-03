@@ -201,13 +201,13 @@ def verify(text):
     #print(url)
 
     playerDict = json.loads(
-            requests.get(
-                url
-            ).text
-        )
+        requests.get(
+            url
+        ).text
+    )
     if(playerDict["status"] != "success"):
         return None
-    
+    playerDict["username"] = text
     return playerDict
 
 def main(playerDict):
@@ -240,7 +240,13 @@ def main(playerDict):
         world.draw(screen)
 
         if world.endGame():
-            endMenu.takeover(screen, clock)
+            response = json.loads(
+                requests.post(
+                    "http://localhost:5000/api/upload/",
+                    data={"username":playerDict["username"],"score":world.level}
+                ).text
+            )
+            endMenu.takeover(screen, clock, response)
             running = False
 
         # flip() the display to put your work on screen
