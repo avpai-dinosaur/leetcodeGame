@@ -76,7 +76,7 @@ class Enemy(pygame.sprite.Sprite):
         
         if self.search:
             self.update_path(player, map)
-        if self.move(self.path[-2] if len(self.path) > 1 else self.path[0], []):
+        if self.move(self.path[-6] if len(self.path) > 5 else self.path[0], []):
             self.search = True
         
         # receive hits from player
@@ -150,7 +150,7 @@ class Enemy(pygame.sprite.Sprite):
         return reached
 
     def draw(self, surface, offset):
-        # for p in self.path:
-        #     pygame.draw.circle(surface, (255, 0, 0), p + offset, 10)
+        for p in self.path:
+            pygame.draw.circle(surface, (255, 0, 0), p + offset, 10)
         surface.blit(self.image, self.rect.topleft + offset)
         self.health.draw(surface, offset)

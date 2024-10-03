@@ -116,7 +116,7 @@ class World():
         self.player = Player("Oldhero.png", self.map.player_spawn, playerStats)
         self.enemies = pygame.sprite.Group()
         self.level = 1
-        [self.enemies.add(Enemy("robot.png", self.map.enemy_spawn[i])) for i in range(self.level * 5)]
+        [self.enemies.add(Enemy("robot.png", self.map.enemy_spawn[i])) for i in range(self.level)]
         self.bullets = pygame.sprite.Group()
         self.last_shot = pygame.time.get_ticks()
         
