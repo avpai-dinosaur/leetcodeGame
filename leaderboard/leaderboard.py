@@ -1,5 +1,6 @@
 import flask
 import sqlite3
+from datetime import datetime
 
 app = flask.Flask(__name__)
 
@@ -11,12 +12,32 @@ def index():
     return board_html
 
 
-@app.route("/upload/", methods=["POST"])
+@app.route("/api/upload/", methods=["POST"])
 def post_score():
     username = flask.request.form["username"]
-    score = flask.request.form["score"]
-    query_db("INSERT INTO scores (username, score) VALUES (?, ?)", [username, score])
-    return flask.redirect(flask.url_for('index'))
+    score = int(flask.request.form["score"])
+    best = query_db("SELECT score FROM scores WHERE username = ?", [username], one=True)
+    newHighScore = False
+    if best and int(best["score"]) < score:
+        query_db("UPDATE scores SET score = ? WHERE username = ?", [score, username])
+        newHighScore = True
+    elif not best:
+        query_db("INSERT INTO scores (username, score) VALUES (?, ?)", [username, score])
+        newHighScore = True
+    context = {
+        "updated": datetime.now(),
+        "highScore": newHighScore,
+        "username": username,
+        "score": score
+    }
+    return flask.jsonify(context)
+
+
+@app.route("/api/board/")
+def get_board():
+    board = query_db("SELECT * FROM scores")
+    return flask.jsonify(board)
+
 
 ### ==================== DATABASE API ==================== ###
 
