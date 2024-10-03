@@ -7,9 +7,9 @@ app = flask.Flask(__name__)
 @app.route("/")
 def index():
     board_html = "<h1>Leaderboard</h1>"
-    for user in query_db("select * from scores"):
-        board_html += f"<p>{user["username"]}, {user["score"]}</p>"
-    return board_html
+    board = query_db("SELECT * FROM scores")
+    board = sorted(board, key=lambda x: -x['score'])
+    return flask.render_template("index.html", leaderboard=board)
 
 
 @app.route("/api/upload/", methods=["POST"])
@@ -36,6 +36,7 @@ def post_score():
 @app.route("/api/board/")
 def get_board():
     board = query_db("SELECT * FROM scores")
+    board = sorted(board, key=lambda x: -x['score'])
     return flask.jsonify(board)
 
 
