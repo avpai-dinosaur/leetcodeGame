@@ -17,9 +17,21 @@ cd game
 python3 main.py
 ```
 
-# Project Structure
-The data/ folder contains files pertaining to the layout of the map and the visuals of game objects.
-
-## data
-This folder contains Tiled and Krita project files.
+# Database
+Initialize database with
+```
+bin/db create
+```
+Reset databse with
+```
+bin/db reset
+```
+See all values in database with
+```
+bin/db dump
+```
+Delete databse with
+```
+bin/db destroy
+```
 
