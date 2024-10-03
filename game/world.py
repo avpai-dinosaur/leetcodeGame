@@ -113,10 +113,10 @@ class World():
     def __init__(self, screen, playerStats):
         self.screen = screen
         self.map = Map("data/images/map.png")
-        self.player = Player("Oldhero.png", self.map.player_spawn, playerStats)
+        self.player = Player("data/images/Oldhero.png", self.map.player_spawn, playerStats)
         self.enemies = pygame.sprite.Group()
         self.level = 1
-        [self.enemies.add(Enemy("robot.png", self.map.enemy_spawn[i])) for i in range(self.level)]
+        [self.enemies.add(Enemy("data/images/robot.png", self.map.enemy_spawn[i])) for i in range(self.level)]
         self.bullets = pygame.sprite.Group()
         self.last_shot = pygame.time.get_ticks()
         
@@ -127,7 +127,7 @@ class World():
         self.camera.add(self.enemies)
     
     def spawn_enemies(self):
-        [self.enemies.add(Enemy("robot.png", self.map.enemy_spawn[i])) for i in range(self.level * 5)]
+        [self.enemies.add(Enemy("data/images/robot.png", self.map.enemy_spawn[i])) for i in range(self.level * 5)]
         self.camera.add(self.enemies)
 
     def update(self):

@@ -13,6 +13,7 @@ pip install -r requirements.txt
 ```
 Run with
 ```
+cd game
 python3 main.py
 ```
 
