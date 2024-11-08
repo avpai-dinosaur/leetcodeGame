@@ -5,6 +5,32 @@ import utils
 import random
 import constants as c
 
+
+class StaminaBar():
+    """Represents a stamina bar."""
+    def __init__(self, x, y, w, h, max_stamina):
+        self.x = x 
+        self.y = y
+        self.w = w 
+        self.h = h
+        self.stamina = max_stamina
+        self.max_stamina = max_stamina
+    
+    def update(self, x, y):
+        self.x = x
+        self.y = y
+
+    def draw(self, surface, offset):
+        for bar in range(self.stamina):
+            pygame.draw.rect(surface, "blue",
+                             pygame.Rect(self.x + self.w * bar + 1, self.y, self.w - 2, self.h)
+                                .move(offset.x, offset.y))
+        for bar in range(self.stamina, self.max_stamina):
+            pygame.draw.rect(surface, "grey",
+                             pygame.Rect(self.x + self.w * bar + 1, self.y, self.w - 2, self.h)
+                                .move(offset.x, offset.y))
+
+
 class HealthBar():
     """Represents a healthbar."""
     def __init__(self, x, y, w, h, max_hp):
