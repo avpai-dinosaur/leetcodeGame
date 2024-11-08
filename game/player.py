@@ -29,6 +29,12 @@ class Player(pygame.sprite.Sprite):
         self.action = "idle"
         self.face_left = False
         
+        # Dash variables
+        self.last_dash = pygame.time.get_ticks()
+        self.dash_time = 50
+        self.dash_cooldown = 1500
+        self.dash = False
+
         self.image = self.spritesheet.get_image(self.action, self.current_frame)
         self.rect = self.image.get_rect()
         self.rect.center = pos
@@ -58,8 +64,13 @@ class Player(pygame.sprite.Sprite):
         # Redo to have these play all the way out
         if keys[pygame.K_p]:
             self.action = "punch"
-        if keys[pygame.K_SPACE]:
-            self.action = "jump"
+        if keys[pygame.K_SPACE] and not self.dash and \
+            (pygame.time.get_ticks() - self.last_dash) > self.dash_cooldown + self.dash_time:
+            self.last_dash = pygame.time.get_ticks()
+            self.speed *= 2
+            self.dash = True
+
+            
         
         # tentatively update to the new position
         # might have to undo if it turns out new position
@@ -87,6 +98,12 @@ class Player(pygame.sprite.Sprite):
         # self.gun.update(self)
 
         current_time = pygame.time.get_ticks()
+        
+        if self.dash and \
+            (current_time - self.last_dash >= self.dash_time):
+            self.dash = False
+            self.speed *= 0.5
+
         if(current_time - self.last_update >= self.spritesheet.cooldown(self.action)):
             #if animation cooldown has passed between last update and current time, switch frame
             self.current_frame += 1

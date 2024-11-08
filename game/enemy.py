@@ -30,6 +30,8 @@ class Enemy(pygame.sprite.Sprite):
 
         # Path following
         self.path = [] # list of Vector2 objects specifying path for enemy to follow
+        self.move_idx = 1
+        self.move_lag = 10
         self.pos = pygame.Vector2(pos)
         self.rect.center = self.pos
         self.direction = 1
@@ -42,6 +44,11 @@ class Enemy(pygame.sprite.Sprite):
         self.speed = c.ENEMY_SPEED
 
     def get_path(self, route):
+        """Given a route represented by nodes convert it into a path
+            represented by coordinates.
+            
+            route: list of nodeID representing tiles on the map
+        """
         path = []
         for node in route:
             row = node // c.MAP_WIDTH
@@ -51,12 +58,17 @@ class Enemy(pygame.sprite.Sprite):
         return path
 
     def update_path(self, player, map):
+        """Given the player and map calculate shortest path to player.
+        
+            player: Player object.
+            map: Map object
+        """
         tile_y = int(self.pos.y // c.TILE_SIZE)
         tile_x = int(self.pos.x // c.TILE_SIZE)
         my_node = tile_y * c.MAP_WIDTH + tile_x
      
         target_node = int(player.pos.y // c.TILE_SIZE) * c.MAP_WIDTH + int(player.pos.x // c.TILE_SIZE)
-        dist, prev = map.graph.dijkstra(my_node, target_node)
+        _, prev = map.graph.dijkstra(my_node, target_node)
 
         route = []
         node = target_node
@@ -76,8 +88,13 @@ class Enemy(pygame.sprite.Sprite):
         
         if self.search:
             self.update_path(player, map)
-        if self.move(self.path[-6] if len(self.path) > 5 else self.path[0], []):
+        
+        if self.move(self.path[-self.move_idx] if len(self.path) > self.move_idx else self.path[0], []):
+            self.move_idx += 1
+        
+        if self.move_idx > min(self.move_lag, len(self.path)):
             self.search = True
+            self.move_idx = 1
         
         # receive hits from player
         if pygame.Rect.colliderect(player.rect, self.rect) and player.action == "punch":
