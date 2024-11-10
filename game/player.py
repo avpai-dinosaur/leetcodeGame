@@ -19,7 +19,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.health = o.PlayerHealthBar(pos[0], pos[1], 60, 10, 100)
         self.stamina = o.StaminaBar(pos[0], pos[1], 20, 5, 3)
-        self.speed = 5
+        self.speed = 4
         self.pos = pygame.Vector2(pos)
         self.spritesheet = SpriteSheet(filename, c.PLAYER_SHEET_METADATA)
         # self.gun = o.Gun(self, "data/images/gun.png")
@@ -47,7 +47,7 @@ class Player(pygame.sprite.Sprite):
         new_pos = pygame.Vector2(self.pos)
 
         if not self.dash and self.stamina.stamina == 0:   
-            self.speed = 1
+            self.speed = 1.5
         elif not self.dash:
             self.speed = 5
         else:
@@ -103,7 +103,6 @@ class Player(pygame.sprite.Sprite):
 
         self.health.update(self.pos[0] - 30, self.pos[1] - 50)
         self.stamina.update(self.pos[0] - 30, self.pos[1] - 40)
-        # self.gun.update(self)
 
         current_time = pygame.time.get_ticks()
         
@@ -131,4 +130,3 @@ class Player(pygame.sprite.Sprite):
             pygame.transform.flip(self.image, self.face_left, False),
             self.rect.topleft + offset
         )
-        # self.gun.draw(surface, offset)

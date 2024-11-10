@@ -46,15 +46,23 @@ ENEMY_SHEET_METADATA = {
     "actions": {
         "idle": {
             "row": 1,
-            "num_frames": 5
+            "num_frames": 5,
+            "cooldown": 500
         },
         "dead" : {
             "row": 0,
-            "num_frames": 5, 
+            "num_frames": 5,
+            "cooldown": 500 
         },
         "walk" : {
             "row": 5,
-            "num_frames": 7
+            "num_frames": 7,
+            "cooldown": 100
+        },
+        "headbutt" : {
+            "row": 4,
+            "num_frames": 4,
+            "cooldown": 300
         }
     },
     "colorkey": (0, 0, 0)

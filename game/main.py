@@ -257,4 +257,5 @@ def main(playerDict):
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((1280, 800))
-    menu(True)
+    main(c.TEST_PLAYER_DICT)
+    #menu(True)

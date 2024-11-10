@@ -58,10 +58,6 @@ class PlayerHealthBar(HealthBar):
     """Represents the player's health bar."""
     def __init__(self, x, y, w, h, max_hp):
         super().__init__(x, y, w, h, max_hp)
-    
-    def draw(self, surface, offset):
-        self.hp -= 0.01
-        super().draw(surface, offset)
 
 class EnemyHealthBar(HealthBar):
     """Represents the enemy's health bar."""

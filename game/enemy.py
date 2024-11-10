@@ -21,7 +21,6 @@ class Enemy(pygame.sprite.Sprite):
         self.action = "walk"
         self.current_frame = 0
         self.last_update = pygame.time.get_ticks()
-        self.cooldown = 100
         
         # Image variables
         self.image = self.spritesheet.get_image(self.action, self.current_frame)
@@ -41,6 +40,8 @@ class Enemy(pygame.sprite.Sprite):
         self.health = o.EnemyHealthBar(self.rect.left, self.rect.top, 60, 10, 100)
         self.melee_lose_cooldown = 200
         self.last_melee_hit = pygame.time.get_ticks()
+        self.last_attack = pygame.time.get_ticks()
+        self.last_attack_cooldown = 1000
         self.speed = c.ENEMY_SPEED
 
     def get_path(self, route):
@@ -85,22 +86,30 @@ class Enemy(pygame.sprite.Sprite):
 
             walls: list of pygame.Rects representing walls in the map.
         """
+
+        # in range of player to attack and take melee attacks
+        if pygame.Rect.colliderect(player.rect, self.rect.inflate(4, 4)):
+            self.action = "headbutt"
+            if player.action == "punch" and pygame.time.get_ticks() - self.last_melee_hit > self.melee_lose_cooldown:
+                self.last_melee_hit = pygame.time.get_ticks()
+                self.health.lose(2)
+            if pygame.time.get_ticks() - self.last_attack > self.last_attack_cooldown:
+                self.last_attack = pygame.time.get_ticks()
+                player.health.lose(2)
+        else:
+            self.action = "walk"
         
         if self.search:
             self.update_path(player, map)
         
-        if self.move(self.path[-self.move_idx] if len(self.path) > self.move_idx else self.path[0], []):
-            self.move_idx += 1
-        
-        if self.move_idx > min(self.move_lag, len(self.path)):
-            self.search = True
-            self.move_idx = 1
-        
-        # receive hits from player
-        if pygame.Rect.colliderect(player.rect, self.rect) and player.action == "punch":
-            if pygame.time.get_ticks() - self.last_melee_hit > self.melee_lose_cooldown:
-                self.last_melee_hit = pygame.time.get_ticks()
-                self.health.lose(2)
+        if self.action == "walk":
+            if self.move(self.path[-self.move_idx] if len(self.path) > self.move_idx else self.path[0]):
+                self.move_idx += 1
+
+            if self.move_idx > min(self.move_lag, len(self.path)):
+                self.search = True
+                self.move_idx = 1
+
         
         # receive hits from bullets
         hit_bullet = pygame.sprite.spritecollideany(self, bullets)
@@ -116,7 +125,7 @@ class Enemy(pygame.sprite.Sprite):
     def update_animation(self):
         """Update animation of enemy."""
         current_time = pygame.time.get_ticks()
-        if(current_time - self.last_update >= self.cooldown):
+        if(current_time - self.last_update >= self.spritesheet.cooldown(self.action)):
             #if animation cooldown has passed between last update and current time, switch frame
             self.current_frame += 1
             self.last_update = current_time
@@ -131,14 +140,13 @@ class Enemy(pygame.sprite.Sprite):
                 False
             )
 
-    def move(self, target, walls):
+    def move(self, target):
         """Move enemy to the target point.
 
         Returns true if target was reached.
         
             target: Vector2.
         """
-        old_pos = self.pos.copy()
         reached = False
         movement = target - self.pos
         distance = movement.length()
@@ -157,17 +165,22 @@ class Enemy(pygame.sprite.Sprite):
                 self.pos += movement.normalize() * distance
             reached = True
         self.rect.center = self.pos
-        for wall in walls:
-            if pygame.Rect.colliderect(wall, self.rect):
-                self.rect.center = old_pos
-                self.pos = old_pos
-                return
             
         self.health.update(self.rect.left - 10, self.rect.top - 15)
         return reached
 
     def draw(self, surface, offset):
-        for p in self.path:
-            pygame.draw.circle(surface, (255, 0, 0), p + offset, 10)
+        """Draw enemy onto surface with camera offset.
+
+            surface: pygame.Surface
+            offset: Vector2.
+        """
+        # for p in self.path:
+        #     pygame.draw.circle(surface, (255, 0, 0), p + offset, 10)
+
+        hit_box = self.rect.inflate(4, 4)
+        hit_box.move_ip(offset.x, offset.y)
+        pygame.draw.rect(surface, (255, 0, 0), hit_box, width=1)
+
         surface.blit(self.image, self.rect.topleft + offset)
         self.health.draw(surface, offset)
