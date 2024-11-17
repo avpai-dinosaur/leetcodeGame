@@ -2,11 +2,12 @@ import pygame
 import sys
 import requests
 import json
+import LeaderboardPull as Leaders
 from world import World
 from button import Button
 import constants as c
 
-def menu(Start):
+def menu(Start, playerName):
     pygame.display.set_caption("Menu")
     Titlefont=pygame.font.SysFont("cambria", 75)
     play_img = pygame.image.load("data/images/Play.png")
@@ -17,7 +18,7 @@ def menu(Start):
     leaderboard_img = pygame.transform.scale(leaderboard_img, leadersize)
 
     background = pygame.image.load("data/images/menu_background.png")
-     
+    
     while True: 
         screen.blit(background,(0,0))
         menu_mouse_pos = pygame.mouse.get_pos()
@@ -54,7 +55,7 @@ def menu(Start):
 
                     if(Start == True):   
                         #input
-                        main(c.TEST_PLAYER_DICT)
+                        main(c.TEST_PLAYER_DICT, playerName)
                     else:
                         return
                 if option_button.checkForInput(menu_mouse_pos):
@@ -63,7 +64,7 @@ def menu(Start):
                     pygame.quit()
                     sys.exit()
                 if leaderboard_button.checkForInput(menu_mouse_pos):
-                    leaderboard()
+                    leaderboardButton()
 
         pygame.display.flip()
 
@@ -77,7 +78,7 @@ def options():
         mouse_pos = pygame.mouse.get_pos()
         option_text = Titlefont.render("OPTIONS", True, "#bcbcbc")
         option_rect = option_text.get_rect(center = (640, 150))
-        back_button = Button(block_img, pos=(640, 600), 
+        back_button = Button(block_img, pos=(640, 650), 
                 text_input="BACK", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
         
         screen.blit(option_text, option_rect)
@@ -115,9 +116,9 @@ def input():
     Titlefont=pygame.font.SysFont("cambria", 75)
     menu_text = Titlefont.render("Locked Escaped: E.T.", True, "#bcbcbc")
     menu_rect = menu_text.get_rect(center = (640, 150))
-    in_text = headingfont.render("Enter Your LeetCode Username", True, 'lightsalmon4')
+    in_text = headingfont.render("Enter Your LeetCode Username", True, 'azure')
     in_rect = in_text.get_rect(center = (640, 300))
-    warning_text = errorfont.render("Make sure it is correct!", True, 'lightsalmon4')
+    warning_text = errorfont.render("Make sure it is correct!", True, 'azure')
     warning_rect = warning_text.get_rect(center = (640, 350))
     
 
@@ -178,10 +179,10 @@ def input():
             if event.type == pygame.KEYDOWN:
                 if active:
                     if event.key == pygame.K_RETURN:
-                        print(text)
+                        #print(text)
                         playerStats = verify(text)
                         if(playerStats):
-                            menu(True)
+                            menu(True, text)
                             #main(c.TEST_PLAYER_DICT)
                             
                         text = ''
@@ -217,21 +218,24 @@ def verify(text):
     
     return playerDict
 
-def leaderboard():
+def leaderboardButton():
     pygame.display.set_caption("Leaderboard")
-    Titlefont=pygame.font.SysFont("cambria", 75)
+    Titlefont=pygame.font.SysFont("cambria", 65)
     block_img = pygame.image.load("data/images/Play.png")
     background = pygame.image.load("data/images/menu_background.png")
+
+    
+    leaders = Leaders.topScores()
     while True:
         screen.blit(background,(0,0))
         mouse_pos = pygame.mouse.get_pos()
-        ltext = Titlefont.render("LEADERBOARD", True, "#bcbcbc")
-        leader_rect = ltext.get_rect(center = (640, 150))
-        back_button = Button(block_img, pos=(640, 600), 
+        ltext = Titlefont.render("TOP 10 LEADERBOARD", True, "#bcbcbc")
+        leader_rect = ltext.get_rect(center = (640, 75))
+        back_button = Button(block_img, pos=(640, 725), 
                 text_input="BACK", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
         
         screen.blit(ltext, leader_rect)
-        
+        leaderboardScreen(leaders)
         buttons = [back_button]
         for button in buttons:
             button.changeColor(mouse_pos)
@@ -246,22 +250,49 @@ def leaderboard():
 
         pygame.display.update()
 
+def leaderboardScreen(leaders):
+
+    indent = 140
+    leaderfont =pygame.font.SysFont("cambria", 35)
+    #
+    # print(leaders)
+    headerScore = leaderfont.render("Score", True, "cadetblue3")
+    headerName = leaderfont.render("Player", True, "cadetblue3")
+    headerName_rect = headerName.get_rect(center = (530, indent))
+    headerScore_rect = headerScore.get_rect(center = (750, indent))
+    screen.blit(headerName, headerName_rect)
+    screen.blit(headerScore, headerScore_rect)
+    leaders = Leaders.topScores()
+    for name, score in leaders:
+        indent += 50
+        name_text = leaderfont.render(name, True, "cadetblue")
+        score_text = leaderfont.render(str(score), True, "cadetblue")
+        
+        score_rect = score_text.get_rect(center = (750, indent))
+        name_rect = name_text.get_rect(center = (530, indent))
+        screen.blit(score_text, score_rect)
+        screen.blit(name_text, name_rect)
+        
+    
+
 def endscreen():
     pygame.display.set_caption("End Screen")
-    Titlefont=pygame.font.SysFont("cambria", 75)
+    Titlefont=pygame.font.SysFont("cambria", 65)
     block_img = pygame.image.load("data/images/Play.png")
     background = pygame.image.load("data/images/menu_background.png")
+    leaders = Leaders.topScores()
     while True:
         screen.blit(background,(0,0))
         mouse_pos = pygame.mouse.get_pos()
         ltext = Titlefont.render("YOU LOSE", True, "#bcbcbc")
-        leader_rect = ltext.get_rect(center = (640, 150))
-        quit_button = Button(block_img, pos=(640, 660), 
+        leader_rect = ltext.get_rect(center = (640, 75))
+        quit_button = Button(block_img, pos=(840, 725), 
                 text_input="QUIT", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
-        continue_button = Button(block_img, pos=(640, 540), 
+        continue_button = Button(block_img, pos=(440, 725), 
                 text_input="CONTINUE", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
         screen.blit(ltext, leader_rect)
         
+        leaderboardScreen(leaders)
         buttons = [quit_button, continue_button]
         for button in buttons:
             button.changeColor(mouse_pos)
@@ -281,7 +312,7 @@ def endscreen():
 
 
 
-def main(playerDict):
+def main(playerDict, playerName):
     pygame.display.set_caption("Leetcode game")
     clock = pygame.time.Clock()
     world = World(screen, playerDict)
@@ -321,7 +352,9 @@ def main(playerDict):
         clock.tick(60)  # limits FPS to 60
 
 
-    print("here")
+    #print("here")
+    scores = 800
+    Leaders.SubmitHighScore(playerName, scores)
     endscreen()
 
 
