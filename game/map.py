@@ -95,7 +95,7 @@ class Map(pygame.sprite.Sprite):
         rooms = layers[0]["data"]
         walls = layers[2]["objects"]
         laser_doors = layers[3]["objects"]
-        player_spawn = layers[5]["objects"][0]
+        player_spawn = layers[4]["objects"][0]
         self.player_spawn = (player_spawn["x"], player_spawn["y"])
         for wall in walls:
             wall_rect = pygame.Rect((wall["x"], wall["y"]), (wall["width"], wall["height"]))

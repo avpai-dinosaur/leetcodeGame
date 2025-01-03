@@ -214,8 +214,6 @@ def main(playerDict):
     pygame.display.set_caption("Leetcode game")
     clock = pygame.time.Clock()
     world = World(screen, playerDict)
-    levelMenu = LevelMenu(screen)
-    endMenu = EndMenu(screen)
     running = True
     
     # Game loop
@@ -228,25 +226,12 @@ def main(playerDict):
             if event.type == pygame.QUIT:
                 pygame.quit()
         
-        keys = pygame.key.get_pressed()
-        if(keys[pygame.K_ESCAPE]):
-            menu(False)
-        
         # fill the screen with a color to wipe away anything from last frame
+        world.update()
         screen.fill("black")
-
-        if not world.update():
-            levelMenu.takeover(screen, clock)
         world.draw(screen)
 
         if world.endGame():
-            response = json.loads(
-                requests.post(
-                    "http://localhost:5000/api/upload/",
-                    data={"username":playerDict["username"],"score":world.level}
-                ).text
-            )
-            endMenu.takeover(screen, clock, response)
             running = False
 
         # flip() the display to put your work on screen
@@ -258,4 +243,3 @@ if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((1280, 800))
     main(c.TEST_PLAYER_DICT)
-    #menu(True)
