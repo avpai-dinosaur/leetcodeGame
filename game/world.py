@@ -134,7 +134,7 @@ class World():
     def update(self):
         self.player.update(self.map.walls, self.map.laser_doors)
         self.enemies.update(self.player, self.bullets, self.map)
-        self.roomba.update()
+        self.roomba.update(self.player)
         self.bullets.update(self.map.walls)
         self.map.laser_doors.update(self.player)
         self.camera.update(self.player.rect)

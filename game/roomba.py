@@ -5,9 +5,15 @@ import objects as o
 import random
 import math
 from spritesheet import SpriteSheet
+from enum import Enum
 
 class Roomba(pygame.sprite.Sprite):
     """Class to represent the roomba player encounters in Level 1."""
+
+    class MoveState(Enum):
+        """State of the enemy's movement."""
+        STOP = 0
+        PATH = 1
     
     def __init__(self, image, path):
         """Constructor.
@@ -33,6 +39,9 @@ class Roomba(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.face_right = True
 
+        # Roomba's Move state
+        self.move_state = Roomba.MoveState.STOP
+
         # Path following
         self.path = path
         self.pos = self.path[0].copy() # This NEEDS to be a copy to avoid modifying path!
@@ -41,23 +50,28 @@ class Roomba(pygame.sprite.Sprite):
         self.target = self.path[self.target_point]
         self.direction = 1
 
-        # Enemy characteristics
+        # Roomba characteristics
         self.speed = c.ENEMY_SPEED
 
-    def update(self):
+    def update(self, player):
         """Update function to run each game tick.
         
         Enemy should move randomly and reverse direction if it bounces off a wall.
 
             walls: list of pygame.Rects representing walls in the map.
         """
-        if self.move(self.target):
-            if self.target_point == len(self.path) - 1:
-                return
-            self.target_point += 1
-            self.target = self.path[self.target_point]
+        if self.move_state == Roomba.MoveState.STOP:
+            if pygame.Rect.colliderect(self.rect, player.rect):
+                self.move_state = Roomba.MoveState.PATH
+        elif self.move_state == Roomba.MoveState.PATH:
+            if self.move(self.target):
+                if self.target_point == len(self.path) - 1:
+                    self.move_state = Roomba.MoveState.STOP
+                else:
+                    self.target_point += 1
+                    self.target = self.path[self.target_point]
         
-        self.update_animation()
+        # self.update_animation()
 
     def update_animation(self):
         """Update animation of enemy."""
