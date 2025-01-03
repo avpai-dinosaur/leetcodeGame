@@ -279,7 +279,7 @@
          "name":"laserDoors",
          "objects":[
                 {
-                 "height":288,
+                 "height":216,
                  "id":26,
                  "name":"",
                  "rotation":0,
@@ -287,10 +287,10 @@
                  "visible":true,
                  "width":288,
                  "x":720,
-                 "y":648
+                 "y":720
                 }, 
                 {
-                 "height":288,
+                 "height":216,
                  "id":27,
                  "name":"",
                  "rotation":0,
@@ -298,11 +298,11 @@
                  "visible":true,
                  "width":504,
                  "x":2376,
-                 "y":648
+                 "y":720
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }, 

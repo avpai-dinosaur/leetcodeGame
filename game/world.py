@@ -22,7 +22,7 @@ class Camera(pygame.sprite.Group):
         self.center_camera_on_target(init_pos)
 
         # Zoom
-        self.zoom = 2.5
+        self.zoom = 1
         self.internal_surface_size = (surface.get_size()[0], surface.get_size()[1])
         self.internal_surface = pygame.Surface(self.internal_surface_size, pygame.SRCALPHA)
         self.internal_rect = self.internal_surface.get_rect(center=(self.half_w, self.half_h))
@@ -53,12 +53,10 @@ class Camera(pygame.sprite.Group):
         pressed_key = False
         if keys[pygame.K_q]:
             pressed_key = True
-            if self.zoom < 2.5:
-                self.zoom += 0.5 
+            self.zoom = 2.5 
         if keys[pygame.K_e]:
             pressed_key = True
-            if self.zoom > 1:
-                self.zoom -= 0.5
+            self.zoom = 1
         if pressed_key:
             self.x_bound_distance = self.half_w / self.zoom
             self.y_bound_distance = self.half_h / self.zoom

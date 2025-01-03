@@ -13,7 +13,7 @@ WALKABLE_TILES = [12, 31, 32, 33]
 PLAYER_SHEET_METADATA = {
     "frame_width": 16,
     "frame_height": 16,
-    "scale": 2,
+    "scale": 5.25,
     "actions": {
         "idle": {
             "row": 0,
