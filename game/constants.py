@@ -4,7 +4,7 @@ MAP_WIDTH = 40
 MAP_HEIGHT = 25
 TILE_SIZE = 32
 INIT_PLAYER_POS = (256, 256)
-ENEMY_SPEED = 3
+ENEMY_SPEED = 1.5
 ENEMY_CHASE_SPEED = 0.7
 
 WALKABLE_TILES = [12, 31, 32, 33]
@@ -42,7 +42,7 @@ PLAYER_SHEET_METADATA = {
 ENEMY_SHEET_METADATA = {
     "frame_width": 64,
     "frame_height": 64,
-    "scale": 0.75,
+    "scale": 2,
     "actions": {
         "idle": {
             "row": 1,

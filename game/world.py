@@ -114,7 +114,7 @@ class World():
         self.screen = screen
         self.map = Map("data/images/brickMap.png")
         self.player = Player("data/images/Oldhero.png", self.map.player_spawn, playerStats)
-        self.roomba = Roomba("data/images/robot.png", self.map.roomba_path)
+        self.roomba = Roomba("data/images/roomba.png", self.map.roomba_path)
         self.enemies = pygame.sprite.Group()
         self.level = 1
         # [self.enemies.add(Enemy("data/images/robot.png", self.map.enemy_spawn[i])) for i in range(self.level)]

@@ -7,6 +7,7 @@ import math
 from spritesheet import SpriteSheet
 
 class Roomba(pygame.sprite.Sprite):
+    """Class to represent the roomba player encounters in Level 1."""
     
     def __init__(self, image, path):
         """Constructor.
@@ -18,14 +19,17 @@ class Roomba(pygame.sprite.Sprite):
         super().__init__()
 
         # Animation Variables
-        self.spritesheet = SpriteSheet(image, c.ENEMY_SHEET_METADATA)
+        # self.spritesheet = SpriteSheet(image, c.ENEMY_SHEET_METADATA)
         self.action = "walk"
         self.current_frame = 0
         self.last_update = pygame.time.get_ticks()
         self.cooldown = 100
         
         # Image variables
-        self.image = self.spritesheet.get_image(self.action, self.current_frame)
+        og_image, _ = utils.load_png(image)
+        self.image = pygame.transform.scale(og_image, (72, 72))
+
+        # self.image = self.spritesheet.get_image(self.action, self.current_frame)
         self.rect = self.image.get_rect()
         self.face_right = True
 
