@@ -81,7 +81,7 @@ class Map(pygame.sprite.Sprite):
         self.laser_doors = pygame.sprite.Group()
         self.antidote_doors = pygame.sprite.Group()
         self.graph = Graph()
-        self.load_json("data/map/map.tmj")
+        self.load_json("data/map/brickMap.tmj")
     
     def draw(self, surface, offset):
         surface.blit(self.image, offset)
@@ -92,23 +92,15 @@ class Map(pygame.sprite.Sprite):
         f = open(filename)
         map_data = json.load(f)
         layers = map_data["layers"]
-        room_data = layers[0]["data"]
-        laser_door_data = layers[1]["objects"]
-        antidote_door_data = layers[2]["objects"]
-        # layer 3 is objects
-        wall_data = layers[4]["objects"]
-        self.enemy_spawn = [(point["x"], point["y"]) for point in layers[5]["objects"]]
-        random.shuffle(self.enemy_spawn)
-        self.player_spawn = (layers[6]["objects"][0]["x"], layers[6]["objects"][0]["y"])
-
-        self.graph.populate(room_data)
-        for door in laser_door_data:
-            door_rect = pygame.Rect((door["x"], door["y"]), (door["width"], door["height"]))
-            self.laser_doors.add(o.LaserDoor(door_rect))
-        for door in antidote_door_data:
-            door_rect = pygame.Rect((door["x"], door["y"]), (door["width"], door["height"]))
-            self.antidote_doors.add(o.AntidoteDoor(door_rect, 10))
-        for wall in wall_data:
+        rooms = layers[0]["data"]
+        walls = layers[2]["objects"]
+        laser_doors = layers[3]["objects"]
+        player_spawn = layers[5]["objects"][0]
+        self.player_spawn = (player_spawn["x"], player_spawn["y"])
+        for wall in walls:
             wall_rect = pygame.Rect((wall["x"], wall["y"]), (wall["width"], wall["height"]))
             self.walls.append(wall_rect)
+        for door in laser_doors:
+            door_rect = pygame.Rect((door["x"], door["y"]), (door["width"], door["height"]))
+            self.laser_doors.add(o.LaserDoor(door_rect))
         

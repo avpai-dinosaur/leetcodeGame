@@ -113,7 +113,7 @@ class World():
    
     def __init__(self, screen, playerStats):
         self.screen = screen
-        self.map = Map("data/images/map.png")
+        self.map = Map("data/images/brickMap.png")
         self.player = Player("data/images/Oldhero.png", self.map.player_spawn, playerStats)
         self.enemies = pygame.sprite.Group()
         self.level = 1
