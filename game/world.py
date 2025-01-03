@@ -3,6 +3,7 @@ import utils
 import requests
 from player import Player
 from enemy import Enemy
+from roomba import Roomba
 from map import Map
 from button import Button
 import objects as o
@@ -113,6 +114,7 @@ class World():
         self.screen = screen
         self.map = Map("data/images/brickMap.png")
         self.player = Player("data/images/Oldhero.png", self.map.player_spawn, playerStats)
+        self.roomba = Roomba("data/images/robot.png", self.map.roomba_path)
         self.enemies = pygame.sprite.Group()
         self.level = 1
         # [self.enemies.add(Enemy("data/images/robot.png", self.map.enemy_spawn[i])) for i in range(self.level)]
@@ -122,7 +124,7 @@ class World():
         self.camera = Camera(screen, self.map.image, self.bullets, self.player.rect)
         self.camera.add(self.player)
         [self.camera.add(laser_door) for laser_door in self.map.laser_doors]
-        [self.camera.add(antidote_door) for antidote_door in self.map.antidote_doors]
+        self.camera.add(self.roomba)
         self.camera.add(self.enemies)
     
     def spawn_enemies(self):
@@ -132,9 +134,9 @@ class World():
     def update(self):
         self.player.update(self.map.walls, self.map.laser_doors)
         self.enemies.update(self.player, self.bullets, self.map)
+        self.roomba.update()
         self.bullets.update(self.map.walls)
         self.map.laser_doors.update(self.player)
-        self.map.antidote_doors.update(self.player)
         self.camera.update(self.player.rect)
 
         mouse = pygame.mouse.get_pressed()

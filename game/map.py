@@ -79,7 +79,7 @@ class Map(pygame.sprite.Sprite):
         self.enemy_spawn = None
         self.player_spawn = None
         self.laser_doors = pygame.sprite.Group()
-        self.antidote_doors = pygame.sprite.Group()
+        self.roomba_path = []
         self.graph = Graph()
         self.load_json("data/map/brickMap.tmj")
     
@@ -92,10 +92,11 @@ class Map(pygame.sprite.Sprite):
         f = open(filename)
         map_data = json.load(f)
         layers = map_data["layers"]
-        rooms = layers[0]["data"]
         walls = layers[2]["objects"]
         laser_doors = layers[3]["objects"]
         player_spawn = layers[4]["objects"][0]
+        roomba_path_data = layers[5]["objects"][0]
+
         self.player_spawn = (player_spawn["x"], player_spawn["y"])
         for wall in walls:
             wall_rect = pygame.Rect((wall["x"], wall["y"]), (wall["width"], wall["height"]))
@@ -103,4 +104,8 @@ class Map(pygame.sprite.Sprite):
         for door in laser_doors:
             door_rect = pygame.Rect((door["x"], door["y"]), (door["width"], door["height"]))
             self.laser_doors.add(o.LaserDoor(door_rect))
+        for point in roomba_path_data["polyline"]:
+            self.roomba_path.append(
+                pygame.Vector2(point.get("x") + roomba_path_data["x"], point.get("y") + roomba_path_data["y"])
+            )
         
