@@ -19,16 +19,17 @@ class SpeechBubble():
         self.text_image = self.font.render(self.text_input, True, text_color)
         self.text_width, self.text_height = self.text_image.get_size()
 
-        self.background_image = pygame.Surface((self.text_width + 20, self.text_height + 20))
-        self.bg_width, self.bg_height = self.background_image.get_size()
-        self.background_image.fill(self.background_color)
+        self.padding = 10
+        self.bg_width, self.bg_height = (self.text_width + self.padding * 2, self.text_height + self.padding * 2)
+        self.bg_rect = pygame.Rect(0, 0, self.bg_width, self.bg_height)
 
-        self.background_image.blit(self.text_image, (10, 10))
 
     def draw(self, surface, pos):
-        surface.blit(self.background_image,
-            (pos[0] - self.bg_width // 2, pos[1] - self.bg_height - 10)
-        )
+        self.bg_rect.topleft = (pos[0] - self.bg_width // 2, pos[1] - self.bg_height - 10)
+        pygame.draw.rect(surface, self.background_color, self.bg_rect, border_radius=10)
+
+        text_position = (self.bg_rect.topleft[0] + self.padding, self.bg_rect.topleft[1] + self.padding)
+        surface.blit(self.text_image, text_position)
 
 
 class Roomba(pygame.sprite.Sprite):
