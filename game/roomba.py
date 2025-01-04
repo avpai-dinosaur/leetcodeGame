@@ -7,6 +7,30 @@ import math
 from spritesheet import SpriteSheet
 from enum import Enum
 
+class SpeechBubble():
+    """Class to represent the speech bubble of NPC."""
+
+    def __init__(self, text_input, font, text_color, background_color):
+        self.text_input = text_input
+        self.font = font
+        self.text_color = text_color
+        self.background_color = background_color
+
+        self.text_image = self.font.render(self.text_input, True, text_color)
+        self.text_width, self.text_height = self.text_image.get_size()
+
+        self.background_image = pygame.Surface((self.text_width + 20, self.text_height + 20))
+        self.bg_width, self.bg_height = self.background_image.get_size()
+        self.background_image.fill(self.background_color)
+
+        self.background_image.blit(self.text_image, (10, 10))
+
+    def draw(self, surface, pos):
+        surface.blit(self.background_image,
+            (pos[0] - self.bg_width // 2, pos[1] - self.bg_height - 10)
+        )
+
+
 class Roomba(pygame.sprite.Sprite):
     """Class to represent the roomba player encounters in Level 1."""
 
@@ -14,6 +38,7 @@ class Roomba(pygame.sprite.Sprite):
         """State of the enemy's movement."""
         STOP = 0
         PATH = 1
+        PAUSE = 2
     
     def __init__(self, image, path):
         """Constructor.
@@ -53,12 +78,20 @@ class Roomba(pygame.sprite.Sprite):
         # Roomba characteristics
         self.speed = c.ENEMY_SPEED
 
+        # Speech Bubble
+        self.speech = SpeechBubble(
+            "Hello World!", pygame.font.Font(None, 36), (255, 255, 255), (0, 0, 0)
+        )
+        self.half_width = self.rect.width
+
+
     def update(self, player):
         """Update function to run each game tick.
         
-        Enemy should move randomly and reverse direction if it bounces off a wall.
+        Roomba should wait until player opens near door, follow cleaning path,
+        then wait until player opens far door before entering Zuck's room. 
 
-            walls: list of pygame.Rects representing walls in the map.
+            player: the player object.
         """
         if self.move_state == Roomba.MoveState.STOP:
             if pygame.Rect.colliderect(self.rect, player.rect):
@@ -70,6 +103,11 @@ class Roomba(pygame.sprite.Sprite):
                 else:
                     self.target_point += 1
                     self.target = self.path[self.target_point]
+            if pygame.Rect.colliderect(self.rect, player.rect):
+                self.move_state = Roomba.MoveState.PAUSE
+        elif self.move_state == Roomba.MoveState.PAUSE:
+            if not pygame.Rect.colliderect(self.rect, player.rect):
+                self.move_state = Roomba.MoveState.PATH
         
         # self.update_animation()
 
@@ -92,7 +130,7 @@ class Roomba(pygame.sprite.Sprite):
             )
 
     def move(self, target):
-        """Move enemy to the target point.
+        """Move roomb to the target point.
 
         Returns true if target was reached.
         
@@ -121,4 +159,5 @@ class Roomba(pygame.sprite.Sprite):
         return reached
 
     def draw(self, surface, offset):
+        self.speech.draw(surface, self.rect.midtop + offset)
         surface.blit(self.image, self.rect.topleft + offset)
