@@ -2,7 +2,7 @@ import pygame
 from world import World
 import constants as c
 
-def main(playerDict):
+def main(screen, playerDict):
     pygame.display.set_caption("Leetcode game")
     clock = pygame.time.Clock()
     world = World(screen, playerDict)
@@ -16,7 +16,7 @@ def main(playerDict):
         for event in pygame.event.get():
             # pygame.QUIT event means the user clicked X to close the window
             if event.type == pygame.QUIT:
-                pygame.quit()
+                return
         
         # fill the screen with a color to wipe away anything from last frame
         world.update()
@@ -34,4 +34,5 @@ def main(playerDict):
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((1280, 800))
-    main(c.TEST_PLAYER_DICT)
+    main(screen, c.TEST_PLAYER_DICT)
+    pygame.quit()
