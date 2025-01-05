@@ -11,6 +11,7 @@ class SpeechBubble():
     """Class to represent the speech bubble of NPC."""
 
     def __init__(self, text_input, font, text_color, background_color):
+        """Constructor."""
         self.text_input = text_input
         self.font = font
         self.text_color = text_color
@@ -23,13 +24,16 @@ class SpeechBubble():
         self.bg_width, self.bg_height = (self.text_width + self.padding * 2, self.text_height + self.padding * 2)
         self.bg_rect = pygame.Rect(0, 0, self.bg_width, self.bg_height)
 
+        self.toggle = False
+
 
     def draw(self, surface, pos):
-        self.bg_rect.topleft = (pos[0] - self.bg_width // 2, pos[1] - self.bg_height - 10)
-        pygame.draw.rect(surface, self.background_color, self.bg_rect, border_radius=10)
+        if self.toggle:
+            self.bg_rect.topleft = (pos[0] - self.bg_width // 2, pos[1] - self.bg_height - 10)
+            pygame.draw.rect(surface, self.background_color, self.bg_rect, border_radius=10)
 
-        text_position = (self.bg_rect.topleft[0] + self.padding, self.bg_rect.topleft[1] + self.padding)
-        surface.blit(self.text_image, text_position)
+            text_position = (self.bg_rect.topleft[0] + self.padding, self.bg_rect.topleft[1] + self.padding)
+            surface.blit(self.text_image, text_position)
 
 
 class Roomba(pygame.sprite.Sprite):
@@ -106,9 +110,11 @@ class Roomba(pygame.sprite.Sprite):
                     self.target = self.path[self.target_point]
             if pygame.Rect.colliderect(self.rect, player.rect):
                 self.move_state = Roomba.MoveState.PAUSE
+                self.speech.toggle = True
         elif self.move_state == Roomba.MoveState.PAUSE:
             if not pygame.Rect.colliderect(self.rect, player.rect):
                 self.move_state = Roomba.MoveState.PATH
+                self.speech.toggle = False
         
         # self.update_animation()
 
