@@ -14,8 +14,8 @@
             "scale": 0.75,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 527.3333333333334,
-                "y": 296.66666666666674
+                "x": 525.9999999999999,
+                "y": 296.6666666666667
             }
         },
         "spaceship.tsx": {
@@ -23,7 +23,7 @@
             "scaleInEditor": 1
         }
     },
-    "last.exportedFilePath": "//wsl.localhost/Ubuntu-24.04/home/avpai/leetcodeGame/data/map",
+    "last.exportedFilePath": "//wsl.localhost/Ubuntu/home/avpai/leetcodeGame/game/data/map",
     "last.imagePath": "//wsl.localhost/Ubuntu/home/avpai/leetcodeGame/data/images",
     "map.height": 25,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",

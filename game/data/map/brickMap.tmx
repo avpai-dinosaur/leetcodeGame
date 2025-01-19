@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="51" height="20" tilewidth="72" tileheight="72" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="51" height="20" tilewidth="72" tileheight="72" infinite="0" nextlayerid="7" nextobjectid="28">
  <tileset firstgid="1" source="redSpace.tsx"/>
  <layer id="1" name="Base" width="51" height="20">
   <data encoding="csv">
@@ -49,4 +49,39 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="3" name="walls">
+  <object id="2" x="144" y="504" width="576" height="72"/>
+  <object id="3" x="720" y="576" width="288" height="144"/>
+  <object id="4" x="936" y="72" width="72" height="504"/>
+  <object id="5" x="72" y="576" width="72" height="432"/>
+  <object id="6" x="144" y="1008" width="576" height="72"/>
+  <object id="7" x="720" y="936" width="72" height="144"/>
+  <object id="8" x="792" y="936" width="216" height="72"/>
+  <object id="9" x="936" y="1008" width="72" height="360"/>
+  <object id="10" x="1008" y="1368" width="1368" height="72"/>
+  <object id="11" x="2376" y="936" width="72" height="432"/>
+  <object id="12" x="2448" y="936" width="360" height="72"/>
+  <object id="13" x="2808" y="936" width="72" height="360"/>
+  <object id="14" x="2880" y="1296" width="648" height="72"/>
+  <object id="15" x="3528" y="144" width="72" height="1152"/>
+  <object id="17" x="2808" y="144" width="72" height="432"/>
+  <object id="18" x="2376" y="576" width="504" height="144"/>
+  <object id="20" x="2376" y="72" width="72" height="504"/>
+  <object id="21" x="1008" y="0" width="1368" height="144"/>
+  <object id="22" x="2880" y="72" width="648" height="144"/>
+ </objectgroup>
+ <objectgroup id="4" name="laser_doors">
+  <object id="24" x="720" y="720" width="288" height="216"/>
+  <object id="25" x="2376" y="720" width="504" height="216"/>
+ </objectgroup>
+ <objectgroup id="5" name="player_spawn">
+  <object id="26" x="288" y="792">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="6" name="roomba_path">
+  <object id="27" x="1080" y="864">
+   <polyline points="0,0 144,0 144,-432 360,-432 360,432 576,432 576,-72 1008,-72 1224,0"/>
+  </object>
+ </objectgroup>
 </map>
