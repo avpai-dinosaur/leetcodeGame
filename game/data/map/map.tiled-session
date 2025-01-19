@@ -3,20 +3,31 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "map.tmx",
+    "activeFile": "brickMap.tmx",
     "expandedProjectPaths": [
         "."
     ],
     "exportAsImage.useCurrentScale": false,
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "brickMap.tmx": {
+            "scale": 0.4082516339869281,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 1838.3269961977185,
+                "y": 721.3688212927757
+            }
+        },
         "map.tmx": {
             "scale": 0.75,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 525.9999999999999,
-                "y": 296.6666666666667
+                "x": 640.6666666666665,
+                "y": 399.33333333333337
             }
+        },
+        "redSpace.tsx": {
+            "scaleInDock": 1
         },
         "spaceship.tsx": {
             "scaleInDock": 1.306,
@@ -31,12 +42,14 @@
     "map.width": 40,
     "openFiles": [
         "map.tmx",
-        "spaceship.tsx"
+        "spaceship.tsx",
+        "brickMap.tmx"
     ],
     "project": "map.tiled-project",
     "recentFiles": [
+        "map.tmx",
         "spaceship.tsx",
-        "map.tmx"
+        "brickMap.tmx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

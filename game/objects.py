@@ -319,12 +319,43 @@ class SpeechBubble():
 class TechNote(pygame.sprite.Sprite):
     """Class to represent a technical note."""
 
-    def __init__(self, player, filename, pos):
-        self.image, _ = utils.load_png(filename)
-        self.player = player
+    def __init__(self, filename, pos):
+        super().__init__()
+        og_image, _ = utils.load_png(filename)
+        self.image = pygame.transform.scale(og_image, (72 * 2, 72 * 2))
+        self.rect = self.image.get_rect()
         self.rect.topleft = pos
+        self.pos = pygame.Vector2(pos)
+        self.scaled_rect = self.rect.inflate(50, 50)
+
+        self.open_button = ("M", pygame.K_m)
+        self.font = pygame.font.Font(size=30)
+        self.button_text = self.font.render(self.open_button[0], True, (250, 250, 250), (0, 0, 0))
+        self.button_textRect = self.button_text.get_rect()
+        self.button_textRect.center = (self.rect.centerx - 100, self.rect.centery - 100)
+        self.present_button = False
     
-    def draw(self, surface, pos):
-        surface.blit(self.image, self.rect.topleft + pos)
+
+    def update(self, player):
+        """Updates the note based on player position.
+
+        If the player is within the note's range, show the key needed to
+        read the note.
+            
+            player: Player object.
+        """
+        if self.scaled_rect.colliderect(player.rect):
+            keys = pygame.key.get_pressed()
+            self.present_button = True
+            if (keys[self.open_button[1]]):
+                pass
+        else:
+            self.present_button = False
+    
+    def draw(self, surface, offset):
+        """Draw the note to the surface."""
+        if self.present_button:
+            surface.blit(self.button_text, self.button_textRect.topleft + offset)
+        surface.blit(self.image, self.rect.topleft + offset)
 
     

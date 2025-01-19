@@ -115,6 +115,7 @@ class World():
         self.map = Map("data/images/brickMap.png")
         self.player = Player("data/images/Oldhero.png", self.map.player_spawn, playerStats)
         self.roomba = Roomba("data/images/roomba.png", self.map.roomba_path)
+        self.tech_note = o.TechNote("data/images/techNote.png", self.map.tech_note_spawn)
         self.enemies = pygame.sprite.Group()
         self.level = 1
         # [self.enemies.add(Enemy("data/images/robot.png", self.map.enemy_spawn[i])) for i in range(self.level)]
@@ -126,6 +127,7 @@ class World():
         [self.camera.add(laser_door) for laser_door in self.map.laser_doors]
         self.camera.add(self.roomba)
         self.camera.add(self.enemies)
+        self.camera.add(self.tech_note)
     
     def spawn_enemies(self):
         [self.enemies.add(Enemy("data/images/robot.png", self.map.enemy_spawn[i])) for i in range(self.level * 5)]
@@ -137,6 +139,7 @@ class World():
         self.roomba.update(self.player)
         self.bullets.update(self.map.walls)
         self.map.laser_doors.update(self.player)
+        self.tech_note.update(self.player)
         self.camera.update(self.player.rect)
 
         mouse = pygame.mouse.get_pressed()

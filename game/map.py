@@ -78,6 +78,7 @@ class Map(pygame.sprite.Sprite):
         self.walls = [] # List of Rects
         self.enemy_spawn = None
         self.player_spawn = None
+        self.tech_note_spawn = None
         self.laser_doors = pygame.sprite.Group()
         self.roomba_path = []
         self.graph = Graph()
@@ -96,8 +97,10 @@ class Map(pygame.sprite.Sprite):
         laser_doors = layers[3]["objects"]
         player_spawn = layers[4]["objects"][0]
         roomba_path_data = layers[5]["objects"][0]
+        tech_note_spawn = layers[6]["objects"][0]
 
         self.player_spawn = (player_spawn["x"], player_spawn["y"])
+        self.tech_note_spawn = (tech_note_spawn["x"], tech_note_spawn["y"])
         for wall in walls:
             wall_rect = pygame.Rect((wall["x"], wall["y"]), (wall["width"], wall["height"]))
             self.walls.append(wall_rect)

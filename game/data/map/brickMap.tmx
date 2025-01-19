@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="51" height="20" tilewidth="72" tileheight="72" infinite="0" nextlayerid="7" nextobjectid="28">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="51" height="20" tilewidth="72" tileheight="72" infinite="0" nextlayerid="8" nextobjectid="30">
  <tileset firstgid="1" source="redSpace.tsx"/>
  <layer id="1" name="Base" width="51" height="20">
   <data encoding="csv">
@@ -82,6 +82,11 @@
  <objectgroup id="6" name="roomba_path">
   <object id="27" x="1080" y="864">
    <polyline points="0,0 144,0 144,-432 360,-432 360,432 576,432 576,-72 1008,-72 1224,0"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="7" name="tech_note">
+  <object id="28" x="2232" y="1008">
+   <point/>
   </object>
  </objectgroup>
 </map>
