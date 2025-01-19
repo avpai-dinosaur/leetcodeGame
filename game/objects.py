@@ -328,12 +328,18 @@ class TechNote(pygame.sprite.Sprite):
         self.pos = pygame.Vector2(pos)
         self.scaled_rect = self.rect.inflate(50, 50)
 
-        self.open_button = ("M", pygame.K_m)
+        self.open_note = ("M", pygame.K_m)
         self.font = pygame.font.Font(size=30)
-        self.button_text = self.font.render(self.open_button[0], True, (250, 250, 250), (0, 0, 0))
+        self.button_text = self.font.render(self.open_note[0], True, (250, 250, 250), (0, 0, 0))
         self.button_textRect = self.button_text.get_rect()
         self.button_textRect.center = (self.rect.centerx - 100, self.rect.centery - 100)
         self.present_button = False
+
+        text = "A really brute force way would be to search for all possible pairs of numbers but that would be too slow."
+        self.note_text = self.font.render(text, True, (250, 250, 25), (0, 0, 0), 72 * 2)
+        self.note_textRect = self.note_text.get_rect()
+        self.note_textRect.center = (self.rect.centerx - 100, self.rect.centery - 100)
+        self.toggle_note = False
     
 
     def update(self, player):
@@ -347,15 +353,18 @@ class TechNote(pygame.sprite.Sprite):
         if self.scaled_rect.colliderect(player.rect):
             keys = pygame.key.get_pressed()
             self.present_button = True
-            if (keys[self.open_button[1]]):
-                pass
+            if (keys[self.open_note[1]]):
+                self.toggle_note = True
         else:
             self.present_button = False
+            self.toggle_note = False
     
     def draw(self, surface, offset):
         """Draw the note to the surface."""
+        surface.blit(self.image, self.rect.topleft + offset)
         if self.present_button:
             surface.blit(self.button_text, self.button_textRect.topleft + offset)
-        surface.blit(self.image, self.rect.topleft + offset)
+        if self.toggle_note:
+            surface.blit(self.note_text, self.note_textRect.topleft + offset)
 
     
