@@ -133,6 +133,16 @@ class Door(pygame.sprite.Sprite):
 class LaserDoor(Door):
     """Class to represent a laser door."""
     def __init__(self, rect, text_input=None):
+        """Constructor.
+
+            rect: pygame.Rect representing the door's area and position.
+            text_input: The question that the door expects the player to solve 
+                before it will open.
+                
+                If no text input is provided functions as 
+                a regular door. If text is provided it shows up in a speech bubble
+                in plain text.
+        """
         super().__init__(rect)
         self.text_input = text_input
         self.speech_bubble = SpeechBubble(text_input, self.font, (255, 255, 255), (0, 0, 0))
