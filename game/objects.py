@@ -145,7 +145,8 @@ class LaserDoor(Door):
         """
         super().__init__(rect)
         self.text_input = text_input
-        self.speech_bubble = SpeechBubble(text_input, self.font, (255, 255, 255), (0, 0, 0))
+        self.speech_bubble = SpeechBubble(
+            text_input, self.font, (255, 255, 255), (0, 0, 0), url="https://leetcode.com/problems/two-sum/description/", )
     
     def update(self, player):
         super().update(player)
@@ -318,9 +319,10 @@ class Bullet(pygame.sprite.Sprite):
 class SpeechBubble():
     """Class to represent the speech bubble of NPC."""
 
-    def __init__(self, text_input, font, text_color, background_color):
+    def __init__(self, text_input, font, text_color, background_color, url=None):
         """Constructor."""
         self.text_input = text_input
+        self.url = url
         self.font = font
         self.text_color = text_color
         self.background_color = background_color
@@ -334,6 +336,16 @@ class SpeechBubble():
 
         self.toggle = False
 
+    def update(self):
+        """Checks if the speech bubble is clicked."""
+        if self.toggle:
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+            if self.bg_rect.collidepoint(mouse_pos) and mouse_pressed[0]:  # Left mouse button
+                print("hello")
+                if self.url:
+                    import webbrowser
+                    webbrowser.open(self.url)
 
     def draw(self, surface, pos):
         if self.toggle:
