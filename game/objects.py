@@ -130,10 +130,28 @@ class Door(pygame.sprite.Sprite):
             surface.blit(self.text, self.textRect.topleft + offset)
         self.draw_door(surface, offset)
 
-
 class LaserDoor(Door):
     """Class to represent a laser door."""
+    def __init__(self, rect, text_input=None):
+        super().__init__(rect)
+        self.text_input = text_input
+        self.speech_bubble = SpeechBubble(text_input, self.font, (255, 255, 255), (0, 0, 0))
     
+    def update(self, player):
+        super().update(player)
+        if not self.scaled_rect.colliderect(player.rect):
+            self.speech_bubble.toggle = False
+    
+    def door_action(self, player=None):
+        if self.text_input != None:
+            self.speech_bubble.toggle = True
+        else:
+            super().door_action(player)
+    
+    def draw(self, surface, offset):
+        super().draw(surface, offset)
+        if self.text_input != None:
+            self.speech_bubble.draw(surface, self.rect.midtop + offset)
 
 class AntidoteDoor(Door):
     """Class to represent an antidote door."""

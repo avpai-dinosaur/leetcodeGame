@@ -104,9 +104,12 @@ class Map(pygame.sprite.Sprite):
         for wall in walls:
             wall_rect = pygame.Rect((wall["x"], wall["y"]), (wall["width"], wall["height"]))
             self.walls.append(wall_rect)
-        for door in laser_doors:
+        for i, door in enumerate(laser_doors):
             door_rect = pygame.Rect((door["x"], door["y"]), (door["width"], door["height"]))
-            self.laser_doors.add(o.LaserDoor(door_rect))
+            if i == 1:
+                self.laser_doors.add(o.LaserDoor(door_rect, "hello"))
+            else:
+                self.laser_doors.add(o.LaserDoor(door_rect))
         for point in roomba_path_data["polyline"]:
             self.roomba_path.append(
                 pygame.Vector2(point.get("x") + roomba_path_data["x"], point.get("y") + roomba_path_data["y"])

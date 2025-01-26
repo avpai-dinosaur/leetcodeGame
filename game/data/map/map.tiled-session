@@ -12,10 +12,10 @@
     "fileStates": {
         "brickMap.tmx": {
             "scale": 0.4082516339869281,
-            "selectedLayer": 5,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 1838.3269961977185,
-                "y": 721.3688212927757
+                "x": 1833.4280568341003,
+                "y": 630.7384430658394
             }
         },
         "map.tmx": {
