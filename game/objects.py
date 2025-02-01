@@ -3,6 +3,7 @@
 import pygame
 import utils
 import random
+import webbrowser
 import constants as c
 
 
@@ -132,12 +133,13 @@ class Door(pygame.sprite.Sprite):
 
 class LaserDoor(Door):
     """Class to represent a laser door."""
-    def __init__(self, rect, text_input=None):
+    def __init__(self, rect, text_input=None, url=None):
         """Constructor.
 
             rect: pygame.Rect representing the door's area and position.
             text_input: The question that the door expects the player to solve 
                 before it will open.
+            url: The url to the leetcode question.
                 
                 If no text input is provided functions as 
                 a regular door. If text is provided it shows up in a speech bubble
@@ -146,12 +148,13 @@ class LaserDoor(Door):
         super().__init__(rect)
         self.text_input = text_input
         self.speech_bubble = SpeechBubble(
-            text_input, self.font, (255, 255, 255), (0, 0, 0), url="https://leetcode.com/problems/two-sum/description/", )
+            text_input, self.font, (255, 255, 255), (0, 0, 0), url=url)
     
     def update(self, player):
         super().update(player)
         if not self.scaled_rect.colliderect(player.rect):
             self.speech_bubble.toggle = False
+        self.speech_bubble.update()
     
     def door_action(self, player=None):
         if self.text_input != None:
@@ -342,9 +345,8 @@ class SpeechBubble():
             mouse_pos = pygame.mouse.get_pos()
             mouse_pressed = pygame.mouse.get_pressed()
             if self.bg_rect.collidepoint(mouse_pos) and mouse_pressed[0]:  # Left mouse button
-                print("hello")
+                print(self.url)
                 if self.url:
-                    import webbrowser
                     webbrowser.open(self.url)
 
     def draw(self, surface, pos):
@@ -407,4 +409,50 @@ class TechNote(pygame.sprite.Sprite):
         if self.toggle_note:
             surface.blit(self.note_text, self.note_textRect.topleft + offset)
 
+class StaticItem(pygame.sprite.Sprite):
+    def __init__(self, pos, width, height, filename=None):
+        super().__init__()
+        self.pos = pos
+        #self.image, self.rect = utils.load_png(filename)
+        self.rect = pygame.Rect(self.pos[0], self.pos[1], width * 72, height * 72)
+        self.rect.topleft = self.pos
     
+    def draw(self, surface, offset):
+        pygame.draw.rect(surface, (255, 0, 255), self.rect.move(offset))
+        # surface.blit(self.image, self.rect.topleft + offset)
+
+class DanceFloor(StaticItem):
+
+    DISCO_COLORS = [(255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 0, 255)]
+
+    def __init__(self, pos, width, height):
+        super().__init__(pos, width, height)
+        self.light_pos = []
+        self.colors = []
+        self.on_dance_floor = False
+        self.disco_timer = pygame.time.get_ticks()
+
+    def update(self, player, camera):
+        if self.rect.colliderect(player.rect):
+            self.on_dance_floor = True
+            camera.dim = True
+        else:
+            self.on_dance_floor = False
+            camera.dim = False
+
+        if self.on_dance_floor:
+            if pygame.time.get_ticks() - self.disco_timer > 1000:  # Change every second
+                self.disco_timer = pygame.time.get_ticks()
+                self.light_pos = []
+                self.colors = []
+                for i in range(10):  # Number of lights
+                    x = random.randint(self.rect.left, self.rect.right)
+                    y = random.randint(self.rect.top, self.rect.bottom)
+                    self.light_pos.append((x, y))
+                    self.colors.append(random.choice(DanceFloor.DISCO_COLORS))
+        
+    def draw(self, surface, offset):
+        super().draw(surface, offset)
+        if self.on_dance_floor:
+            for i, pos in enumerate(self.light_pos):
+                pygame.draw.circle(surface, self.colors[i], pos + offset, 15)

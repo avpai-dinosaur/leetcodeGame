@@ -36,6 +36,7 @@ class Camera(pygame.sprite.Group):
 
         # Lighting
         self.light_radius = 300
+        self.dim = False
 
         # Bullets
         self.foreground_objects = foreground_objects
@@ -90,6 +91,9 @@ class Camera(pygame.sprite.Group):
         # clip_rect = pygame.Rect(self.half_w - radius, self.half_h - radius, radius*2, radius*2)
         # surface.set_clip(clip_rect)
 
+        dim_surface = pygame.Surface((1280, 800), pygame.SRCALPHA)
+        dim_surface.fill((0, 0, 0, 180))  # RGBA: Dark transparent overlay
+
 
         self.internal_surface.fill((0, 0, 0))
         self.internal_surface.blit(self.background, -self.offset + self.internal_offset)
@@ -103,7 +107,8 @@ class Camera(pygame.sprite.Group):
         scaled_rect = scaled_surface.get_rect(center=(self.half_w, self.half_h))
 
         surface.blit(scaled_surface, scaled_rect)
-        # surface.blit(cover_surf, clip_rect)
+        if self.dim:
+            surface.blit(dim_surface, (0, 0))
 
 
 
@@ -128,6 +133,7 @@ class World():
         self.camera.add(self.roomba)
         self.camera.add(self.enemies)
         self.camera.add(self.tech_note)
+        self.camera.add(self.map.static_objects)
     
     def spawn_enemies(self):
         [self.enemies.add(Enemy("data/images/robot.png", self.map.enemy_spawn[i])) for i in range(self.level * 5)]
@@ -141,6 +147,7 @@ class World():
         self.map.laser_doors.update(self.player)
         self.tech_note.update(self.player)
         self.camera.update(self.player.rect)
+        self.map.static_objects.update(self.player, self.camera)
 
         mouse = pygame.mouse.get_pressed()
         if mouse[0] and pygame.time.get_ticks() - self.last_shot > 200:
