@@ -6,6 +6,8 @@ import objects as o
 import constants as c
 import random
 
+pygame.mixer.init()
+
 class Edge():
     def __init__(self, id, weight):
         self.id = id

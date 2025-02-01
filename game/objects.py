@@ -5,7 +5,7 @@ import utils
 import random
 import webbrowser
 import constants as c
-
+import music_manager
 
 class StaminaBar():
     """Represents a stamina bar."""
@@ -436,9 +436,11 @@ class DanceFloor(StaticItem):
         if self.rect.colliderect(player.rect):
             self.on_dance_floor = True
             camera.dim = True
+            music_manager.play_music()
         else:
             self.on_dance_floor = False
             camera.dim = False
+            music_manager.stop_music()
 
         if self.on_dance_floor:
             if pygame.time.get_ticks() - self.disco_timer > 1000:  # Change every second
