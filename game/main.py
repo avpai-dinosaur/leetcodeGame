@@ -3,7 +3,7 @@ from world import World
 import constants as c
 
 def main(screen, playerDict):
-    pygame.display.set_caption("Leetcode game")
+    pygame.display.set_caption("EscapeCodes")
     clock = pygame.time.Clock()
     world = World(screen, playerDict)
     running = True

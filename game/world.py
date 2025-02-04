@@ -40,6 +40,7 @@ class Camera(pygame.sprite.Group):
 
         # Bullets
         self.foreground_objects = foreground_objects
+        self.background_objects = pygame.sprite.Group()
     
     def center_camera_on_target(self, target):
         """Centers the camera on the target rect.
@@ -82,23 +83,15 @@ class Camera(pygame.sprite.Group):
 
     def draw(self, player_rect, surface):
         """Draw the sprites belonging to the camera group to surface."""
-        # radius = self.light_radius * self.zoom
-        # cover_surf = pygame.Surface((radius*2, radius*2))
-        # cover_surf.fill(0)
-        # cover_surf.set_colorkey((255, 255, 255))
-        # pygame.draw.circle(cover_surf, (255, 255, 255), (radius, radius), radius)
-
-        # clip_rect = pygame.Rect(self.half_w - radius, self.half_h - radius, radius*2, radius*2)
-        # surface.set_clip(clip_rect)
 
         dim_surface = pygame.Surface((1280, 800), pygame.SRCALPHA)
         dim_surface.fill((0, 0, 0, 180))  # RGBA: Dark transparent overlay
 
-
         self.internal_surface.fill((0, 0, 0))
         self.internal_surface.blit(self.background, -self.offset + self.internal_offset)
+        [obj.draw(self.internal_surface, -self.offset + self.internal_offset)
+         for obj in self.background_objects]
         for sprite in sorted(self.sprites(), key=lambda s : s.rect.centery):
-            # if self.draw_filter(player_rect, sprite.rect):
             sprite.draw(self.internal_surface, -self.offset + self.internal_offset)
         [obj.draw(self.internal_surface, -self.offset + self.internal_offset) 
          for obj in self.foreground_objects]
@@ -134,6 +127,7 @@ class World():
         self.camera.add(self.enemies)
         self.camera.add(self.tech_note)
         self.camera.add(self.map.static_objects)
+        self.camera.background_objects.add(self.map.background_objects)
     
     def spawn_enemies(self):
         [self.enemies.add(Enemy("data/images/robot.png", self.map.enemy_spawn[i])) for i in range(self.level * 5)]
@@ -148,6 +142,7 @@ class World():
         self.tech_note.update(self.player)
         self.camera.update(self.player.rect)
         self.map.static_objects.update(self.player, self.camera)
+        self.map.background_objects.update(self.player, self.camera)
 
         mouse = pygame.mouse.get_pressed()
         if mouse[0] and pygame.time.get_ticks() - self.last_shot > 200:

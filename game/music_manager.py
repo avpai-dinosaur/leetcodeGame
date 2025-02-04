@@ -6,7 +6,6 @@ pygame.mixer.music.set_volume(0.5)
 
 def play_music():
     pygame.mixer.music.play(-1)
-    print("playing music")
 
 def stop_music():
     pygame.mixer.music.stop()

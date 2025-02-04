@@ -83,6 +83,7 @@ class Map(pygame.sprite.Sprite):
         self.tech_note_spawn = None
         self.laser_doors = pygame.sprite.Group()
         self.static_objects = pygame.sprite.Group()
+        self.background_objects = pygame.sprite.Group()
         self.roomba_path = []
         self.graph = Graph()
         self.load_json("data/map/brickMap.tmj")
@@ -107,7 +108,7 @@ class Map(pygame.sprite.Sprite):
 
         self.player_spawn = (player_spawn["x"], player_spawn["y"])
         self.tech_note_spawn = (tech_note_spawn["x"], tech_note_spawn["y"])
-        self.static_objects.add(o.DanceFloor((dance_floor_spawn["x"], dance_floor_spawn["y"]), 5, 5))
+        self.background_objects.add(o.DanceFloor((dance_floor_spawn["x"], dance_floor_spawn["y"]), 5, 5))
         self.static_objects.add(o.StaticItem((computers_spawn[0]["x"], computers_spawn[0]["y"]), 2, 5))
         self.static_objects.add(o.StaticItem((computers_spawn[1]["x"], computers_spawn[1]["y"]), 2, 5))
         self.static_objects.add(o.StaticItem((beer_pong_spawn["x"], beer_pong_spawn["y"]), 5, 2))

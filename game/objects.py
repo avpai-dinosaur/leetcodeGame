@@ -345,7 +345,6 @@ class SpeechBubble():
             mouse_pos = pygame.mouse.get_pos()
             mouse_pressed = pygame.mouse.get_pressed()
             if self.bg_rect.collidepoint(mouse_pos) and mouse_pressed[0]:  # Left mouse button
-                print(self.url)
                 if self.url:
                     webbrowser.open(self.url)
 
@@ -436,11 +435,11 @@ class DanceFloor(StaticItem):
         if self.rect.colliderect(player.rect):
             self.on_dance_floor = True
             camera.dim = True
-            music_manager.play_music()
+            # music_manager.play_music()
         else:
             self.on_dance_floor = False
             camera.dim = False
-            music_manager.stop_music()
+            # music_manager.stop_music()
 
         if self.on_dance_floor:
             if pygame.time.get_ticks() - self.disco_timer > 1000:  # Change every second
