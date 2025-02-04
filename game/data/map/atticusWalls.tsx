@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.2" name="atticusWalls" tilewidth="320" tileheight="256" tilecount="33" columns="0">
+<tileset version="1.10" tiledversion="1.10.2" name="atticusWalls" tilewidth="320" tileheight="256" tilecount="41" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="64" height="64" source="../images/wall, ground tiles/bttm L crnr.png"/>
@@ -99,5 +99,29 @@
  </tile>
  <tile id="32">
   <image width="64" height="64" source="../images/wall, ground tiles/neon, R uppr crnrl.png"/>
+ </tile>
+ <tile id="33">
+  <image width="16" height="16" source="../images/dance flr trim/bttm l crnr dance trim.png"/>
+ </tile>
+ <tile id="34">
+  <image width="16" height="16" source="../images/dance flr trim/bttm r crnr dance trim.png"/>
+ </tile>
+ <tile id="35">
+  <image width="64" height="16" source="../images/dance flr trim/mid horizontal bttm dance trim.png"/>
+ </tile>
+ <tile id="36">
+  <image width="64" height="16" source="../images/dance flr trim/mid horizontal top dance trim.png"/>
+ </tile>
+ <tile id="37">
+  <image width="16" height="64" source="../images/dance flr trim/mid vertical l dance trim.png"/>
+ </tile>
+ <tile id="38">
+  <image width="16" height="64" source="../images/dance flr trim/mid vertical r dance trim.png"/>
+ </tile>
+ <tile id="39">
+  <image width="16" height="16" source="../images/dance flr trim/uppr l crnr dance trim.png"/>
+ </tile>
+ <tile id="40">
+  <image width="16" height="16" source="../images/dance flr trim/uppr r crnr dance trim.png"/>
  </tile>
 </tileset>

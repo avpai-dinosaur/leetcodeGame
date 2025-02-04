@@ -86,7 +86,7 @@ class Map(pygame.sprite.Sprite):
         self.background_objects = pygame.sprite.Group()
         self.roomba_path = []
         self.graph = Graph()
-        self.load_json("data/map/brickMap.tmj")
+        self.load_json("data/map/atticusMap.tmj")
     
     def draw(self, surface, offset):
         surface.blit(self.image, offset)
@@ -97,27 +97,23 @@ class Map(pygame.sprite.Sprite):
         f = open(filename)
         map_data = json.load(f)
         layers = map_data["layers"]
-        walls = layers[2]["objects"]
-        laser_doors = layers[3]["objects"]
-        player_spawn = layers[4]["objects"][0]
-        roomba_path_data = layers[5]["objects"][0]
-        tech_note_spawn = layers[6]["objects"][0]
-        dance_floor_spawn = layers[7]["objects"][0]
-        computers_spawn = layers[8]["objects"]
-        beer_pong_spawn = layers[9]["objects"][0]
+        walls = layers[3]["objects"]
+        laser_doors = layers[4]["objects"]
+        player_spawn = layers[5]["objects"][0]
+        roomba_path_data = layers[6]["objects"][0]
+        tech_note_spawn = layers[7]["objects"][0]
+        dance_floor_spawn = layers[8]["objects"][0]
 
         self.player_spawn = (player_spawn["x"], player_spawn["y"])
         self.tech_note_spawn = (tech_note_spawn["x"], tech_note_spawn["y"])
         self.background_objects.add(o.DanceFloor((dance_floor_spawn["x"], dance_floor_spawn["y"]), 5, 5))
-        self.static_objects.add(o.StaticItem((computers_spawn[0]["x"], computers_spawn[0]["y"]), 2, 5))
-        self.static_objects.add(o.StaticItem((computers_spawn[1]["x"], computers_spawn[1]["y"]), 2, 5))
-        self.static_objects.add(o.StaticItem((beer_pong_spawn["x"], beer_pong_spawn["y"]), 5, 2))
+       
         for wall in walls:
             wall_rect = pygame.Rect((wall["x"], wall["y"]), (wall["width"], wall["height"]))
             self.walls.append(wall_rect)
         for i, door in enumerate(laser_doors):
             door_rect = pygame.Rect((door["x"], door["y"]), (door["width"], door["height"]))
-            if i == 1:
+            if i == 0:
                 self.laser_doors.add(o.LaserDoor(door_rect, "Solve TwoSum", "https://leetcode.com/problems/two-sum/description/"))
             else:
                 self.laser_doors.add(o.LaserDoor(door_rect))

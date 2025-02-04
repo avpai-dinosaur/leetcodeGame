@@ -109,7 +109,7 @@ class World():
    
     def __init__(self, screen, playerStats):
         self.screen = screen
-        self.map = Map("data/images/brickMap.png")
+        self.map = Map("data/images/atticusMap.png")
         self.player = Player("data/images/Oldhero.png", self.map.player_spawn, playerStats)
         self.roomba = Roomba("data/images/roomba.png", self.map.roomba_path)
         self.tech_note = o.TechNote("data/images/techNote.png", self.map.tech_note_spawn)
