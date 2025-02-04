@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="51" height="20" tilewidth="64" tileheight="64" infinite="0" nextlayerid="10" nextobjectid="39">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="51" height="20" tilewidth="64" tileheight="64" infinite="0" nextlayerid="10" nextobjectid="40">
+ <editorsettings>
+  <export target="atticusMap.tmj" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" source="atticusWalls.tsx"/>
  <tileset firstgid="42" source="redSpace.tsx"/>
  <tileset firstgid="342" source="spaceship.tsx"/>
@@ -112,9 +115,9 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="7" name="roomba_path" visible="0">
-  <object id="34" x="896" y="768">
-   <polyline points="0,0 128,0 192,-64 192,-256 384,-320 512,-256 640,-128 1216,-128 1280,0"/>
+ <objectgroup id="7" name="roomba_path">
+  <object id="39" x="896" y="768">
+   <polyline points="0,0 512,0 512,-512 832,-512 832,0 1280,0"/>
   </object>
  </objectgroup>
  <objectgroup id="8" name="tech_note" visible="0">
