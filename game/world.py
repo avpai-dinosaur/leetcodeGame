@@ -104,7 +104,6 @@ class Camera(pygame.sprite.Group):
             surface.blit(dim_surface, (0, 0))
 
 
-
 class World():
     """Top level class to keep track of all game objects."""
    
@@ -126,7 +125,7 @@ class World():
         self.camera.add(self.roomba)
         self.camera.add(self.enemies)
         self.camera.add(self.tech_note)
-        self.camera.add(self.map.static_objects)
+        self.camera.foreground_objects.add(self.map.static_objects)
         self.camera.background_objects.add(self.map.background_objects)
     
     def spawn_enemies(self):

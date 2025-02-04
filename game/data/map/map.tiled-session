@@ -10,12 +10,34 @@
     "exportAsImage.useCurrentScale": false,
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
-        "brickMap.tmx": {
-            "scale": 0.4082516339869281,
-            "selectedLayer": 7,
+        "atticusMap.tmx": {
+            "expandedObjectLayers": [
+                7,
+                4,
+                5,
+                6,
+                8
+            ],
+            "scale": 0.25,
+            "selectedLayer": 8,
             "viewCenter": {
-                "x": 1830.9785871522913,
-                "y": 628.2889733840304
+                "x": 1848,
+                "y": 402
+            }
+        },
+        "atticusWalls.tsx": {
+            "dynamicWrapping": true,
+            "scaleInEditor": 1
+        },
+        "brickMap.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
+            "scale": 0.33,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1318.1818181818185,
+                "y": 822.727272727273
             }
         },
         "map.tmx": {
@@ -27,19 +49,23 @@
             }
         },
         "redSpace.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         },
         "spaceship.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1.306,
             "scaleInEditor": 1
         }
     },
     "last.exportedFilePath": "//wsl.localhost/Ubuntu/home/avpai/leetcodeGame/game/data/map",
-    "last.imagePath": "//wsl.localhost/Ubuntu/home/avpai/leetcodeGame/data/images",
-    "map.height": 25,
+    "last.imagePath": "//wsl.localhost/Ubuntu/home/avpai/leetcodeGame/game/data/images/wall, ground tiles",
+    "map.height": 20,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
-    "map.width": 40,
+    "map.tileHeight": 64,
+    "map.tileWidth": 64,
+    "map.width": 51,
     "openFiles": [
         "map.tmx",
         "spaceship.tsx",
@@ -47,9 +73,11 @@
     ],
     "project": "map.tiled-project",
     "recentFiles": [
+        "atticusWalls.tsx",
         "map.tmx",
         "spaceship.tsx",
         "brickMap.tmx"
     ],
-    "tileset.lastUsedFormat": "tsx"
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.type": 1
 }

@@ -330,7 +330,7 @@ class SpeechBubble():
         self.text_color = text_color
         self.background_color = background_color
 
-        self.text_image = self.font.render(self.text_input, True, text_color)
+        self.text_image = self.font.render(self.text_input, True, text_color, 72 * 3)
         self.text_width, self.text_height = self.text_image.get_size()
 
         self.padding = 10
@@ -338,6 +338,11 @@ class SpeechBubble():
         self.bg_rect = pygame.Rect(0, 0, self.bg_width, self.bg_height)
 
         self.toggle = False
+
+    def update_text(self, text_input, text_color=(255, 255, 255)):
+        self.text_input = text_input
+        self.text_color = text_color
+        self.text_image = self.font.render(self.text_input, True, text_color, 72 * 3)
 
     def update(self):
         """Checks if the speech bubble is clicked."""
