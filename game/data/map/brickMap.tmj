@@ -277,6 +277,39 @@
                  "width":648,
                  "x":2880,
                  "y":72
+                }, 
+                {
+                 "height":72,
+                 "id":43,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":360,
+                 "x":1224,
+                 "y":288
+                }, 
+                {
+                 "height":360,
+                 "id":44,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":144,
+                 "x":1224,
+                 "y":1008
+                }, 
+                {
+                 "height":360,
+                 "id":45,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":144,
+                 "x":1512,
+                 "y":1008
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -428,13 +461,14 @@
          "name":"dance_floor",
          "objects":[
                 {
-                 "height":288,
-                 "id":32,
+                 "height":0,
+                 "id":41,
                  "name":"",
+                 "point":true,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":360,
+                 "width":0,
                  "x":1944,
                  "y":288
                 }],
@@ -450,25 +484,27 @@
          "name":"computers",
          "objects":[
                 {
-                 "height":288,
-                 "id":34,
+                 "height":0,
+                 "id":39,
                  "name":"",
+                 "point":true,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":144,
-                 "x":1512,
+                 "width":0,
+                 "x":1224,
                  "y":1008
                 }, 
                 {
-                 "height":288,
-                 "id":35,
+                 "height":0,
+                 "id":40,
                  "name":"",
+                 "point":true,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":144,
-                 "x":1224,
+                 "width":0,
+                 "x":1512,
                  "y":1008
                 }],
          "opacity":1,
@@ -483,13 +519,14 @@
          "name":"beer_pong",
          "objects":[
                 {
-                 "height":144,
-                 "id":36,
+                 "height":0,
+                 "id":38,
                  "name":"",
+                 "point":true,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":360,
+                 "width":0,
                  "x":1224,
                  "y":288
                 }],
@@ -500,7 +537,7 @@
          "y":0
         }],
  "nextlayerid":13,
- "nextobjectid":37,
+ "nextobjectid":46,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",
