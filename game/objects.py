@@ -422,15 +422,17 @@ class StaticItem(pygame.sprite.Sprite):
         self.rect.topleft = self.pos
     
     def draw(self, surface, offset):
-        pygame.draw.rect(surface, (255, 0, 255), self.rect.move(offset))
+        pygame.draw.rect(surface, (219, 134, 111), self.rect.move(offset))
         # surface.blit(self.image, self.rect.topleft + offset)
 
 class DanceFloor(StaticItem):
 
     DISCO_COLORS = [(255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 0, 255)]
 
-    def __init__(self, pos, width, height):
+    def __init__(self, pos, width=5, height=5):
         super().__init__(pos, width, height)
+        self.rect.width = 448
+        self.rect.height = 320
         self.light_pos = []
         self.colors = []
         self.on_dance_floor = False
@@ -458,6 +460,7 @@ class DanceFloor(StaticItem):
                     self.colors.append(random.choice(DanceFloor.DISCO_COLORS))
         
     def draw(self, surface, offset):
+        super().draw(surface, offset)
         if self.on_dance_floor:
             for i, pos in enumerate(self.light_pos):
                 pygame.draw.circle(surface, self.colors[i], pos + offset, 15)

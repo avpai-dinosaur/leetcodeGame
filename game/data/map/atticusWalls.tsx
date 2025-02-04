@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.2" name="atticusWalls" tilewidth="320" tileheight="256" tilecount="41" columns="0">
+<tileset version="1.10" tiledversion="1.10.2" name="atticusWalls" tilewidth="464" tileheight="336" tilecount="42" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="64" height="64" source="../images/wall, ground tiles/bttm L crnr.png"/>
@@ -123,5 +123,8 @@
  </tile>
  <tile id="40">
   <image width="16" height="16" source="../images/dance flr trim/uppr r crnr dance trim.png"/>
+ </tile>
+ <tile id="41">
+  <image width="464" height="336" source="../images/dance flr trim/dance flr trim (one piece).png"/>
  </tile>
 </tileset>

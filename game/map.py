@@ -106,7 +106,7 @@ class Map(pygame.sprite.Sprite):
 
         self.player_spawn = (player_spawn["x"], player_spawn["y"])
         self.tech_note_spawn = (tech_note_spawn["x"], tech_note_spawn["y"])
-        self.background_objects.add(o.DanceFloor((dance_floor_spawn["x"], dance_floor_spawn["y"]), 5, 5))
+        self.background_objects.add(o.DanceFloor((dance_floor_spawn["x"], dance_floor_spawn["y"])))
        
         for wall in walls:
             wall_rect = pygame.Rect((wall["x"], wall["y"]), (wall["width"], wall["height"]))
