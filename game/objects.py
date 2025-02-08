@@ -155,9 +155,9 @@ class LaserDoor(Door):
         # Lasers
         self.lasers = []
         self.inner_lasers = []
-        laser_width = 10
-        inner_laser_width = 4
-        num_lasers = 7
+        laser_width = 4
+        inner_laser_width = 2
+        num_lasers = 10
         air_gap = (rect.width - laser_width) // (num_lasers - 1) - laser_width
         inner_laser_x_offset = (laser_width - inner_laser_width) / 2
         
@@ -213,9 +213,10 @@ class LaserDoor(Door):
             super().door_action(player)
 
     def draw_door(self, surface, offset):
-        for i in range(len(self.lasers)):
-            pygame.draw.rect(surface, (200, 0, 0), self.lasers[i].move(offset.x, offset.y))
-            pygame.draw.rect(surface, (255, 0, 0), self.inner_lasers[i].move(offset.x, offset.y))
+        if self.toggle:
+            for i in range(len(self.lasers)):
+                pygame.draw.rect(surface, (200, 0, 0), self.lasers[i].move(offset.x, offset.y))
+                pygame.draw.rect(surface, (255, 0, 0), self.inner_lasers[i].move(offset.x, offset.y))
 
     def draw(self, surface, offset):
         super().draw(surface, offset)

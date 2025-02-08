@@ -13,17 +13,17 @@
         "atticusMap.tmx": {
             "expandedObjectLayers": [
                 7,
+                8,
                 4,
-                9,
-                5,
                 6,
-                8
+                9,
+                5
             ],
             "scale": 1,
             "selectedLayer": 8,
             "viewCenter": {
-                "x": 1771,
-                "y": 249.5
+                "x": 1770,
+                "y": 428.5
             }
         },
         "atticusWalls.tsx": {
@@ -36,17 +36,17 @@
                 3
             ],
             "scale": 0.33,
-            "selectedLayer": 2,
+            "selectedLayer": 6,
             "viewCenter": {
                 "x": 1318.1818181818185,
-                "y": 822.727272727273
+                "y": 719.6969696969699
             }
         },
         "map.tmx": {
             "scale": 0.75,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 640.6666666666665,
+                "x": 640,
                 "y": 399.33333333333337
             }
         },
@@ -61,7 +61,7 @@
         }
     },
     "last.exportedFilePath": "//wsl.localhost/Ubuntu/home/avpai/leetcodeGame/game/data/map",
-    "last.imagePath": "//wsl.localhost/Ubuntu/home/avpai/leetcodeGame/game/data/images/dance flr trim",
+    "last.imagePath": "//wsl.localhost/Ubuntu/home/avpai/leetcodeGame/game/data/images/mapTiles",
     "map.height": 20,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
@@ -80,8 +80,8 @@
         "map.tmx",
         "spaceship.tsx",
         "brickMap.tmx",
-        "atticusWalls.tsx",
-        "atticusMap.tmx"
+        "atticusMap.tmx",
+        "atticusWalls.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.type": 1

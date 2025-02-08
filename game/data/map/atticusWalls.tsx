@@ -2,43 +2,43 @@
 <tileset version="1.10" tiledversion="1.10.2" name="atticusWalls" tilewidth="464" tileheight="336" tilecount="42" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
-  <image width="64" height="64" source="../images/wall, ground tiles/bttm L crnr.png"/>
+  <image width="64" height="64" source="../images/mapTiles/bttm L crnr.png"/>
  </tile>
  <tile id="1">
-  <image width="64" height="64" source="../images/wall, ground tiles/bttm middle.png"/>
+  <image width="64" height="64" source="../images/mapTiles/bttm middle.png"/>
  </tile>
  <tile id="2">
-  <image width="64" height="64" source="../images/wall, ground tiles/bttm R crnr.png"/>
+  <image width="64" height="64" source="../images/mapTiles/bttm R crnr.png"/>
  </tile>
  <tile id="3">
-  <image width="64" height="128" source="../images/wall, ground tiles/l crnr wall piece.png"/>
+  <image width="64" height="128" source="../images/mapTiles/l crnr wall piece.png"/>
  </tile>
  <tile id="4">
-  <image width="64" height="64" source="../images/wall, ground tiles/L vertical.png"/>
+  <image width="64" height="64" source="../images/mapTiles/L vertical.png"/>
  </tile>
  <tile id="5">
-  <image width="64" height="64" source="../images/wall, ground tiles/mid uppr.png"/>
+  <image width="64" height="64" source="../images/mapTiles/mid uppr.png"/>
  </tile>
  <tile id="6">
-  <image width="64" height="64" source="../images/wall, ground tiles/middle, default piece.png"/>
+  <image width="64" height="64" source="../images/mapTiles/middle, default piece.png"/>
  </tile>
  <tile id="7">
-  <image width="64" height="128" source="../images/wall, ground tiles/plain wall section.png"/>
+  <image width="64" height="128" source="../images/mapTiles/plain wall section.png"/>
  </tile>
  <tile id="8">
-  <image width="64" height="128" source="../images/wall, ground tiles/r crnr wall piece.png"/>
+  <image width="64" height="128" source="../images/mapTiles/r crnr wall piece.png"/>
  </tile>
  <tile id="9">
-  <image width="64" height="64" source="../images/wall, ground tiles/R vertical.png"/>
+  <image width="64" height="64" source="../images/mapTiles/R vertical.png"/>
  </tile>
  <tile id="10">
-  <image width="64" height="64" source="../images/wall, ground tiles/uppr L crnr.png"/>
+  <image width="64" height="64" source="../images/mapTiles/uppr L crnr.png"/>
  </tile>
  <tile id="11">
-  <image width="64" height="64" source="../images/wall, ground tiles/uppr R crnr.png"/>
+  <image width="64" height="64" source="../images/mapTiles/uppr R crnr.png"/>
  </tile>
  <tile id="12">
-  <image width="64" height="64" source="../images/wall, ground tiles/vent in flr.png"/>
+  <image width="64" height="64" source="../images/mapTiles/vent in flr.png"/>
  </tile>
  <tile id="13">
   <image width="128" height="256" source="../images/objectTiles/empty computer desk.png"/>
@@ -80,25 +80,25 @@
   <image width="320" height="128" source="../images/objectTiles/yt tbl with solo cups on it.png"/>
  </tile>
  <tile id="26">
-  <image width="64" height="64" source="../images/wall, ground tiles/neon out, bttm L crnr.png"/>
+  <image width="64" height="64" source="../images/mapTiles/neon out, bttm L crnr.png"/>
  </tile>
  <tile id="27">
-  <image width="64" height="64" source="../images/wall, ground tiles/neon out, L vertical.png"/>
+  <image width="64" height="64" source="../images/mapTiles/neon out, L vertical.png"/>
  </tile>
  <tile id="28">
-  <image width="64" height="64" source="../images/wall, ground tiles/neon out, main piece.png"/>
+  <image width="64" height="64" source="../images/mapTiles/neon out, main piece.png"/>
  </tile>
  <tile id="29">
-  <image width="64" height="64" source="../images/wall, ground tiles/neon out, R crnr.png"/>
+  <image width="64" height="64" source="../images/mapTiles/neon out, R crnr.png"/>
  </tile>
  <tile id="30">
-  <image width="64" height="64" source="../images/wall, ground tiles/neon out, R vertical.png"/>
+  <image width="64" height="64" source="../images/mapTiles/neon out, R vertical.png"/>
  </tile>
  <tile id="31">
-  <image width="64" height="64" source="../images/wall, ground tiles/neon, L uppr crnr.png"/>
+  <image width="64" height="64" source="../images/mapTiles/neon, L uppr crnr.png"/>
  </tile>
  <tile id="32">
-  <image width="64" height="64" source="../images/wall, ground tiles/neon, R uppr crnrl.png"/>
+  <image width="64" height="64" source="../images/mapTiles/neon, R uppr crnrl.png"/>
  </tile>
  <tile id="33">
   <image width="16" height="16" source="../images/dance flr trim/bttm l crnr dance trim.png"/>
