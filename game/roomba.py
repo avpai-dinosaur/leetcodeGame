@@ -95,7 +95,7 @@ class Roomba(pygame.sprite.Sprite):
                 self.move_state = Roomba.MoveState.PATH
                 self.speech.toggle = False
         
-        self.speech.update(self.rect.midtop)
+        self.speech.update_pos(self.rect.midtop)
         # self.update_animation()
 
     def update_animation(self):

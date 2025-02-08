@@ -85,6 +85,7 @@ class Map(pygame.sprite.Sprite):
         self.static_objects = pygame.sprite.Group()
         self.background_objects = pygame.sprite.Group()
         self.roomba_path = []
+        self.computers = pygame.sprite.Group()
         self.graph = Graph()
         self.load_json("data/map/atticusMap.tmj")
     
@@ -101,11 +102,12 @@ class Map(pygame.sprite.Sprite):
         laser_doors = layers[4]["objects"]
         player_spawn = layers[5]["objects"][0]
         roomba_path_data = layers[6]["objects"][0]
-        tech_note_spawn = layers[7]["objects"][0]
-        dance_floor_spawn = layers[8]["objects"][0]
+        dance_floor_spawn = layers[7]["objects"][0]
+        computers = layers[8]["objects"]
+        problems = layers[9]["objects"]
 
         self.player_spawn = (player_spawn["x"], player_spawn["y"])
-        self.tech_note_spawn = (tech_note_spawn["x"], tech_note_spawn["y"])
+        # self.tech_note_spawn = (tech_note_spawn["x"], tech_note_spawn["y"])
         self.background_objects.add(o.DanceFloor((dance_floor_spawn["x"], dance_floor_spawn["y"])))
        
         for wall in walls:
@@ -113,12 +115,27 @@ class Map(pygame.sprite.Sprite):
             self.walls.append(wall_rect)
         for i, door in enumerate(laser_doors):
             door_rect = pygame.Rect((door["x"], door["y"]), (door["width"], door["height"]))
-            if i == 0:
-                self.laser_doors.add(o.LaserDoor(door_rect, "Solve TwoSum", "https://leetcode.com/problems/two-sum/description/"))
-            else:
-                self.laser_doors.add(o.LaserDoor(door_rect))
+            self.laser_doors.add(o.LaserDoor(door_rect))
         for point in roomba_path_data["polyline"]:
             self.roomba_path.append(
                 pygame.Vector2(point.get("x") + roomba_path_data["x"], point.get("y") + roomba_path_data["y"])
             )
+        for computer in computers:
+            computer_rect = pygame.Rect((computer["x"], computer["y"]), (computer["width"], computer["height"]))
+            self.computers.add(o.Computer(computer_rect, "hello"))
+        for problem in problems:
+            problem_rect = pygame.Rect((problem["x"], problem["y"]), (problem["width"], problem["height"]))
+            text = "Dev Note (3/9/2100):\n\
+Our stupid spaceship door is breaking again.\n\
+Druck says I need to solve (1. TwoSum) to get it working.\n\
+I tried going through all pairs of numbers, but that took too long...\n\
+Ugh, guess I'll be staying late. Again."
+            problem_computer = o.ProblemComputer(
+                problem_rect,
+                text,
+                "https://leetcode.com/problems/two-sum/description/")
+            self.computers.add(problem_computer)
+            self.laser_doors.sprites()[0].problems.add(problem_computer)
+            print("door 0", len(self.laser_doors.sprites()[0].problems)) # has 1 
+            print("door 1", len(self.laser_doors.sprites()[1].problems)) # has 1 as well?
         

@@ -112,7 +112,7 @@ class World():
         self.map = Map("data/images/atticusMap.png")
         self.player = Player("data/images/Oldhero.png", self.map.player_spawn, playerStats)
         self.roomba = Roomba("data/images/roomba.png", self.map.roomba_path)
-        self.tech_note = o.TechNote("data/images/techNote.png", self.map.tech_note_spawn)
+        # self.tech_note = o.TechNote("data/images/techNote.png", self.map.tech_note_spawn)
         self.enemies = pygame.sprite.Group()
         self.level = 1
         # [self.enemies.add(Enemy("data/images/robot.png", self.map.enemy_spawn[i])) for i in range(self.level)]
@@ -122,9 +122,10 @@ class World():
         self.camera = Camera(screen, self.map.image, self.bullets, self.player.rect)
         self.camera.add(self.player)
         [self.camera.add(laser_door) for laser_door in self.map.laser_doors]
+        [self.camera.add(computer) for computer in self.map.computers]
         self.camera.add(self.roomba)
         self.camera.add(self.enemies)
-        self.camera.add(self.tech_note)
+        # self.camera.add(self.tech_note)
         self.camera.foreground_objects.add(self.map.static_objects)
         self.camera.background_objects.add(self.map.background_objects)
     
@@ -138,7 +139,8 @@ class World():
         self.roomba.update(self.player)
         self.bullets.update(self.map.walls)
         self.map.laser_doors.update(self.player)
-        self.tech_note.update(self.player)
+        self.map.computers.update(self.player)
+        # self.tech_note.update(self.player)
         self.camera.update(self.player.rect)
         self.map.static_objects.update(self.player, self.camera)
         self.map.background_objects.update(self.player, self.camera)

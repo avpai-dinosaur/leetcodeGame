@@ -138,7 +138,7 @@ class Door(pygame.sprite.Sprite):
 class LaserDoor(Door):
     """Class to represent a laser door."""
 
-    def __init__(self, rect, text_input=None, url=None):
+    def __init__(self, rect):
         """Constructor.
 
             rect: pygame.Rect representing the door's area and position.
@@ -157,9 +157,13 @@ class LaserDoor(Door):
         self.recede_cooldown = 200
 
         # Question prompting
-        self.text_input = text_input
         self.speech_bubble = SpeechBubble(
-            text_input, pygame.font.Font(size=36), (255, 255, 255), (0, 0, 0), rect.midtop, url=url)
+            "",
+            pygame.font.Font(size=30),
+            (255, 0, 0),
+            (0, 0, 0),
+            rect.midtop
+        )
         
         # Lasers
         self.lasers = []
@@ -209,6 +213,9 @@ class LaserDoor(Door):
                 self.rect.height
             )
         )
+
+        # Problems associated with this door
+        self.problems = pygame.sprite.Group()
     
     def update_receding_animation(self):
         if pygame.time.get_ticks() - self.last_recede > self.recede_cooldown:
@@ -230,10 +237,15 @@ class LaserDoor(Door):
         if self.receding:
             self.update_receding_animation()
         
-        self.speech_bubble.update()
+        num_problems = len(self.problems)
+        computer_plural = "computer" if num_problems == 1 else "computers"
+        self.speech_bubble.update_text(
+            f"Error: {num_problems} {computer_plural} still broken",
+            (255, 0, 0)
+        )
     
     def door_action(self, player=None):
-        if self.text_input != None:
+        if len(self.problems) > 0:
             self.speech_bubble.toggle = True
         else:
             self.receding = True
@@ -250,9 +262,7 @@ class LaserDoor(Door):
             surface.blit(self.text, self.textRect.topleft + offset)
         
         self.draw_door(surface, offset)
-        
-        if self.text_input != None:
-            self.speech_bubble.draw(surface, offset)
+        self.speech_bubble.draw(surface, offset)
 
 class AntidoteDoor(Door):
     """Class to represent an antidote door."""
@@ -419,35 +429,101 @@ class SpeechBubble():
 
         self.text_input = text_input
         self.text_color = text_color
-        self.text_image = self.font.render(self.text_input, True, text_color, wraplength=c.TILE_SIZE * 3)
+        self.text_image = self.font.render(self.text_input, True, text_color, wraplength=c.TILE_SIZE * 5)
         self.text_rect = self.text_image.get_rect()
         self.text_rect.midbottom = (pos[0], pos[1] - 10)
         self.bg_rect = self.text_rect.inflate(10, 10)
-        
+
+        self.was_clicked = False
 
     def update_text(self, text_input, text_color=(255, 255, 255)):
+        old_midbottom = self.text_rect.midbottom
         self.text_input = text_input
         self.text_color = text_color
-        self.text_image = self.font.render(self.text_input, True, text_color, wraplength=c.TILE_SIZE * 3)
+        self.text_image = self.font.render(self.text_input, True, text_color, wraplength=c.TILE_SIZE * 5)
         self.text_rect = self.text_image.get_rect()
+        self.text_rect.midbottom = old_midbottom
         self.bg_rect = self.text_rect.inflate(10, 10)
 
-    def update(self, pos=None):
-        """Checks if the speech bubble is clicked."""
-        if pos:
-            self.text_rect.midbottom = (pos[0], pos[1] - 10)
-            self.bg_rect = self.text_rect.inflate(10, 10)
-        if self.toggle:
-            mouse_pos = pygame.mouse.get_pos()
-            mouse_pressed = pygame.mouse.get_pressed()
-            if self.bg_rect.collidepoint(mouse_pos) and mouse_pressed[0]:  # Left mouse button
-                if self.url:
-                    webbrowser.open(self.url)
-
+    def update_pos(self, pos):
+        """Updates position of the speech bubble."""
+        self.text_rect.midbottom = (pos[0], pos[1] - 10)
+        self.bg_rect = self.text_rect.inflate(10, 10)
+    
     def draw(self, surface, offset):
+        """Draws the speech bubble and also checks if it is clicked."""
         if self.toggle:
             pygame.draw.rect(surface, self.background_color, self.bg_rect.move(offset.x, offset.y), border_radius=10)
             surface.blit(self.text_image, self.text_rect.move(offset.x, offset.y))
+
+        if self.toggle:
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+            if self.bg_rect.move(offset.x, offset.y).collidepoint(mouse_pos) and mouse_pressed[0]:  # Left mouse button
+                if self.url:
+                    # TODO: remove this Chatgpt hack after demo
+                    if not hasattr(self, "click_time"):  # Store the click time only once
+                            self.click_time = pygame.time.get_ticks()
+                    webbrowser.open(self.url)
+        # TODO: remove this Chatgpt hack after demo
+        if hasattr(self, "click_time") and pygame.time.get_ticks() - self.click_time >= 1000:
+            self.was_clicked = True
+            del self.click_time  # Remove the attribute after setting self.was_clicked
+
+
+class Computer(pygame.sprite.Sprite):
+    """Class to represent a computer."""
+
+    def __init__(self, rect, text_input):
+        super().__init__()
+        self.rect = rect
+        self.scaled_rect = rect.inflate(50, 50)
+        self.note = SpeechBubble(text_input, pygame.font.Font(size=25), (65, 74, 74), (80,199,199), self.rect.midtop)
+
+        # Open button
+        self.open_note_button = ("O", pygame.K_o)
+        self.button_font = pygame.font.Font(size=50)
+        self.button_text = self.button_font.render(self.open_note_button[0], True, (250, 250, 250))
+        self.button_textRect = self.button_text.get_rect()
+        self.button_textRect.midbottom = (self.rect.midtop[0], self.rect.midtop[1] - 10)
+        self.button_bg_rect = self.button_textRect.inflate(10, 10)
+
+        self.present_button = False
+    
+    def computer_action(self):
+        self.note.toggle = True
+        self.present_button = False
+
+    def update(self, player):
+        if self.scaled_rect.colliderect(player.rect):
+            keys = pygame.key.get_pressed()
+            self.present_button = True
+            if (keys[self.open_note_button[1]]):
+                self.computer_action()
+        else:
+            self.present_button = False
+            self.note.toggle = False      
+
+    def draw(self, surface, offset):
+        if self.note.toggle:
+            self.note.draw(surface, offset)
+        elif self.present_button:
+            pygame.draw.rect(surface, (252, 3, 3), self.button_bg_rect.move(offset.x, offset.y), border_radius=5)
+            surface.blit(self.button_text, self.button_textRect.move(offset.x, offset.y))
+
+
+class ProblemComputer(Computer):
+    """Class to represent a computer that hosts a LeetCode problem."""
+
+    def __init__(self, rect, text_input, url):
+        super().__init__(rect, text_input)
+        self.note.url = url
+    
+    def update(self, player):
+        super().update(player)
+        if self.note.was_clicked:
+            self.kill()
+
 
 
 class TechNote(pygame.sprite.Sprite):

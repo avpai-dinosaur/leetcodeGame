@@ -78,7 +78,7 @@ bin/db destroy
 
 - Make the prompt to open the door bigger and nicer DONE
 - When player runs into an obstacle, continue movement animation
-- Fix text wrapping on roomba speech bubble
+- Fix text wrapping on roomba speech bubble DONE
 - Add back the start menu, with a menu class
 - Add a mental health note
 - Make laser doors look nicer DONE
