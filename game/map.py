@@ -166,6 +166,4 @@ Ugh, guess I'll be staying late. Again."
                 "https://leetcode.com/problems/two-sum/description/")
             self.computers.add(problem_computer)
             self.laser_doors.sprites()[0].problems.add(problem_computer)
-            print("door 0", len(self.laser_doors.sprites()[0].problems)) # has 1 
-            print("door 1", len(self.laser_doors.sprites()[1].problems)) # has 1 as well?
         
