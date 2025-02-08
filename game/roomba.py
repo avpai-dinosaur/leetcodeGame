@@ -57,7 +57,7 @@ class Roomba(pygame.sprite.Sprite):
 
         # Speech Bubble
         self.speech = o.SpeechBubble(
-            "dirty slobs...", pygame.font.Font(None, 36), (255, 255, 255), (0, 0, 0)
+            "humans are slobs...", pygame.font.Font(None, 36), (255, 255, 255), (0, 0, 0)
         )
         self.half_width = self.rect.width
 
@@ -78,7 +78,7 @@ class Roomba(pygame.sprite.Sprite):
                 if self.target_point == len(self.path) - 1:
                     self.move_state = Roomba.MoveState.STOP
                     self.speech.update_text(
-                        "Hey you! Open the door to this supply closet. I need more cleaning fluids."
+                        "Open this door please!"
                     )
                         
                 else:

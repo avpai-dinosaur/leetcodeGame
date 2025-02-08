@@ -51,3 +51,15 @@ Delete databse with
 bin/db destroy
 ```
 
+# Todo
+- Make the prompt to open the door bigger and nicer
+- When player runs into an obstacle, continue movement animation
+- Fix text wrapping on roomba speech bubble
+- Add back the start menu, with a menu class
+- Add a mental health note
+- Make laser doors look nicer
+- Make dance floor lights look nicer
+- Make clickable elements change color when clicked (plus cursor image changes)
+- Add type annotations
+- Consolidate some sprite behaviors into a base class
+- Connect to leetcode account and detect that a question was solved

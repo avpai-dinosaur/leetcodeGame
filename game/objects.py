@@ -141,14 +141,64 @@ class LaserDoor(Door):
                 before it will open.
             url: The url to the leetcode question.
                 
-                If no text input is provided functions as 
-                a regular door. If text is provided it shows up in a speech bubble
-                in plain text.
+            If no text input is provided, functions as 
+            a regular door. If text is provided it shows up in a speech bubble
+            in plain text and clicking the speech bubble opens a browser at w/ url.
         """
         super().__init__(rect)
+        
+        # Question prompting
         self.text_input = text_input
         self.speech_bubble = SpeechBubble(
             text_input, self.font, (255, 255, 255), (0, 0, 0), url=url)
+        
+        # Lasers
+        self.lasers = []
+        self.inner_lasers = []
+        laser_width = 10
+        inner_laser_width = 4
+        num_lasers = 7
+        air_gap = (rect.width - laser_width) // (num_lasers - 1) - laser_width
+        inner_laser_x_offset = (laser_width - inner_laser_width) / 2
+        
+        # Add the laser at the left edge and all lasers in middle
+        for i in range(num_lasers - 1):
+            left_pos = self.rect.left + i * (laser_width + air_gap)
+            self.lasers.append(
+                pygame.Rect(
+                    left_pos,
+                    self.rect.top,
+                    laser_width,
+                    self.rect.height
+                )
+            )
+            self.inner_lasers.append(
+                pygame.rect.Rect(
+                    left_pos + inner_laser_x_offset,
+                    self.rect.top,
+                    inner_laser_width,
+                    self.rect.height
+                )
+            )
+        
+        # Add the laser that is flush with right edge of door
+        end_laser_left_pos = self.rect.right - laser_width
+        self.lasers.append(
+            pygame.Rect(
+                end_laser_left_pos,
+                self.rect.top,
+                laser_width,
+                self.rect.height
+            )
+        )
+        self.inner_lasers.append(
+            pygame.Rect(
+                end_laser_left_pos + inner_laser_x_offset,
+                self.rect.top,
+                inner_laser_width,
+                self.rect.height
+            )
+        )
     
     def update(self, player):
         super().update(player)
@@ -161,7 +211,12 @@ class LaserDoor(Door):
             self.speech_bubble.toggle = True
         else:
             super().door_action(player)
-    
+
+    def draw_door(self, surface, offset):
+        for i in range(len(self.lasers)):
+            pygame.draw.rect(surface, (200, 0, 0), self.lasers[i].move(offset.x, offset.y))
+            pygame.draw.rect(surface, (255, 0, 0), self.inner_lasers[i].move(offset.x, offset.y))
+
     def draw(self, surface, offset):
         super().draw(surface, offset)
         if self.text_input != None:
@@ -330,7 +385,7 @@ class SpeechBubble():
         self.text_color = text_color
         self.background_color = background_color
 
-        self.text_image = self.font.render(self.text_input, True, text_color, 72 * 3)
+        self.text_image = self.font.render(self.text_input, True, text_color, c.TILE_SIZE * 2)
         self.text_width, self.text_height = self.text_image.get_size()
 
         self.padding = 10
@@ -342,7 +397,7 @@ class SpeechBubble():
     def update_text(self, text_input, text_color=(255, 255, 255)):
         self.text_input = text_input
         self.text_color = text_color
-        self.text_image = self.font.render(self.text_input, True, text_color, 72 * 3)
+        self.text_image = self.font.render(self.text_input, True, text_color, c.TILE_SIZE * 2)
 
     def update(self):
         """Checks if the speech bubble is clicked."""
@@ -407,7 +462,7 @@ class TechNote(pygame.sprite.Sprite):
     
     def draw(self, surface, offset):
         """Draw the note to the surface."""
-        surface.blit(self.image, self.rect.topleft + offset)
+        #surface.blit(self.image, self.rect.topleft + offset)
         if self.present_button:
             surface.blit(self.button_text, self.button_textRect.topleft + offset)
         if self.toggle_note:

@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "brickMap.tmx",
+    "activeFile": "atticusMap.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -14,20 +14,22 @@
             "expandedObjectLayers": [
                 7,
                 4,
+                9,
                 5,
                 6,
                 8
             ],
-            "scale": 0.25,
+            "scale": 1,
             "selectedLayer": 8,
             "viewCenter": {
-                "x": 1848,
-                "y": 402
+                "x": 1771,
+                "y": 249.5
             }
         },
         "atticusWalls.tsx": {
             "dynamicWrapping": true,
-            "scaleInEditor": 1
+            "scaleInDock": 0.25,
+            "scaleInEditor": 0.33
         },
         "brickMap.tmx": {
             "expandedObjectLayers": [
@@ -69,14 +71,17 @@
     "openFiles": [
         "map.tmx",
         "spaceship.tsx",
-        "brickMap.tmx"
+        "brickMap.tmx",
+        "atticusMap.tmx",
+        "atticusWalls.tsx"
     ],
     "project": "map.tiled-project",
     "recentFiles": [
-        "atticusWalls.tsx",
         "map.tmx",
         "spaceship.tsx",
-        "brickMap.tmx"
+        "brickMap.tmx",
+        "atticusWalls.tsx",
+        "atticusMap.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.type": 1
