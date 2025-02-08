@@ -6,6 +6,7 @@ import random
 import webbrowser
 import constants as c
 import music_manager
+from enum import Enum
 
 class StaminaBar():
     """Represents a stamina bar."""
@@ -136,6 +137,7 @@ class Door(pygame.sprite.Sprite):
 
 class LaserDoor(Door):
     """Class to represent a laser door."""
+
     def __init__(self, rect, text_input=None, url=None):
         """Constructor.
 
@@ -150,6 +152,10 @@ class LaserDoor(Door):
         """
         super().__init__(rect)
         
+        self.receding = False
+        self.last_recede = pygame.time.get_ticks()
+        self.recede_cooldown = 200
+
         # Question prompting
         self.text_input = text_input
         self.speech_bubble = SpeechBubble(
@@ -163,6 +169,7 @@ class LaserDoor(Door):
         num_lasers = 10
         air_gap = (rect.width - laser_width) // (num_lasers - 1) - laser_width
         inner_laser_x_offset = (laser_width - inner_laser_width) / 2
+        self.laser_and_air_width = laser_width + air_gap
         
         # Add the laser at the left edge and all lasers in middle
         for i in range(num_lasers - 1):
@@ -203,17 +210,33 @@ class LaserDoor(Door):
             )
         )
     
+    def update_receding_animation(self):
+        if pygame.time.get_ticks() - self.last_recede > self.recede_cooldown:
+            if len(self.lasers) > 1:
+                self.lasers = self.lasers[1:]
+                self.inner_lasers = self.inner_lasers[1:]
+                self.rect.width -= self.laser_and_air_width
+                self.rect.left = self.lasers[0].left
+                self.last_recede = pygame.time.get_ticks()
+            else:
+                self.receding = False
+                self.toggle = False
+
     def update(self, player):
         super().update(player)
         if not self.scaled_rect.colliderect(player.rect):
             self.speech_bubble.toggle = False
+        
+        if self.receding:
+            self.update_receding_animation()
+        
         self.speech_bubble.update()
     
     def door_action(self, player=None):
         if self.text_input != None:
             self.speech_bubble.toggle = True
         else:
-            super().door_action(player)
+            self.receding = True
 
     def draw_door(self, surface, offset):
         if self.toggle:
@@ -222,7 +245,12 @@ class LaserDoor(Door):
                 pygame.draw.rect(surface, (255, 0, 0), self.inner_lasers[i].move(offset.x, offset.y))
 
     def draw(self, surface, offset):
-        super().draw(surface, offset)
+        if self.present_button and not self.receding:
+            pygame.draw.rect(surface, (240, 0, 0), self.bg_rect.move(offset.x, offset.y), border_radius=5)
+            surface.blit(self.text, self.textRect.topleft + offset)
+        
+        self.draw_door(surface, offset)
+        
         if self.text_input != None:
             self.speech_bubble.draw(surface, self.rect.midtop + offset)
 
