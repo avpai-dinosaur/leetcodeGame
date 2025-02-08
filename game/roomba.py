@@ -57,10 +57,13 @@ class Roomba(pygame.sprite.Sprite):
 
         # Speech Bubble
         self.speech = o.SpeechBubble(
-            "humans are slobs...", pygame.font.Font(None, 36), (255, 255, 255), (0, 0, 0)
+            "humans are slobs...",
+            pygame.font.Font(None, 36),
+            (255, 255, 255),
+            (0, 0, 0),
+            self.rect.midtop
         )
         self.half_width = self.rect.width
-
 
     def update(self, player):
         """Update function to run each game tick.
@@ -78,7 +81,7 @@ class Roomba(pygame.sprite.Sprite):
                 if self.target_point == len(self.path) - 1:
                     self.move_state = Roomba.MoveState.STOP
                     self.speech.update_text(
-                        "Open this door please!"
+                        "Hey you!\nOpen this door, I need more cleaning supplies."
                     )
                         
                 else:
@@ -92,6 +95,7 @@ class Roomba(pygame.sprite.Sprite):
                 self.move_state = Roomba.MoveState.PATH
                 self.speech.toggle = False
         
+        self.speech.update(self.rect.midtop)
         # self.update_animation()
 
     def update_animation(self):
@@ -142,5 +146,5 @@ class Roomba(pygame.sprite.Sprite):
         return reached
 
     def draw(self, surface, offset):
-        self.speech.draw(surface, self.rect.midtop + offset)
+        self.speech.draw(surface, offset)
         surface.blit(self.image, self.rect.topleft + offset)

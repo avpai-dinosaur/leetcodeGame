@@ -159,7 +159,7 @@ class LaserDoor(Door):
         # Question prompting
         self.text_input = text_input
         self.speech_bubble = SpeechBubble(
-            text_input, self.font, (255, 255, 255), (0, 0, 0), url=url)
+            text_input, pygame.font.Font(size=36), (255, 255, 255), (0, 0, 0), rect.midtop, url=url)
         
         # Lasers
         self.lasers = []
@@ -252,7 +252,7 @@ class LaserDoor(Door):
         self.draw_door(surface, offset)
         
         if self.text_input != None:
-            self.speech_bubble.draw(surface, self.rect.midtop + offset)
+            self.speech_bubble.draw(surface, offset)
 
 class AntidoteDoor(Door):
     """Class to represent an antidote door."""
@@ -409,30 +409,34 @@ class Bullet(pygame.sprite.Sprite):
 class SpeechBubble():
     """Class to represent the speech bubble of NPC."""
 
-    def __init__(self, text_input, font, text_color, background_color, url=None):
+    def __init__(self, text_input, font, text_color, background_color, pos, url=None):
         """Constructor."""
-        self.text_input = text_input
         self.url = url
         self.font = font
-        self.text_color = text_color
         self.background_color = background_color
-
-        self.text_image = self.font.render(self.text_input, True, text_color, c.TILE_SIZE * 2)
-        self.text_width, self.text_height = self.text_image.get_size()
-
-        self.padding = 10
-        self.bg_width, self.bg_height = (self.text_width + self.padding * 2, self.text_height + self.padding * 2)
-        self.bg_rect = pygame.Rect(0, 0, self.bg_width, self.bg_height)
-
+        
         self.toggle = False
+
+        self.text_input = text_input
+        self.text_color = text_color
+        self.text_image = self.font.render(self.text_input, True, text_color, wraplength=c.TILE_SIZE * 3)
+        self.text_rect = self.text_image.get_rect()
+        self.text_rect.midbottom = (pos[0], pos[1] - 10)
+        self.bg_rect = self.text_rect.inflate(10, 10)
+        
 
     def update_text(self, text_input, text_color=(255, 255, 255)):
         self.text_input = text_input
         self.text_color = text_color
-        self.text_image = self.font.render(self.text_input, True, text_color, c.TILE_SIZE * 2)
+        self.text_image = self.font.render(self.text_input, True, text_color, wraplength=c.TILE_SIZE * 3)
+        self.text_rect = self.text_image.get_rect()
+        self.bg_rect = self.text_rect.inflate(10, 10)
 
-    def update(self):
+    def update(self, pos=None):
         """Checks if the speech bubble is clicked."""
+        if pos:
+            self.text_rect.midbottom = (pos[0], pos[1] - 10)
+            self.bg_rect = self.text_rect.inflate(10, 10)
         if self.toggle:
             mouse_pos = pygame.mouse.get_pos()
             mouse_pressed = pygame.mouse.get_pressed()
@@ -440,13 +444,10 @@ class SpeechBubble():
                 if self.url:
                     webbrowser.open(self.url)
 
-    def draw(self, surface, pos):
+    def draw(self, surface, offset):
         if self.toggle:
-            self.bg_rect.topleft = (pos[0] - self.bg_width // 2, pos[1] - self.bg_height - 10)
-            pygame.draw.rect(surface, self.background_color, self.bg_rect, border_radius=10)
-
-            text_position = (self.bg_rect.topleft[0] + self.padding, self.bg_rect.topleft[1] + self.padding)
-            surface.blit(self.text_image, text_position)
+            pygame.draw.rect(surface, self.background_color, self.bg_rect.move(offset.x, offset.y), border_radius=10)
+            surface.blit(self.text_image, self.text_rect.move(offset.x, offset.y))
 
 
 class TechNote(pygame.sprite.Sprite):
