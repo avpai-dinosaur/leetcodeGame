@@ -120,12 +120,42 @@ class Map(pygame.sprite.Sprite):
             self.roomba_path.append(
                 pygame.Vector2(point.get("x") + roomba_path_data["x"], point.get("y") + roomba_path_data["y"])
             )
-        for computer in computers:
+        
+        msg_text = [
+"User: Bill\n\
+Mateo:\n\
+    Just patched a bug in the guidance system. If this thing had launched, we'd be aiming for the Sun right now.\n\
+You:\n\
+    Hahahaha...I'm scared.",
+"User: Mateo\n\
+Alice:\n\
+    I don't think Aakash looks so good?\n\
+You:\n\
+    *side-eye* maybe I'll check on him after the office party...",
+"User: Jinyan\n\
+Status Update:\n\
+    They let me design the rocket's warnings dashboard.\n\
+    Druck asked for it to look 'more like Fakebook.'\n\
+    Now it has infinite scroll. God help us.",
+"User: Alice\n\
+Fakebook post:\n\
+    Feeling beyond blessed to be part of this once-in-a-lifetime mission to Mars with Druck Dripersburg\n\
+    Never imagined I'd be delivering agile, scalable, integrated solutions in zero gravity!\n",
+"User: Chuck\n\
+Fakebook post:\n\
+    Bro, imagine Mars but with AI-powered DAO governance.\n\
+    No governments, just vibes.\n\
+    We are literally disrupting planets right now. WAGMI."
+        ]
+        
+        for i, computer in enumerate(computers):
             computer_rect = pygame.Rect((computer["x"], computer["y"]), (computer["width"], computer["height"]))
-            self.computers.add(o.Computer(computer_rect, "hello"))
+            self.computers.add(o.Computer(computer_rect, msg_text[i]))
+        
         for problem in problems:
             problem_rect = pygame.Rect((problem["x"], problem["y"]), (problem["width"], problem["height"]))
-            text = "Dev Note (3/9/2100):\n\
+            text = "User: Aakash\n\
+Dev Note (3/9/2100):\n\
 Our stupid spaceship door is breaking again.\n\
 Druck says I need to solve (1. TwoSum) to get it working.\n\
 I tried going through all pairs of numbers, but that took too long...\n\
