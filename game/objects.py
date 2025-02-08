@@ -87,10 +87,12 @@ class Door(pygame.sprite.Sprite):
         self.rect = rect
         self.scaled_rect = rect.inflate(50, 50)
         self.open_button = ("M", pygame.K_m)
-        self.font = pygame.font.Font(size=30)
-        self.text = self.font.render(self.open_button[0], True, (250, 250, 250), (0, 0, 0))
+        self.font = pygame.font.Font(size=50)
+        self.text = self.font.render(self.open_button[0], True, (250, 250, 250))
         self.textRect = self.text.get_rect()
-        self.textRect.center = (self.rect.centerx + 50, self.rect.centery + 50)
+        self.textRect.left = self.rect.left - self.textRect.width - 20
+        self.textRect.top = self.rect.top
+        self.bg_rect = self.textRect.inflate(10, 10)
         self.toggle = True
         self.present_button = False
     
@@ -128,6 +130,7 @@ class Door(pygame.sprite.Sprite):
     def draw(self, surface, offset):
         """Draw the door to the surface."""
         if self.present_button:
+            pygame.draw.rect(surface, (240, 0, 0), self.bg_rect.move(offset.x, offset.y), border_radius=5)
             surface.blit(self.text, self.textRect.topleft + offset)
         self.draw_door(surface, offset)
 
