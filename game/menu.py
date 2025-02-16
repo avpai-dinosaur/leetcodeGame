@@ -1,6 +1,26 @@
 import pygame
 from button import Button
 
+class Menu:
+    """Base class for all menu's in the game."""
+    def __init__(self, manager):
+        """Constructor.
+        
+            manager: The state manager driving the game.
+        """
+        self.manager = manager
+        self.titleFont = pygame.font.SysFont("cambria", 75)
+        self.buttons = []
+    
+    def update(self):
+        mouse_pos = pygame.mouse.get_pos()
+
+
+
+
+
+
+
 class LevelMenu:
     """Represents a menu that shows up between levels."""
     
@@ -12,7 +32,7 @@ class LevelMenu:
         self.rect = pygame.Rect(0, 0, self.width, self.height)
         self.rect.center = (center_x, center_y)
         self.nextLevelButton = Button(None, pos=(center_x, center_y), 
-                text_input="Next Level", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
+                textInput="Next Level", font=pygame.font.SysFont("cambria", 40), baseColor="#d7fcd4", hoveringColor="White")
     
     def takeover(self, screen, clock):
         running = True
@@ -37,7 +57,7 @@ class LevelMenu:
 
     def update(self, screen):
         mouse_pos = pygame.mouse.get_pos()
-        self.nextLevelButton.changeColor(mouse_pos)
+        self.nextLevelButton.checkMouseover(mouse_pos)
         self.nextLevelButton.update(screen)
         if pygame.mouse.get_pressed()[0] and self.nextLevelButton.checkForInput(mouse_pos):
             return False
@@ -57,7 +77,7 @@ class EndMenu:
         self.rect = pygame.Rect(0, 0, self.width, self.height)
         self.rect.center = (center_x, center_y)
         self.exitButton = Button(None, pos=(center_x , center_y), 
-                text_input="Back to Menu", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
+                textInput="Back to Menu", font=pygame.font.SysFont("cambria", 40), baseColor="#d7fcd4", hoveringColor="White")
         # self.scoreButton = Button(None, pos=(center_x, center_y - 10),
         #     text_input=response["score"], font=pygame.font.SysFont("cambria", 40),
         #     base_color=("#24b345" if response["highScore"] else "#b32424"), hovering_color="White")
@@ -84,7 +104,7 @@ class EndMenu:
 
     def update(self, screen):
         mouse_pos = pygame.mouse.get_pos()
-        self.exitButton.changeColor(mouse_pos)
+        self.exitButton.checkMouseover(mouse_pos)
         self.exitButton.update(screen)
         if pygame.mouse.get_pressed()[0] and self.exitButton.checkForInput(mouse_pos):
             return False

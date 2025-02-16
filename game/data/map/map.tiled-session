@@ -12,18 +12,18 @@
     "fileStates": {
         "atticusMap.tmx": {
             "expandedObjectLayers": [
-                7,
-                8,
+                5,
+                9,
                 4,
                 6,
-                9,
-                5
+                7,
+                8
             ],
-            "scale": 5.5,
-            "selectedLayer": 1,
+            "scale": 0.5,
+            "selectedLayer": 8,
             "viewCenter": {
-                "x": 712.909090909091,
-                "y": 603.5454545454545
+                "x": 1508,
+                "y": 673
             }
         },
         "atticusWalls.tsx": {

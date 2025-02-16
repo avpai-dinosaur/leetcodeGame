@@ -20,27 +20,27 @@ def menu(Start):
         screen.blit(background,(0,0))
         menu_mouse_pos = pygame.mouse.get_pos()
         main_button = Button(play_img, pos=(640, 300), 
-                text_input="PLAY", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
+                textInput="PLAY", font=pygame.font.SysFont("cambria", 40), baseColor="#d7fcd4", hoveringColor="White")
         if(Start == True):
             menu_text = Titlefont.render("Locked Escaped: E.T.", True, "#bcbcbc")
         else:
             menu_text = Titlefont.render("MAIN MENU", True, "#bcbcbc")
             main_button = Button(play_img, pos=(640, 300), 
-                text_input="RESUME", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
+                textInput="RESUME", font=pygame.font.SysFont("cambria", 40), baseColor="#d7fcd4", hoveringColor="White")
 
         menu_rect = menu_text.get_rect(center = (640, 150))
 
 
         
         option_button = Button(option_img, pos=(640, 420), 
-                text_input="OPTIONS", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
+                textInput="OPTIONS", font=pygame.font.SysFont("cambria", 40), baseColor="#d7fcd4", hoveringColor="White")
         quit_button = Button(quit_img, pos=(640, 540), 
-                text_input="QUIT", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
+                textInput="QUIT", font=pygame.font.SysFont("cambria", 40), baseColor="#d7fcd4", hoveringColor="White")
   
         screen.blit(menu_text, menu_rect)
         buttons = [main_button, option_button, quit_button]
         for button in buttons:
-            button.changeColor(menu_mouse_pos)
+            button.checkMouseover(menu_mouse_pos)
             button.update(screen)
 
         for event in pygame.event.get():
@@ -73,13 +73,13 @@ def options():
         option_text = Titlefont.render("MAIN MENU", True, "#bcbcbc")
         option_rect = option_text.get_rect(center = (640, 150))
         back_button = Button(block_img, pos=(640, 600), 
-                text_input="BACK", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
+                textInput="BACK", font=pygame.font.SysFont("cambria", 40), baseColor="#d7fcd4", hoveringColor="White")
         
         screen.blit(option_text, option_rect)
         
         buttons = [back_button]
         for button in buttons:
-            button.changeColor(mouse_pos)
+            button.checkMouseover(mouse_pos)
             button.update(screen)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -147,10 +147,10 @@ def input():
         #Back Button
         mouse_pos = pygame.mouse.get_pos()
         back_button = Button(block_img, pos=(640, 600), 
-                text_input="BACK", font=pygame.font.SysFont("cambria", 40), base_color="#d7fcd4", hovering_color="White")
+                textInput="BACK", font=pygame.font.SysFont("cambria", 40), baseColor="#d7fcd4", hoveringColor="White")
         buttons = [back_button]
         for button in buttons:
-            button.changeColor(mouse_pos)
+            button.checkMouseover(mouse_pos)
             button.update(screen)
             
         for event in pygame.event.get():
