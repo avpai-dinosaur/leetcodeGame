@@ -1,5 +1,9 @@
 import pygame
+
+pygame.init()
+
 from world import World
+from menu import MainMenu, OptionsMenu, LoginMenu
 import constants as c
 from button import Button
 import sys
@@ -40,7 +44,7 @@ def menu(Start):
         screen.blit(menu_text, menu_rect)
         buttons = [main_button, option_button, quit_button]
         for button in buttons:
-            button.checkMouseover(menu_mouse_pos)
+            button.check_mouseover(menu_mouse_pos)
             button.update(screen)
 
         for event in pygame.event.get():
@@ -79,7 +83,7 @@ def options():
         
         buttons = [back_button]
         for button in buttons:
-            button.checkMouseover(mouse_pos)
+            button.check_mouseover(mouse_pos)
             button.update(screen)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -150,7 +154,7 @@ def input():
                 textInput="BACK", font=pygame.font.SysFont("cambria", 40), baseColor="#d7fcd4", hoveringColor="White")
         buttons = [back_button]
         for button in buttons:
-            button.checkMouseover(mouse_pos)
+            button.check_mouseover(mouse_pos)
             button.update(screen)
             
         for event in pygame.event.get():
@@ -210,29 +214,46 @@ def verify(text):
     playerDict["username"] = text
     return playerDict
 
+
+class GameManager:
+    def __init__(self):
+        self.states = {
+            "menu": MainMenu(self),
+            "options": OptionsMenu(self),
+            "login": LoginMenu,
+            #"world": World(self)
+        }
+        self.active_state = self.states["menu"]
+
+    def set_state(self, state_name):
+        self.active_state = self.states[state_name]
+
+    def handle_event(self, event):
+        self.active_state.handle_event(event)
+
+    def update(self):
+        self.active_state.update()
+
+    def draw(self, screen):
+        self.active_state.draw(screen)
+
 def main(screen, playerDict):
     pygame.display.set_caption("EscapeCodes")
     clock = pygame.time.Clock()
-    world = World(screen, playerDict)
+    manager = GameManager()
     running = True
     
-    # Game loop
     while running:
-        # Poll for events.
-        # Note that user input devices are not accessed here,
-        # instead they are accessed directly through their modules.
         for event in pygame.event.get():
-            # pygame.QUIT event means the user clicked X to close the window
             if event.type == pygame.QUIT:
                 return
+            manager.handle_event(event)
         
         # fill the screen with a color to wipe away anything from last frame
-        world.update()
         screen.fill("black")
-        world.draw(screen)
 
-        if world.endGame():
-            running = False
+        manager.update()
+        manager.draw(screen)
 
         # flip() the display to put your work on screen
         pygame.display.flip()
@@ -240,6 +261,5 @@ def main(screen, playerDict):
         clock.tick(60)  # limits FPS to 60
 
 if __name__ == "__main__":
-    pygame.init()
-    menu(True)
+    main(screen, {})
     pygame.quit()
