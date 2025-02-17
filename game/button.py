@@ -61,7 +61,7 @@ class Button:
 	def handle_event(self, event):
 		"""Handle a click from the user."""
 		mousePosition = pygame.mouse.get_pos()
-		if self.check_mouseover(mousePosition) and event == pygame.MOUSEBUTTONDOWN:
+		if self.check_mouseover(mousePosition) and event.type == pygame.MOUSEBUTTONDOWN:
 			self.onClick()
 
 	def update(self, mousePosition):
@@ -119,7 +119,7 @@ class TextInput:
 
 	def handle_event(self, event):
 		"""Handle text input from the user."""
-		if not self.check_mouseover():
+		if not self.check_mouseover(pygame.mouse.get_pos()):
 			return
 
 		if not self.active and event.type == pygame.MOUSEBUTTONDOWN:
@@ -129,17 +129,20 @@ class TextInput:
 			if event.key == pygame.K_RETURN:
 				self.onSubmit()
 			elif event.key == pygame.K_BACKSPACE:
-				text = text[:-1]
+				self.textBuffer = self.textBuffer[:-1]
 			else:
-				text += event.unicode
+				self.textBuffer += event.unicode
+	
+	def update(self, mousePosition):
+		pass
 	
 	def draw(self, surface):
 		"""Draw the text input control."""
-		inputTextImage = self.font.render(self.text, True, self.inputTextColor)
+		inputTextImage = self.font.render(self.textBuffer, True, self.inputTextColor)
 		inputTextRect = inputTextImage.get_rect()
 		inputTextRect.topright = self.rect.topright
 
-		pygame.draw.rect(surface, self.color, self.rect)
+		pygame.draw.rect(surface, self.color, self.rect, width=2)
 		surface.blit(inputTextImage, inputTextRect)
 		
 	

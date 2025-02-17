@@ -1,5 +1,6 @@
 import pygame
 import utils
+import sys
 from button import Button, TextInput
 
 class Menu:
@@ -47,12 +48,23 @@ class MainMenu(Menu):
         self.optionImage, _ = utils.load_png("data/images/Play.png")
         self.quitImage, _ = utils.load_png("data/images/Play.png")
         self.controls += [
-            Button(self.playImage, pos=(640, 300), textInput="PLAY"),
-            Button(self.optionImage, pos=(640, 420), textInput="OPTIONS"),
-            Button(self.quitImage, pos=(640, 540), textInput="QUIT")
+            Button(self.playImage, pos=(640, 300), textInput="PLAY", onClick=self.onLogin),
+            Button(self.optionImage, pos=(640, 420), textInput="OPTIONS", onClick=self.onOption),
+            Button(self.quitImage, pos=(640, 540), textInput="QUIT", onClick=self.onQuit)
         ]
     
+    def onOption(self):
+        self.manager.set_state("options")
+    
+    def onLogin(self):
+        self.manager.set_state("login")
+    
+    def onQuit(self):
+        pygame.quit()
+        sys.exit()
+
     def draw(self, surface):
+        """Draw main menu to the surface."""
         super().draw(surface)
         surface.blit(self.titleTextImage, self.titleRect)
 
@@ -64,107 +76,32 @@ class OptionsMenu(Menu):
         super().__init__(manager)
         self.backImage, _ = utils.load_png("data/images/Play.png")
         self.controls += [
-            Button(self.backImage, pos=(640, 600), textInput="BACK")
+            Button(self.backImage, pos=(640, 600), textInput="BACK", onClick=self.onBack)
         ]
+    
+    def onBack(self):
+        self.manager.set_state("menu")
 
 class LoginMenu(Menu):
     """Login menu."""
 
     def __init__(self, manager):
         super().__init__(manager)
+        self.headingFont = pygame.font.SysFont("cambria", 40)
+        self.headingTextImage = self.headingFont.render("Enter Your LeetCode Username", True, 'lightsalmon4')
+        self.headingTextRect = self.headingTextImage.get_rect(center=(640, 300))
+        self.backImage, _ = utils.load_png("data/images/Play.png")
         self.controls += [
-            TextInput(pos=(540, 420), width=200, height=50)
+            TextInput(pos=(540, 420), width=200, height=50, onSubmit=self.onEnter),
+            Button(self.backImage, pos=(640, 600), textInput="BACK", onClick=self.onBack)
         ]
-        
 
-# class LevelMenu:
-#     """Represents a menu that shows up between levels."""
+    def onBack(self):
+        self.manager.set_state("menu")
     
-#     def __init__(self, screen):
-#         self.width = screen.get_size()[0] * 0.75
-#         self.height = screen.get_size()[1] * 0.75
-#         center_x = screen.get_size()[0] * 0.5
-#         center_y = screen.get_size()[1] * 0.5
-#         self.rect = pygame.Rect(0, 0, self.width, self.height)
-#         self.rect.center = (center_x, center_y)
-#         self.nextLevelButton = Button(None, pos=(center_x, center_y), 
-#                 textInput="Next Level", font=pygame.font.SysFont("cambria", 40), baseColor="#d7fcd4", hoveringColor="White")
-    
-#     def takeover(self, screen, clock):
-#         running = True
-#         while running:
-#             for event in pygame.event.get():
-#                 # pygame.QUIT event means the user clicked X to close the window
-#                 if event.type == pygame.QUIT:
-#                     pygame.quit()
-#                 keys = pygame.key.get_pressed()
+    def onEnter(self):
+        self.manager.set_state("world")
 
-#                 if(keys[pygame.K_ESCAPE]):
-#                     menu(False)
-
-#             self.draw(screen)
-#             if not self.update(screen):
-#                 running = False
-
-#             # flip() the display to put your work on screen
-#             pygame.display.flip()
-
-#             clock.tick(60)  # limits FPS to 60
-
-#     def update(self, screen):
-#         mouse_pos = pygame.mouse.get_pos()
-#         self.nextLevelButton.check_mouseover(mouse_pos)
-#         self.nextLevelButton.update(screen)
-#         if pygame.mouse.get_pressed()[0] and self.nextLevelButton.checkForInput(mouse_pos):
-#             return False
-#         return True
-
-#     def draw(self, surface):
-#         pygame.draw.rect(surface, (112, 125, 130), self.rect)
-    
-# class EndMenu:
-#     """Represents the end game menu."""
-    
-#     def __init__(self, screen):
-#         self.width = screen.get_size()[0] * 0.75
-#         self.height = screen.get_size()[1] * 0.75
-#         center_x = screen.get_size()[0] * 0.5
-#         center_y = screen.get_size()[1] * 0.5
-#         self.rect = pygame.Rect(0, 0, self.width, self.height)
-#         self.rect.center = (center_x, center_y)
-#         self.exitButton = Button(None, pos=(center_x , center_y), 
-#                 textInput="Back to Menu", font=pygame.font.SysFont("cambria", 40), baseColor="#d7fcd4", hoveringColor="White")
-#         # self.scoreButton = Button(None, pos=(center_x, center_y - 10),
-#         #     text_input=response["score"], font=pygame.font.SysFont("cambria", 40),
-#         #     base_color=("#24b345" if response["highScore"] else "#b32424"), hovering_color="White")
-    
-#     def takeover(self, screen, clock):
-#         running = True
-#         while running:
-#             for event in pygame.event.get():
-#                 # pygame.QUIT event means the user clicked X to close the window
-#                 if event.type == pygame.QUIT:
-#                     pygame.quit()
-#             keys = pygame.key.get_pressed()
-#             if(keys[pygame.K_ESCAPE]):
-#                 running = False
-
-#             self.draw(screen)
-#             if not self.update(screen):
-#                 running = False
-
-#             # flip() the display to put your work on screen
-#             pygame.display.flip()
-
-#             clock.tick(60)  # limits FPS to 60
-
-#     def update(self, screen):
-#         mouse_pos = pygame.mouse.get_pos()
-#         self.exitButton.check_mouseover(mouse_pos)
-#         self.exitButton.update(screen)
-#         if pygame.mouse.get_pressed()[0] and self.exitButton.checkForInput(mouse_pos):
-#             return False
-#         return True
-
-#     def draw(self, surface):
-#         pygame.draw.rect(surface, (112, 125, 130), self.rect)
+    def draw(self, surface):
+        super().draw(surface)
+        surface.blit(self.headingTextImage, self.headingTextRect)

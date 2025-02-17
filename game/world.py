@@ -107,7 +107,8 @@ class Camera(pygame.sprite.Group):
 class World():
     """Top level class to keep track of all game objects."""
    
-    def __init__(self, screen, playerStats):
+    def __init__(self, manager, screen, playerStats):
+        self.manager = manager
         self.screen = screen
         self.map = Map("data/images/atticusMap.png")
         self.player = Player("data/images/Oldhero.png", self.map.player_spawn, playerStats)
@@ -158,6 +159,9 @@ class World():
             # self.spawn_enemies()
             return False
         return True
+    
+    def handle_event(self, event):
+        pass
     
     def endGame(self):
         return self.player.health.hp <= 0
