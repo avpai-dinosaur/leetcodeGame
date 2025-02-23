@@ -47,7 +47,7 @@ def main(screen):
         manager.update()
         manager.draw(screen)
 
-        # flip() the display to put your work on screen
+        # flip() the display to put work on screen
         pygame.display.flip()
 
         clock.tick(60)  # limits FPS to 60

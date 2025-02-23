@@ -4,9 +4,6 @@ import json
 import queue
 import objects as o
 import constants as c
-import random
-
-pygame.mixer.init()
 
 class Edge():
     def __init__(self, id, weight):
