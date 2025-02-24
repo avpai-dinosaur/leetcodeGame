@@ -38,3 +38,5 @@ python3 main.py
 - Boss fight
 - Level loading
 - Figure out why music isn't working
+- switch handling of game objects to level class from map class. map class should only parse and present data from tiled
+- related, an object creating factory to communicate to level class what types of objects to create based on parsed map data

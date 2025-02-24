@@ -5,24 +5,20 @@ import constants as c
 class Camera(pygame.sprite.Group):
     """Represents the world's camera"""
 
-    def __init__(self, background, initialTarget=None):
+    def __init__(self):
         """Constructor.
         
             background: pygame.Surface representing the background image.
             initialTarget: pygame.Rect representing initial target of camera.
         """
         super().__init__()
-        self.background = background
+        self.background = None
         self.offset = pygame.math.Vector2()
         self.half_w = c.SCREEN_WIDTH // 2
         self.half_h = c.SCREEN_HEIGHT // 2
 
         # Camera positioning
-        self.target = initialTarget
-        if self.target:
-            self.center_camera(self.target)
-        else:
-            self.center_camera((0, 0))
+        self.target = None
 
         # Zoom
         self.zoom = 1
