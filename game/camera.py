@@ -1,22 +1,32 @@
 import pygame
+import constants as c
 
 
 class Camera(pygame.sprite.Group):
     """Represents the world's camera"""
 
-    def __init__(self, surface, background, foreground_objects, init_pos):
+    def __init__(self, background, initialTarget=None):
+        """Constructor.
+        
+            background: pygame.Surface representing the background image.
+            initialTarget: pygame.Rect representing initial target of camera.
+        """
         super().__init__()
         self.background = background
         self.offset = pygame.math.Vector2()
-        self.half_w = surface.get_size()[0] // 2
-        self.half_h = surface.get_size()[1] // 2
+        self.half_w = c.SCREEN_WIDTH // 2
+        self.half_h = c.SCREEN_HEIGHT // 2
 
         # Camera positioning
-        self.center_camera_on_target(init_pos)
+        self.target = initialTarget
+        if self.target:
+            self.center_camera(self.target)
+        else:
+            self.center_camera((0, 0))
 
         # Zoom
         self.zoom = 1
-        self.internal_surface_size = (surface.get_size()[0], surface.get_size()[1])
+        self.internal_surface_size = (c.SCREEN_WIDTH, c.SCREEN_HEIGHT)
         self.internal_surface = pygame.Surface(self.internal_surface_size, pygame.SRCALPHA)
         self.internal_rect = self.internal_surface.get_rect(center=(self.half_w, self.half_h))
         self.internal_surface_size_vector = pygame.math.Vector2(self.internal_surface_size)
@@ -30,11 +40,10 @@ class Camera(pygame.sprite.Group):
         self.light_radius = 300
         self.dim = False
 
-        # Bullets
-        self.foreground_objects = foreground_objects
+        self.foreground_objects = pygame.sprite.Group()
         self.background_objects = pygame.sprite.Group()
     
-    def center_camera_on_target(self, target):
+    def center_camera(self, target):
         """Centers the camera on the target rect.
         
             target: pygame.Rect
@@ -42,26 +51,22 @@ class Camera(pygame.sprite.Group):
         self.offset.x = target.centerx - self.half_w
         self.offset.y = target.centery - self.half_h
 
-    def zoom_keyboard_control(self):
-        """Control the zoom level with keyboard."""
-        keys = pygame.key.get_just_pressed()
-        pressed_key = False
-        if keys[pygame.K_q]:
-            pressed_key = True
-            self.zoom = 2.5 
-        if keys[pygame.K_e]:
-            pressed_key = True
-            self.zoom = 1
-        if pressed_key:
-            self.x_bound_distance = self.half_w / self.zoom
-            self.y_bound_distance = self.half_h / self.zoom
-
-    def update(self, player_rect):
+    def update(self):
         """Update the camera."""
-        self.zoom_keyboard_control()
-        self.center_camera_on_target(player_rect)
+        if self.target:
+            self.center_camera(self.target)
 
-    def draw(self, player_rect, surface):
+    def handle_event(self, event):
+        """Handle an event off the event queue."""
+        if event.type == c.PLAYER_MOVED:
+            self.target = event.target
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                self.zoom = 2.5
+            elif event.key == pygame.K_e:
+                self.zoom = 1
+
+    def draw(self, surface):
         """Draw the sprites belonging to the camera group to surface."""
         # Draw to the camera's internal surface
         self.internal_surface.fill((0, 0, 0))

@@ -45,6 +45,7 @@ class Player(pygame.sprite.Sprite):
     def update(self, walls, doors):
         """Updates the player's position."""
         new_pos = pygame.Vector2(self.pos)
+        moved = False
 
         if not self.dash and self.stamina.stamina == 0:   
             self.speed = 1.5
@@ -57,22 +58,29 @@ class Player(pygame.sprite.Sprite):
         self.action = "idle"
         if keys[pygame.K_w]:
             new_pos.y = self.pos.y - self.speed
-            self.action = "run"
-        if keys[pygame.K_s]:
-            new_pos.y = self.pos.y + self.speed
+            moved = True
             self.action = "run"
         if keys[pygame.K_a]:
             new_pos.x = self.pos.x - self.speed
+            moved = True
             self.action = "run"
             self.face_left = True
+        if keys[pygame.K_s]:
+            new_pos.y = self.pos.y + self.speed
+            moved = True
+            self.action = "run"
         if keys[pygame.K_d]:
             new_pos.x = self.pos.x + self.speed
+            moved = True
             self.action = "run"
             self.face_left = False
-        # Redo to have these play all the way out
         if keys[pygame.K_p]:
             self.action = "punch"
         
+        if moved:
+            pygame.event.post(pygame.event.Event(c.PLAYER_MOVED, {"target": self.rect}))
+
+
         if pygame.key.get_just_pressed()[pygame.K_SPACE] and not self.dash and self.stamina.stamina > 0:
             self.last_dash = pygame.time.get_ticks()
             self.dash = True

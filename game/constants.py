@@ -1,4 +1,9 @@
+"""Useful constants."""
+
 import pygame
+
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 800
 
 MAP_WIDTH = 40
 MAP_HEIGHT = 25
@@ -8,6 +13,9 @@ ENEMY_SPEED = 1.5
 ENEMY_CHASE_SPEED = 0.7
 
 WALKABLE_TILES = [12, 31, 32, 33]
+
+# Custom events
+PLAYER_MOVED = pygame.USEREVENT + 1
 
 # Animation constants
 PLAYER_SHEET_METADATA = {
