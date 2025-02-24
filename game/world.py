@@ -11,11 +11,12 @@ import objects as o
 import constants as c
 
 class Level():
-    """"""
+    """Represents a level in the game."""
 
-    def __init__(self, camera):
+    def __init__(self, game, camera, map):
+        self.game = game
         self.camera = camera
-        self.map = Map("data/images/atticusMap.png")
+        self.map = map
         self.player = Player("data/images/Oldhero.png", self.map.player_spawn, {})
         self.roomba = Roomba("data/images/roomba.png", self.map.roomba_path)
         self.npcs = pygame.sprite.Group()
@@ -37,6 +38,9 @@ class Level():
     def add_objects(self):
         pass
 
+    def end_level(self):
+        self.game.next_level()
+
     def update(self):
         self.player.update(self.map.walls, self.map.laser_doors)
         self.roomba.update(self.player)
@@ -47,9 +51,9 @@ class Level():
         self.map.background_objects.update(self.player, self.camera)
     
     def handle_event(self, event):
-        pass
-
-
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                self.end_level()
 
 
 class Game():
@@ -58,13 +62,23 @@ class Game():
     def __init__(self, manager, playerStats):
         self.manager = manager
         self.camera = Camera()
-        self.level = Level(self.camera)
+        self.levels = [
+            Level(self, self.camera, Map("data/images/atticusMap.png"))
+        ]
+        self.level = 0
 
     def update(self):
-        self.level.update()
+        self.levels[self.level].update()
         self.camera.update()
     
+    def next_level(self):
+        if self.level == len(self.levels) - 1:
+            self.manager.set_state("menu")
+        else:
+            self.level += 1
+
     def handle_event(self, event):
+        self.levels[self.level].handle_event(event)
         self.camera.handle_event(event)
 
     def draw(self, surface):
