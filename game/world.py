@@ -29,6 +29,15 @@ class Level():
 
         camera.target = self.player.rect
         camera.background = self.map.image
+    
+    def reset(self, camera):
+        #TODO: This doesn't work right now because the map is managing static objects
+        # once we move static objects into the level class it should work
+        self.player = Player("data/images/Oldhero.png", self.map.player_spawn, {})
+        self.roomba = Roomba("data/images/roomba.png", self.map.roomba_path)
+        self.npcs = pygame.sprite.Group()
+        self.objects = pygame.sprite.Group()
+        self.load_camera(camera)
 
     def add_npcs(self):
         pass
@@ -38,6 +47,9 @@ class Level():
 
     def end_level(self):
         pygame.event.post(pygame.event.Event(c.LEVEL_ENDED))
+    
+    def player_died(self):
+        pygame.event.post(pygame.event.Event(c.PLAYER_DIED))
 
     def update(self):
         self.player.update(self.map.walls, self.map.laser_doors)
@@ -52,6 +64,9 @@ class Level():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.end_level()
+            # TODO: This is just for testing purposes
+            if event.key == pygame.K_v:
+                self.player_died()
 
 
 class Game():
@@ -83,7 +98,12 @@ class Game():
         self.camera.handle_event(event)
 
         if event.type == c.LEVEL_ENDED:
+            self.camera.reset()
             self.next_level()
+        elif event.type == c.PLAYER_DIED:
+            self.camera.reset()
+            self.levels[self.level].reset(self.camera)
+            self.manager.set_state("died")
 
     def draw(self, surface):
         self.camera.draw(surface)

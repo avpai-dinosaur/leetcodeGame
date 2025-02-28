@@ -70,8 +70,6 @@ class Camera(pygame.sprite.Group):
                 self.zoom = 2.5
             elif event.key == pygame.K_e:
                 self.zoom = 1
-        elif event.type == c.LEVEL_ENDED:
-            self.reset()
         elif event.type == c.ENTERED_DANCE_FLOOR:
             self.dim = True
         elif event.type == c.LEFT_DANCE_FLOOR:

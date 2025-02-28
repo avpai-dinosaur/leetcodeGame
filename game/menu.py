@@ -105,3 +105,21 @@ class LoginMenu(Menu):
     def draw(self, surface):
         super().draw(surface)
         surface.blit(self.headingTextImage, self.headingTextRect)
+
+class YouDiedMenu(Menu):
+    """Menu that shows when player dies during level."""
+
+    def __init__(self, manager):
+        super().__init__(manager)
+        self.retryImage, _ = utils.load_png("data/images/Play.png")
+        self.quitImage, _ = utils.load_png("data/images/Play.png")
+        self.controls += {
+            Button(self.retryImage, pos=(640, 300), textInput="RETRY", onClick=self.onRetry),
+            Button(self.quitImage, pos=(640, 420), textInput="QUIT", onClick=self.onQuit)
+        }
+    
+    def onRetry(self):
+        self.manager.set_state("world")
+    
+    def onQuit(self):
+        self.manager.set_state("menu")

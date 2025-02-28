@@ -5,7 +5,7 @@ pygame.init()
 
 import constants as c
 from world import Game
-from menu import MainMenu, OptionsMenu, LoginMenu
+from menu import MainMenu, OptionsMenu, LoginMenu, YouDiedMenu
 
 class GameManager:
     def __init__(self):
@@ -13,7 +13,8 @@ class GameManager:
             "menu": MainMenu(self),
             "options": OptionsMenu(self),
             "login": LoginMenu(self),
-            "world": Game(self, {})
+            "world": Game(self, {}),
+            "died": YouDiedMenu(self)
         }
         self.active_state = self.states["menu"]
 
