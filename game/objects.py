@@ -121,8 +121,8 @@ class Door(pygame.sprite.Sprite):
             player: Player object.
         """
         if self.scaled_rect.colliderect(player.rect) and self.toggle:
-            keys = pygame.key.get_pressed()
             self.present_button = True
+            keys = pygame.key.get_pressed()
             if (keys[self.open_button[1]]):
                 self.door_action(player)
         else:
@@ -257,7 +257,7 @@ class LaserDoor(Door):
                 pygame.draw.rect(surface, (255, 0, 0), self.inner_lasers[i].move(offset.x, offset.y))
 
     def draw(self, surface, offset):
-        if self.present_button and not self.receding:
+        if self.present_button and self.toggle and not self.receding:
             pygame.draw.rect(surface, (240, 0, 0), self.bg_rect.move(offset.x, offset.y), border_radius=5)
             surface.blit(self.text, self.textRect.topleft + offset)
         
