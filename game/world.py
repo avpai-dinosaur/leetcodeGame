@@ -13,24 +13,22 @@ import constants as c
 class Level():
     """Represents a level in the game."""
 
-    def __init__(self, game, camera, map):
-        self.game = game
-        self.camera = camera
+    def __init__(self, map):
         self.map = map
         self.player = Player("data/images/Oldhero.png", self.map.player_spawn, {})
         self.roomba = Roomba("data/images/roomba.png", self.map.roomba_path)
         self.npcs = pygame.sprite.Group()
         self.objects = pygame.sprite.Group()
 
-        self.camera.add(self.player)
-        [self.camera.add(laser_door) for laser_door in self.map.laser_doors]
-        [self.camera.add(computer) for computer in self.map.computers]
-        self.camera.add(self.roomba)
-        self.camera.foreground_objects.add(self.map.static_objects)
-        self.camera.background_objects.add(self.map.background_objects)
+    def load_camera(self, camera):
+        camera.add(self.player)
+        [camera.add(laser_door) for laser_door in self.map.laser_doors]
+        [camera.add(computer) for computer in self.map.computers]
+        camera.add(self.roomba)
+        camera.background_objects.add(self.map.background_objects)
 
-        self.camera.target = self.player.rect
-        self.camera.background = self.map.image
+        camera.target = self.player.rect
+        camera.background = self.map.image
 
     def add_npcs(self):
         pass
@@ -39,7 +37,7 @@ class Level():
         pass
 
     def end_level(self):
-        self.game.next_level()
+        pygame.event.post(pygame.event.Event(c.LEVEL_ENDED))
 
     def update(self):
         self.player.update(self.map.walls, self.map.laser_doors)
@@ -47,8 +45,8 @@ class Level():
         self.npcs.update(self.player)
         self.map.laser_doors.update(self.player)
         self.map.computers.update(self.player)
-        self.map.static_objects.update(self.player, self.camera)
-        self.map.background_objects.update(self.player, self.camera)
+        # self.map.static_objects.update(self.player, self.camera)
+        self.map.background_objects.update(self.player)
     
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
@@ -63,9 +61,11 @@ class Game():
         self.manager = manager
         self.camera = Camera()
         self.levels = [
-            Level(self, self.camera, Map("data/images/atticusMap.png"))
+            Level(Map("data/images/atticusMap.png")),
+            Level(Map("data/images/atticusMap.png"))
         ]
         self.level = 0
+        self.levels[self.level].load_camera(self.camera)
 
     def update(self):
         self.levels[self.level].update()
@@ -76,10 +76,14 @@ class Game():
             self.manager.set_state("menu")
         else:
             self.level += 1
+            self.levels[self.level].load_camera(self.camera)
 
     def handle_event(self, event):
         self.levels[self.level].handle_event(event)
         self.camera.handle_event(event)
+
+        if event.type == c.LEVEL_ENDED:
+            self.next_level()
 
     def draw(self, surface):
         self.camera.draw(surface)

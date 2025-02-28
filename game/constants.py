@@ -16,6 +16,9 @@ WALKABLE_TILES = [12, 31, 32, 33]
 
 # Custom events
 PLAYER_MOVED = pygame.USEREVENT + 1
+LEVEL_ENDED = pygame.USEREVENT + 2
+ENTERED_DANCE_FLOOR = pygame.USEREVENT + 3
+LEFT_DANCE_FLOOR = pygame.USEREVENT + 4
 
 # Animation constants
 PLAYER_SHEET_METADATA = {

@@ -39,6 +39,15 @@ class Camera(pygame.sprite.Group):
         self.foreground_objects = pygame.sprite.Group()
         self.background_objects = pygame.sprite.Group()
     
+    def reset(self):
+        """Clears all sprites the camera is managing.
+        
+            Usually called when loading a new level.
+        """
+        self.empty()
+        self.foreground_objects.empty()
+        self.background_objects.empty()
+
     def center_camera(self, target):
         """Centers the camera on the target rect.
         
@@ -61,6 +70,12 @@ class Camera(pygame.sprite.Group):
                 self.zoom = 2.5
             elif event.key == pygame.K_e:
                 self.zoom = 1
+        elif event.type == c.LEVEL_ENDED:
+            self.reset()
+        elif event.type == c.ENTERED_DANCE_FLOOR:
+            self.dim = True
+        elif event.type == c.LEFT_DANCE_FLOOR:
+            self.dim = False
 
     def draw(self, surface):
         """Draw the sprites belonging to the camera group to surface."""

@@ -450,15 +450,15 @@ class DanceFloor(StaticItem):
         self.on_dance_floor = False
         self.disco_timer = pygame.time.get_ticks()
 
-    def update(self, player, camera):
+    def update(self, player):
         if self.rect.colliderect(player.rect):
+            if not self.on_dance_floor:
+                pygame.event.post(pygame.event.Event(c.ENTERED_DANCE_FLOOR))
             self.on_dance_floor = True
-            camera.dim = True
-            # music_manager.play_music()
         else:
+            if self.on_dance_floor:
+                pygame.event.post(pygame.event.Event(c.LEFT_DANCE_FLOOR))
             self.on_dance_floor = False
-            camera.dim = False
-            # music_manager.stop_music()
 
         if self.on_dance_floor:
             if pygame.time.get_ticks() - self.disco_timer > 1000:  # Change every second
