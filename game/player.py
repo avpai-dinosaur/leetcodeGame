@@ -91,23 +91,24 @@ class Player(pygame.sprite.Sprite):
         # might have to undo if it turns out new position
         # collides with a barrier
         self.rect.center = new_pos
+        old_pos = self.pos
+        self.pos = new_pos
 
         # check if the proposed position collides with walls
         for wall in walls:
             if pygame.Rect.colliderect(wall, self.rect):
                 # dont update the position
-                self.rect.center = self.pos
-                return
+                self.rect.center = old_pos
+                self.pos = old_pos
         
         # check if the proposed position collides with closed doors
         door = pygame.sprite.spritecollideany(self, doors)
         if door:
             if door.toggle:
                 # dont update the position
-                self.rect.center = self.pos
+                self.rect.center = old_pos
+                self.pos = old_pos
                 self.health.lose(0.1)
-                return
-        self.pos = new_pos
 
         self.health.update(self.pos[0] - 30, self.pos[1] - 50)
         self.stamina.update(self.pos[0] - 30, self.pos[1] - 40)
