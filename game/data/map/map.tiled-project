@@ -10,5 +10,107 @@
     "properties": [
     ],
     "propertyTypes": [
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 1,
+            "members": [
+                {
+                    "name": "hasProblem",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "note",
+                    "type": "string",
+                    "value": "TODO: this computer needs a note"
+                },
+                {
+                    "name": "problemName",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "problemUrl",
+                    "type": "string",
+                    "value": ""
+                }
+            ],
+            "name": "Computer",
+            "type": "class",
+            "useAs": [
+                "property",
+                "layer",
+                "object",
+                "tile",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 3,
+            "members": [
+                {
+                    "name": "brokenComputer",
+                    "type": "object",
+                    "value": 0
+                }
+            ],
+            "name": "LaserDoor",
+            "type": "class",
+            "useAs": [
+                "property",
+                "layer",
+                "object",
+                "tile",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 4,
+            "members": [
+                {
+                    "name": "initialHealth",
+                    "type": "int",
+                    "value": 100
+                }
+            ],
+            "name": "Player",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 5,
+            "members": [
+            ],
+            "name": "DanceFloor",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        }
     ]
 }

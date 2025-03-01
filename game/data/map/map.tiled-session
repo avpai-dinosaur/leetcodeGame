@@ -12,18 +12,18 @@
     "fileStates": {
         "atticusMap.tmx": {
             "expandedObjectLayers": [
-                5,
-                9,
                 4,
-                6,
+                5,
                 7,
-                8
+                8,
+                9,
+                6
             ],
-            "scale": 0.5,
+            "scale": 0.33,
             "selectedLayer": 8,
             "viewCenter": {
-                "x": 1508,
-                "y": 673
+                "x": 1998.4848484848487,
+                "y": 665.1515151515152
             }
         },
         "atticusWalls.tsx": {
@@ -69,13 +69,13 @@
     "map.tileWidth": 64,
     "map.width": 51,
     "openFiles": [
-        "atticusWalls.tsx",
         "atticusMap.tmx"
     ],
     "project": "map.tiled-project",
+    "property.type": "int",
     "recentFiles": [
-        "atticusWalls.tsx",
         "atticusMap.tmx",
+        "atticusWalls.tsx",
         "map.tmx",
         "spaceship.tsx",
         "brickMap.tmx"

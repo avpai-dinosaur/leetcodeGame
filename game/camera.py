@@ -6,11 +6,7 @@ class Camera(pygame.sprite.Group):
     """Represents the world's camera"""
 
     def __init__(self):
-        """Constructor.
-        
-            background: pygame.Surface representing the background image.
-            initialTarget: pygame.Rect representing initial target of camera.
-        """
+        """Constructor."""
         super().__init__()
         self.background = None
         self.offset = pygame.math.Vector2()

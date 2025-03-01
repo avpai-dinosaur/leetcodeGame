@@ -29,11 +29,11 @@ python3 main.py
 
 - switch handling of game objects to level class from map class. map class should only parse and present data from tiled
 - related, an object creating factory to communicate to level class what types of objects to create based on parsed map data
+- add unit tests
 - Connect to leetcode account and detect that a question was solved
 - Boss fight
 - Make clickable elements change color when clicked (plus cursor image changes)
 
-- When player runs into an obstacle, continue movement animation
 - Add a mental health notes (new feature)
 - Make dance floor lights look nicer
 - Add type annotations

@@ -15,35 +15,26 @@ class Level():
 
     def __init__(self, map):
         self.map = map
-        self.player = Player("data/images/Oldhero.png", self.map.player_spawn, {})
-        self.roomba = Roomba("data/images/roomba.png", self.map.roomba_path)
-        self.npcs = pygame.sprite.Group()
-        self.objects = pygame.sprite.Group()
+        self.player = Player("data/images/Oldhero.png", self.map.playerSpawn, {})
+        self.roomba = Roomba("data/images/roomba.png", self.map.roombaPath)
+        self.objects = self.map.object_factory()
+        self.walls = self.map.walls_factory()
 
     def load_camera(self, camera):
         camera.add(self.player)
-        [camera.add(laser_door) for laser_door in self.map.laser_doors]
-        [camera.add(computer) for computer in self.map.computers]
         camera.add(self.roomba)
-        camera.background_objects.add(self.map.background_objects)
+        camera.add(self.objects)
+        # camera.background_objects.add(self.map.background_objects)
 
         camera.target = self.player.rect
         camera.background = self.map.image
     
     def reset(self, camera):
-        #TODO: This doesn't work right now because the map is managing static objects
-        # once we move static objects into the level class it should work
         self.player = Player("data/images/Oldhero.png", self.map.player_spawn, {})
         self.roomba = Roomba("data/images/roomba.png", self.map.roomba_path)
         self.npcs = pygame.sprite.Group()
-        self.objects = pygame.sprite.Group()
+        self.objects = self.map.object_factory()
         self.load_camera(camera)
-
-    def add_npcs(self):
-        pass
-
-    def add_objects(self):
-        pass
 
     def end_level(self):
         pygame.event.post(pygame.event.Event(c.LEVEL_ENDED))
@@ -52,13 +43,10 @@ class Level():
         pygame.event.post(pygame.event.Event(c.PLAYER_DIED))
 
     def update(self):
-        self.player.update(self.map.walls, self.map.laser_doors)
+        self.player.update(self.walls, [])
         self.roomba.update(self.player)
-        self.npcs.update(self.player)
-        self.map.laser_doors.update(self.player)
-        self.map.computers.update(self.player)
-        # self.map.static_objects.update(self.player, self.camera)
-        self.map.background_objects.update(self.player)
+        self.objects.update(self.player)
+        # self.map.background_objects.update(self.player)
     
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
@@ -76,8 +64,8 @@ class Game():
         self.manager = manager
         self.camera = Camera()
         self.levels = [
-            Level(Map("data/images/atticusMap.png")),
-            Level(Map("data/images/atticusMap.png"))
+            Level(Map("data/images/atticusMap.png", "data/map/atticusMap.tmj")),
+            Level(Map("data/images/atticusMap.png", "data/map/atticusMap.tmj"))
         ]
         self.level = 0
         self.levels[self.level].load_camera(self.camera)

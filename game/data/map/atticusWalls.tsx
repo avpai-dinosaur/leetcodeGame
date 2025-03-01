@@ -49,10 +49,10 @@
  <tile id="15">
   <image width="32" height="32" source="../images/objectTiles/lg solo cup.png"/>
  </tile>
- <tile id="16">
+ <tile id="16" type="Computer">
   <image width="64" height="64" source="../images/objectTiles/Lh computer facing L.png"/>
  </tile>
- <tile id="17">
+ <tile id="17" type="Computer">
   <image width="64" height="64" source="../images/objectTiles/Lh computer facing R.png"/>
  </tile>
  <tile id="18">
@@ -61,10 +61,10 @@
  <tile id="19">
   <image width="320" height="127" source="../images/objectTiles/plain yt tbl.png"/>
  </tile>
- <tile id="20">
+ <tile id="20" type="Computer">
   <image width="64" height="64" source="../images/objectTiles/Rh computer facing L.png"/>
  </tile>
- <tile id="21">
+ <tile id="21" type="Computer">
   <image width="64" height="64" source="../images/objectTiles/Rh computer facing R.png"/>
  </tile>
  <tile id="22">
@@ -124,7 +124,7 @@
  <tile id="40">
   <image width="16" height="16" source="../images/dance flr trim/uppr r crnr dance trim.png"/>
  </tile>
- <tile id="41">
+ <tile id="41" type="DanceFloor">
   <image width="464" height="336" source="../images/dance flr trim/dance flr trim (one piece).png"/>
  </tile>
 </tileset>
