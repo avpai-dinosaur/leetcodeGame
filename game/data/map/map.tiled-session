@@ -72,7 +72,7 @@
         "atticusMap.tmx"
     ],
     "project": "map.tiled-project",
-    "property.type": "int",
+    "property.type": "Computer",
     "recentFiles": [
         "atticusMap.tmx",
         "atticusWalls.tsx",

@@ -373,7 +373,6 @@ class ProblemComputer(Computer):
             self.kill()
 
 
-
 class TechNote(pygame.sprite.Sprite):
     """Class to represent a technical note."""
 

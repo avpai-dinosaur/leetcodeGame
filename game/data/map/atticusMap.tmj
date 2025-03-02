@@ -361,6 +361,45 @@
         }, 
         {
          "draworder":"topdown",
+         "id":19,
+         "name":"doors",
+         "objects":[
+                {
+                 "height":192,
+                 "id":76,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"brokenComputer",
+                         "type":"object",
+                         "value":63
+                        }],
+                 "rotation":0,
+                 "type":"LaserDoor",
+                 "visible":true,
+                 "width":256,
+                 "x":2240,
+                 "y":640
+                }, 
+                {
+                 "height":192,
+                 "id":77,
+                 "name":"",
+                 "rotation":0,
+                 "type":"LaserDoor",
+                 "visible":true,
+                 "width":256,
+                 "x":576,
+                 "y":640
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":6,
          "name":"playerSpawn",
          "objects":[
@@ -439,6 +478,12 @@
                  "height":64,
                  "id":58,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"note",
+                         "type":"string",
+                         "value":"User: Alice\nFakebook post:\n     Feeling beyond blessed to be part of this once-in-a-lifetime mission to Mars with Druck Dripersburg\n     Never imagined I'd be delivering agile, scalable, integrated solutions in zero gravity!"
+                        }],
                  "rotation":0,
                  "type":"Computer",
                  "visible":true,
@@ -487,6 +532,17 @@
                  "height":64,
                  "id":62,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"hasProblem",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"note",
+                         "type":"string",
+                         "value":"User: Chuck\nFakebook post:\n     Bro, imagine Mars but with AI-powered DAO governance.\n     No governments, just vibes.\n     We are literally disrupting planets right now. WAGMI."
+                        }],
                  "rotation":0,
                  "type":"Computer",
                  "visible":true,
@@ -538,34 +594,6 @@
                  "width":464,
                  "x":1728,
                  "y":576
-                }, 
-                {
-                 "height":192,
-                 "id":74,
-                 "name":"",
-                 "rotation":0,
-                 "type":"LaserDoor",
-                 "visible":true,
-                 "width":256,
-                 "x":576,
-                 "y":640
-                }, 
-                {
-                 "height":192,
-                 "id":75,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"brokenComputer",
-                         "type":"object",
-                         "value":63
-                        }],
-                 "rotation":0,
-                 "type":"LaserDoor",
-                 "visible":true,
-                 "width":256,
-                 "x":2240,
-                 "y":640
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -573,8 +601,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":19,
- "nextobjectid":76,
+ "nextlayerid":20,
+ "nextobjectid":78,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

@@ -15,36 +15,40 @@ class Level():
 
     def __init__(self, map):
         self.map = map
+        self.load_entities()
+
+    def load_entities(self):
         self.player = Player("data/images/Oldhero.png", self.map.playerSpawn, {})
         self.roomba = Roomba("data/images/roomba.png", self.map.roombaPath)
         self.objects = self.map.object_factory()
         self.walls = self.map.walls_factory()
+        self.doors = self.map.doors_factory()
 
     def load_camera(self, camera):
         camera.add(self.player)
         camera.add(self.roomba)
         camera.add(self.objects)
+        camera.add(self.doors)
         # camera.background_objects.add(self.map.background_objects)
 
         camera.target = self.player.rect
         camera.background = self.map.image
     
     def reset(self, camera):
-        self.player = Player("data/images/Oldhero.png", self.map.player_spawn, {})
-        self.roomba = Roomba("data/images/roomba.png", self.map.roomba_path)
-        self.npcs = pygame.sprite.Group()
-        self.objects = self.map.object_factory()
+        self.load_entities()
         self.load_camera(camera)
 
     def end_level(self):
         pygame.event.post(pygame.event.Event(c.LEVEL_ENDED))
     
     def player_died(self):
+        # TODO: the player should probably post this event
         pygame.event.post(pygame.event.Event(c.PLAYER_DIED))
 
     def update(self):
-        self.player.update(self.walls, [])
+        self.player.update(self.walls, self.doors)
         self.roomba.update(self.player)
+        self.doors.update(self.player)
         self.objects.update(self.player)
         # self.map.background_objects.update(self.player)
     

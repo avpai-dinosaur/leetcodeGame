@@ -80,6 +80,7 @@ class Map():
         self.image, _ = utils.load_png(imageFile)
         self.graph = Graph()
         self.walls = {}
+        self.doors = {}
         self.laserDoors = {}
         self.computers = {}
         self.generatedComputers = {}
@@ -88,17 +89,19 @@ class Map():
         self.roombaPath = []
 
         self.load_json(dataFile)
+        self.parse_doors()
         self.parse_objects()
-
 
     def load_json(self, filename):
         """Load JSON data for the map."""
         f = open(filename)
-        self.raw_json = json.load(f)
-        layers = self.raw_json["layers"]
+        self.rawJson = json.load(f)
+        layers = self.rawJson["layers"]
         for layer in layers:
             if layer["name"] == "walls":
                 self.walls = layer
+            elif layer["name"] == "doors":
+                self.doors = layer
             elif layer["name"] == "objects":
                 self.objects = layer
             elif layer["name"] == "playerSpawn":
@@ -107,16 +110,22 @@ class Map():
                     layer["objects"][0]["y"]
                 )
             elif layer["name"] == "roombaPath":
-                roomba_path_data = layer["objects"][0]
-
-        for point in roomba_path_data["polyline"]:
-            self.roombaPath.append(
-                pygame.Vector2(point.get("x") + roomba_path_data["x"], point.get("y") + roomba_path_data["y"])
-            )
+                roombaPathRaw = layer["objects"][0]
+                self.roombaPath = self.parse_polyline(
+                    roombaPathRaw["polyline"],
+                    roombaPathRaw["x"],
+                    roombaPathRaw["y"]
+                )
     
-    def parse_object(object, internalDict):
-        """Parse an object into the internal dictionary."""
+    def parse_polyline(self, polyline, startX, startY):
+        """Parse a polyline into array of Vector2 points."""
+        return [
+            pygame.Vector2(point["x"] + startX, point["y"] + startY) 
+            for point in polyline
+        ]
 
+    def parse_object(self, object, internalDict):
+        """Parse object and add to internal dictionary."""
         id = object["id"]
         internalDict[id] = {
             "width": object["width"],
@@ -130,26 +139,15 @@ class Map():
     
     def parse_objects(self):
         """Parse the objects layer of the JSON data."""
-
         for object in self.objects["objects"]:
             if object["type"] == "Computer":
-                Map.parse_object(object, self.computers)
-            elif object["type"] == "LaserDoor":
-                Map.parse_object(object, self.laserDoors)
+                self.parse_object(object, self.computers)
     
-    def walls_factory(self):
-        """Generates the walls for this map as a list of rects."""
-        startX = self.walls["x"]
-        startY = self.walls["y"]
-        wallRects = []
-        for wall in self.walls["objects"]:
-            wallRects.append(
-                pygame.Rect(
-                    (startX + wall["x"], startY + wall["y"]),
-                    (wall["width"], wall["height"])
-                )
-            )
-        return wallRects
+    def parse_doors(self):
+        """Parse the laserDoor layer of the JSON data."""
+        for door in self.doors["objects"]:
+            if door["type"] == "LaserDoor":
+                self.parse_object(door, self.laserDoors)
 
     def computer_factory(self, computer, id, startX, startY):
         """Generates a computer from an entry in the internal computer dict."""
@@ -158,7 +156,7 @@ class Map():
             generatedComputer = o.ProblemComputer(
                 pygame.Rect(
                     startX + computer["x"],
-                    startY + computer["y"],
+                    startY + computer["y"] - computer["height"],
                     computer["width"],
                     computer["height"]
                 ),
@@ -169,7 +167,7 @@ class Map():
             generatedComputer = o.Computer(
                 pygame.Rect(
                     startX + computer["x"],
-                    startY + computer["y"],
+                    startY + computer["y"] - computer["height"],
                     computer["width"],
                     computer["height"]
                 ),
@@ -192,7 +190,18 @@ class Map():
             computerId = laserDoor["brokenComputer"]
             door.problems.add(self.generatedComputers[computerId])
         return door
-              
+    
+    def doors_factory(self):
+        """Get all the doors for this map as a sprite group."""
+        startX = self.doors["x"]
+        startY = self.doors["y"]
+        doorGroup = pygame.sprite.Group()
+        for door in self.doors["objects"]:
+            if door["type"] == "LaserDoor":
+                laserDoor = self.laserDoors[door["id"]]
+                doorGroup.add(self.laser_door_factory(laserDoor, startX, startY))
+        return doorGroup
+
     def object_factory(self):
         """Get the objects for this map as a sprite group."""
         startX = self.objects["x"]
@@ -206,48 +215,22 @@ class Map():
                 objectGroup.add(
                     o.DanceFloor((startX + object["x"], startY + object["y"]))
                 )
-        
-        # Second pass for objects which need dependency injection
-        for object in self.objects["objects"]:
-            if object["type"] == "LaserDoor":
-                laserDoor = self.laserDoors[object["id"]]
-                objectGroup.add(self.laser_door_factory(laserDoor, startX, startY))
-        
         return objectGroup
+
+    def walls_factory(self):
+        """Generates the walls for this map as a list of rects."""
+        startX = self.walls["x"]
+        startY = self.walls["y"]
+        wallRects = []
+        for wall in self.walls["objects"]:
+            wallRects.append(
+                pygame.Rect(
+                    (startX + wall["x"], startY + wall["y"]),
+                    (wall["width"], wall["height"])
+                )
+            )
+        return wallRects
 
     def draw(self, surface, offset):
         """Draw map background to surface."""
         surface.blit(self.image, offset)
-
-
-
-
-
-
-
-#         msg_text = [
-# "User: Bill\n\
-# Mateo:\n\
-#     Just patched a bug in the guidance system. If this thing had launched, we'd be aiming for the Sun right now.\n\
-# You:\n\
-#     Hahahaha...I'm scared.",
-# "User: Mateo\n\
-# Alice:\n\
-#     I don't think Aakash looks so good?\n\
-# You:\n\
-#     *side-eye* maybe I'll check on him after the office party...",
-# "User: Jinyan\n\
-# Status Update:\n\
-#     They let me design the rocket's warnings dashboard.\n\
-#     Druck asked for it to look 'more like Fakebook.'\n\
-#     Now it has infinite scroll. God help us.",
-# "User: Alice\n\
-# Fakebook post:\n\
-#     Feeling beyond blessed to be part of this once-in-a-lifetime mission to Mars with Druck Dripersburg\n\
-#     Never imagined I'd be delivering agile, scalable, integrated solutions in zero gravity!\n",
-# "User: Chuck\n\
-# Fakebook post:\n\
-#     Bro, imagine Mars but with AI-powered DAO governance.\n\
-#     No governments, just vibes.\n\
-#     We are literally disrupting planets right now. WAGMI."
-#         ]
