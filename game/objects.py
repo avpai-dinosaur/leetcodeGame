@@ -471,7 +471,6 @@ class DanceFloor(StaticItem):
                     self.colors.append(random.choice(DanceFloor.DISCO_COLORS))
         
     def draw(self, surface, offset):
-        super().draw(surface, offset)
         if self.on_dance_floor:
             for i, pos in enumerate(self.light_pos):
                 pygame.draw.circle(surface, self.colors[i], pos + offset, 15)

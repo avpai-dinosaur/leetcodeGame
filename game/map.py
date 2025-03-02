@@ -213,7 +213,7 @@ class Map():
                 objectGroup.add(self.computer_factory(computer, object["id"], startX, startY))
             elif object["type"] == "DanceFloor":
                 objectGroup.add(
-                    o.DanceFloor((startX + object["x"], startY + object["y"]))
+                    o.DanceFloor((startX + object["x"], startY + object["y"] - object["height"]))
                 )
         return objectGroup
 

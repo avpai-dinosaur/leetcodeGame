@@ -170,7 +170,12 @@ Fakebook post:
   <object id="63" type="Computer" gid="18" x="1600" y="512" width="64" height="64">
    <properties>
     <property name="hasProblem" type="bool" value="true"/>
-    <property name="note" value="Solve (1. TwoSum)"/>
+    <property name="note">User: Aakash
+Dev Note (3/9/2100):
+Our stupid spaceship door is breaking again.
+Druck says I need to solve (1. TwoSum) to get it working.
+I tried going through all pairs of numbers, but that took too long...
+Ugh, guess I'll be staying late. Again.</property>
     <property name="problemName" value="TwoSum"/>
     <property name="problemUrl" value="https://leetcode.com/problems/two-sum/description/"/>
    </properties>
