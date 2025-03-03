@@ -68,8 +68,8 @@ class Game():
         self.manager = manager
         self.camera = Camera()
         self.levels = [
-            Level(Map("data/images/atticusMap.png", "data/map/atticusMap.tmj")),
-            Level(Map("data/images/atticusMap.png", "data/map/atticusMap.tmj"))
+            Level(Map("data/images/level1.png", "data/map/level1.tmj")),
+            Level(Map("data/images/level2.png", "data/map/level2.tmj"))
         ]
         self.level = 0
         self.levels[self.level].load_camera(self.camera)

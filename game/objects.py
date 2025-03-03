@@ -97,7 +97,7 @@ class Door(pygame.sprite.Sprite):
         self.toggle = True
         self.present_button = False
     
-    def door_action(self, player=None):
+    def door_action(self):
         """Runs the action specific to the door.
         
         Default is to turn self.toggle to False.
@@ -124,7 +124,7 @@ class Door(pygame.sprite.Sprite):
             self.present_button = True
             keys = pygame.key.get_pressed()
             if (keys[self.open_button[1]]):
-                self.door_action(player)
+                self.door_action()
         else:
             self.present_button = False
     
@@ -244,7 +244,7 @@ class LaserDoor(Door):
             (255, 0, 0)
         )
     
-    def door_action(self, player=None):
+    def door_action(self):
         if len(self.problems) > 0:
             self.speech_bubble.toggle = True
         else:
@@ -263,6 +263,14 @@ class LaserDoor(Door):
         
         self.draw_door(surface, offset)
         self.speech_bubble.draw(surface, offset)
+
+
+class ExitDoor(Door):
+    """Class to represent door that takes player to next level."""
+
+    def door_action(self):
+        pygame.event.post(pygame.Event(c.LEVEL_ENDED))
+
 
 class SpeechBubble():
     """Class to represent the speech bubble of NPC."""

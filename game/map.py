@@ -191,6 +191,10 @@ class Map():
             door.problems.add(self.generatedComputers[computerId])
         return door
     
+    def exit_door_factory(self, exitDoor, startX, startY):
+        """Generates an exit door."""
+        
+    
     def doors_factory(self):
         """Get all the doors for this map as a sprite group."""
         startX = self.doors["x"]
@@ -214,6 +218,17 @@ class Map():
             elif object["type"] == "DanceFloor":
                 objectGroup.add(
                     o.DanceFloor((startX + object["x"], startY + object["y"] - object["height"]))
+                )
+            elif object["type"] == "ExitDoor":
+                objectGroup.add(
+                    o.ExitDoor(
+                        pygame.Rect(
+                            startX + object["x"],
+                            startY + object["y"],
+                            object["width"],
+                            object["height"]
+                        )
+                    )
                 )
         return objectGroup
 

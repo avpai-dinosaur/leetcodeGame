@@ -55,7 +55,7 @@
  <tile id="17" type="Computer">
   <image width="64" height="64" source="../images/objectTiles/Lh computer facing R.png"/>
  </tile>
- <tile id="18">
+ <tile id="18" type="ExitDoor">
   <image width="64" height="64" source="../images/objectTiles/no exit sign.png"/>
  </tile>
  <tile id="19">
