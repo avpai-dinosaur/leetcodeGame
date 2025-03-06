@@ -60,7 +60,6 @@ class Level():
             if event.key == pygame.K_v:
                 self.player_died()
 
-
 class Game():
     """Manages high-level gameplay logic like switching between levels and camera functions."""
    
@@ -79,16 +78,17 @@ class Game():
         self.camera.update()
     
     def next_level(self):
+        self.camera.reset()
         if self.level == len(self.levels) - 1:
+            self.level = 0
             self.manager.set_state("menu")
         else:
             self.level += 1
-            self.levels[self.level].load_camera(self.camera)
+        self.levels[self.level].load_camera(self.camera)
 
     def handle_event(self, event):
         self.levels[self.level].handle_event(event)
         self.camera.handle_event(event)
-
         if event.type == c.LEVEL_ENDED:
             self.camera.reset()
             self.next_level()

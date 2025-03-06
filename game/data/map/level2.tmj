@@ -314,6 +314,24 @@
                  "width":64,
                  "x":576,
                  "y":192
+                }, 
+                {
+                 "gid":44,
+                 "height":64,
+                 "id":20,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"path",
+                         "type":"object",
+                         "value":17
+                        }],
+                 "rotation":0,
+                 "type":"Npc",
+                 "visible":false,
+                 "width":80,
+                 "x":192,
+                 "y":448
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -369,7 +387,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":20,
+ "nextobjectid":22,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

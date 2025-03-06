@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "atticusMap.tmx",
+    "activeFile": "level2.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -54,8 +54,8 @@
             "scale": 1,
             "selectedLayer": 7,
             "viewCenter": {
-                "x": 2904.5,
-                "y": 289.5
+                "x": 3266.5,
+                "y": 435.5
             }
         },
         "level2.tmx": {
@@ -69,8 +69,8 @@
             "scale": 0.75,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 607.3333333333333,
-                "y": 223.33333333333337
+                "x": 231.33333333333326,
+                "y": 428.66666666666674
             }
         },
         "map.tmx": {
@@ -93,7 +93,7 @@
         }
     },
     "last.exportedFilePath": "//wsl.localhost/Ubuntu/home/avpai/leetcodeGame/game/data/map",
-    "last.imagePath": "//wsl.localhost/Ubuntu/home/avpai/leetcodeGame/game/data/images/mapTiles",
+    "last.imagePath": "//wsl.localhost/Ubuntu/home/avpai/leetcodeGame/game/data/images",
     "map.height": 20,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
@@ -101,14 +101,17 @@
     "map.tileWidth": 64,
     "map.width": 20,
     "openFiles": [
-        "atticusMap.tmx",
-        "atticusWalls.tsx"
+        "atticusWalls.tsx",
+        "level2.tmx",
+        "level1.tmx"
     ],
     "project": "map.tiled-project",
-    "property.type": "int",
+    "property.type": "object",
     "recentFiles": [
-        "redSpace.tsx",
         "atticusWalls.tsx",
+        "level1.tmx",
+        "level2.tmx",
+        "redSpace.tsx",
         "atticusMap.tmx",
         "map.tmx",
         "spaceship.tsx",
