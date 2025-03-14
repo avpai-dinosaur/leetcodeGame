@@ -2,6 +2,7 @@ import pygame
 import utils
 import requests
 from camera import Camera
+from problemManager import LeetcodeManager
 from player import Player
 from enemy import Enemy
 from roomba import Roomba
@@ -13,7 +14,7 @@ import constants as c
 class Level():
     """Represents a level in the game."""
 
-    def __init__(self, map):
+    def __init__(self, map: Map):
         self.map = map
         self.load_entities()
 
@@ -24,7 +25,7 @@ class Level():
         self.walls = self.map.walls_factory()
         self.doors = self.map.doors_factory()
 
-    def load_camera(self, camera):
+    def load_camera(self, camera: Camera):
         camera.add(self.player)
         camera.add(self.roomba)
         camera.add(self.objects)
@@ -53,6 +54,17 @@ class Level():
         # self.map.background_objects.update(self.player)
     
     def handle_event(self, event):
+        # TODO: This is not that great of a solution. 
+        # We need a custom class that inherits from Sprite group 
+        # which has a handle_event method and we need to add
+        # our objects to that custom group.
+        # Every object should also probably have a handle event method
+        # and they should inheret from a base object
+        for obj in self.objects:
+            handleEventOp = getattr(obj, "handle_event", None)
+            if callable(handleEventOp):
+                handleEventOp(event)
+
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.end_level()
@@ -66,6 +78,7 @@ class Game():
     def __init__(self, manager, playerStats):
         self.manager = manager
         self.camera = Camera()
+        self.leetcodeManager = LeetcodeManager()
         self.levels = [
             Level(Map("data/images/level1.png", "data/map/level1.tmj")),
             Level(Map("data/images/level2.png", "data/map/level2.tmj"))
@@ -76,6 +89,7 @@ class Game():
     def update(self):
         self.levels[self.level].update()
         self.camera.update()
+        self.leetcodeManager.update()
     
     def next_level(self):
         self.camera.reset()
@@ -89,6 +103,7 @@ class Game():
     def handle_event(self, event):
         self.levels[self.level].handle_event(event)
         self.camera.handle_event(event)
+        self.leetcodeManager.handle_event(event)
         if event.type == c.LEVEL_ENDED:
             self.camera.reset()
             self.next_level()

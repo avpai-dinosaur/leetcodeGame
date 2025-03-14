@@ -206,7 +206,7 @@ class Map():
                 doorGroup.add(self.laser_door_factory(laserDoor, startX, startY))
         return doorGroup
 
-    def object_factory(self):
+    def object_factory(self) -> pygame.sprite.Group:
         """Get the objects for this map as a sprite group."""
         startX = self.objects["x"]
         startY = self.objects["y"]

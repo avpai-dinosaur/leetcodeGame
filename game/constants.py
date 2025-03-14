@@ -21,6 +21,11 @@ ENTERED_DANCE_FLOOR = pygame.USEREVENT + 3
 LEFT_DANCE_FLOOR = pygame.USEREVENT + 4
 PLAYER_DIED = pygame.USEREVENT + 5
 
+OPEN_PROBLEM = pygame.USEREVENT + 6
+PROBLEM_SOLVED = pygame.USEREVENT + 7
+
+USER_LOGIN = pygame.USEREVENT + 8
+
 # Animation constants
 PLAYER_SHEET_METADATA = {
     "frame_width": 16,

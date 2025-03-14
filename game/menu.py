@@ -1,6 +1,9 @@
 import pygame
 import utils
 import sys
+import requests
+import json
+import constants as c
 from button import Button, TextInput
 
 class Menu:
@@ -99,9 +102,17 @@ class LoginMenu(Menu):
     def onBack(self):
         self.manager.set_state("menu")
     
-    def onEnter(self):
-        self.manager.set_state("world")
-
+    def onEnter(self, textInput):
+        url = "https://leetcode-stats-api.herokuapp.com/" + textInput
+        playerStats = json.loads(
+            requests.get(
+                url
+            ).text
+        )
+        if playerStats["status"] == "success":
+            self.manager.set_state("world")
+            pygame.event.post(pygame.Event(c.USER_LOGIN, {"username": textInput, "stats": playerStats}))
+    
     def draw(self, surface):
         super().draw(surface)
         surface.blit(self.headingTextImage, self.headingTextRect)

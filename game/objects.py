@@ -3,9 +3,7 @@
 import pygame
 import utils
 import random
-import webbrowser
 import constants as c
-import music_manager
 from enum import Enum
 
 class StaminaBar():
@@ -290,7 +288,7 @@ class SpeechBubble():
         self.text_rect.midbottom = (pos[0], pos[1] - 10)
         self.bg_rect = self.text_rect.inflate(10, 10)
 
-        self.was_clicked = False
+        self.mouseover = False
 
     def update_text(self, text_input, text_color=(255, 255, 255)):
         old_midbottom = self.text_rect.midbottom
@@ -305,6 +303,10 @@ class SpeechBubble():
         """Updates position of the speech bubble."""
         self.text_rect.midbottom = (pos[0], pos[1] - 10)
         self.bg_rect = self.text_rect.inflate(10, 10)
+
+    def handle_event(self, event):
+        if self.url and self.mouseover and event.type == pygame.MOUSEBUTTONDOWN:
+            pygame.event.post(pygame.Event(c.OPEN_PROBLEM, {"url": self.url}))
     
     def draw(self, surface, offset):
         """Draws the speech bubble and also checks if it is clicked."""
@@ -314,18 +316,10 @@ class SpeechBubble():
 
         if self.toggle:
             mouse_pos = pygame.mouse.get_pos()
-            mouse_pressed = pygame.mouse.get_pressed()
-            if self.bg_rect.move(offset.x, offset.y).collidepoint(mouse_pos) and mouse_pressed[0]:  # Left mouse button
-                if self.url:
-                    # TODO: remove this Chatgpt hack after demo
-                    if not hasattr(self, "click_time"):  # Store the click time only once
-                            self.click_time = pygame.time.get_ticks()
-                    webbrowser.open(self.url)
-        # TODO: remove this Chatgpt hack after demo
-        if hasattr(self, "click_time") and pygame.time.get_ticks() - self.click_time >= 1000:
-            self.was_clicked = True
-            del self.click_time  # Remove the attribute after setting self.was_clicked
-
+            if self.bg_rect.move(offset.x, offset.y).collidepoint(mouse_pos):
+                self.mouseover = True
+            else:
+                self.mouseover = False
 
 class Computer(pygame.sprite.Sprite):
     """Class to represent a computer."""
@@ -349,6 +343,9 @@ class Computer(pygame.sprite.Sprite):
     def computer_action(self):
         self.note.toggle = True
         self.present_button = False
+
+    def handle_event(self, event):
+        self.note.handle_event(event)
 
     def update(self, player):
         if self.scaled_rect.colliderect(player.rect):
@@ -374,11 +371,6 @@ class ProblemComputer(Computer):
     def __init__(self, rect, text_input, url):
         super().__init__(rect, text_input)
         self.note.url = url
-    
-    def update(self, player):
-        super().update(player)
-        if self.note.was_clicked:
-            self.kill()
 
 
 class TechNote(pygame.sprite.Sprite):

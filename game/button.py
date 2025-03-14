@@ -127,8 +127,9 @@ class TextInput:
 			self.color = self.activeColor
 		elif event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_RETURN:
+				oldTextBuffer = self.textBuffer
 				self.textBuffer = ''
-				self.onSubmit()
+				self.onSubmit(oldTextBuffer)
 			elif event.key == pygame.K_BACKSPACE:
 				self.textBuffer = self.textBuffer[:-1]
 			else:
