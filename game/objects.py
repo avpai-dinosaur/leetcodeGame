@@ -372,6 +372,11 @@ class ProblemComputer(Computer):
         super().__init__(rect, text_input)
         self.note.url = url
 
+    def handle_event(self, event: pygame.Event):
+        super().handle_event(event)
+        if event.type == c.PROBLEM_SOLVED:
+            self.kill()
+
 
 class TechNote(pygame.sprite.Sprite):
     """Class to represent a technical note."""
