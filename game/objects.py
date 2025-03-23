@@ -3,6 +3,7 @@
 import pygame
 import utils
 import random
+import time
 import constants as c
 from enum import Enum
 
@@ -306,7 +307,9 @@ class SpeechBubble():
 
     def handle_event(self, event):
         if self.url and self.mouseover and event.type == pygame.MOUSEBUTTONDOWN:
-            pygame.event.post(pygame.Event(c.OPEN_PROBLEM, {"url": self.url}))
+            timestamp = time.time()
+            pygame.event.post(pygame.Event(c.OPEN_PROBLEM, {"url": self.url, "timestamp": timestamp}))
+            print(f"Posted event: OPEN_PROBLEM {self.url}, {timestamp}")
     
     def draw(self, surface, offset):
         """Draws the speech bubble and also checks if it is clicked."""
