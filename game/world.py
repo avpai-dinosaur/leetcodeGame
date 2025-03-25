@@ -1,14 +1,10 @@
 import pygame
-import utils
-import requests
+import time
 from camera import Camera
 from problemManager import LeetcodeManager
 from player import Player
-from enemy import Enemy
 from roomba import Roomba
 from map import Map
-from button import Button
-import objects as o
 import constants as c
 
 class Level():
@@ -64,6 +60,8 @@ class Level():
             handleEventOp = getattr(obj, "handle_event", None)
             if callable(handleEventOp):
                 handleEventOp(event)
+        
+        [d.handle_event(event) for d in self.doors]
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:

@@ -14,6 +14,7 @@ class LeetcodeManager:
 
     def __init__(self):
         """Constructor."""
+        self.startTimestamp = time.time()
         self.username = None
         self.stats = None
         self.totalSolved = 0
@@ -27,14 +28,16 @@ class LeetcodeManager:
             # TODO: Kind of a hacky way to do this
             problemSlug = event.url.split('/')[4]
             self.inProgressProblems.add(problemSlug)
-            apiRequestThread = threading.Thread(target=self.check_submissions, args=(problemSlug, event.timestamp))
+        elif event.type == c.CHECK_PROBLEMS:
+            apiRequestThread = threading.Thread(target=self.check_submissions, args=(self.startTimestamp,))
             apiRequestThread.start()
         elif event.type == c.USER_LOGIN:
             self.username = event.username
             self.stats = event.stats
             self.totalSolved = self.stats["totalSolved"]
 
-    def check_submissions(self, problemSlug: str, lowerTimestamp: int) -> None:
+    def check_submissions(self, lowerTimestamp: int) -> None:
+        """Check the user's last 50 accepted submissions."""
         LeetcodeManager.lock.acquire_lock()
         url = "https://leetcode.com/graphql"
         payload = {
@@ -51,25 +54,30 @@ class LeetcodeManager:
                 """,
             "variables" : {
                 "username" : self.username,
-                "limit" : 5
+                "limit" : 50
             }
         }
         headers = {
             "Content-Type": "application/json"
         }
-        while problemSlug in self.inProgressProblems:
-            LeetcodeManager.lock.release_lock()
-            # TODO: check recent submissions when player tries to open door to avoid spamming requests
-            time.sleep(3) 
-            response = requests.get(url, json=payload, headers=headers)
-            recentSubmissions = json.loads(response.text)["data"]
-            LeetcodeManager.lock.acquire_lock()
-            if response.status_code == 200:
-                self.was_problem_solved(
+        
+        LeetcodeManager.lock.release_lock()
+        response = requests.get(url, json=payload, headers=headers)
+        recentSubmissions = json.loads(response.text)["data"]
+        print(f"Getting {self.username}'s recent submissions")
+        print(recentSubmissions)
+        LeetcodeManager.lock.acquire_lock()
+        
+        if response.status_code == 200:
+            solvedProblems = []
+            for problemSlug in self.inProgressProblems:
+                if self.was_problem_solved(
                     problemSlug,
                     recentSubmissions["recentAcSubmissionList"],
                     lowerTimestamp
-                )
+                ): 
+                    solvedProblems.append(problemSlug)
+        [self.inProgressProblems.remove(p) for p in solvedProblems]
         LeetcodeManager.lock.release_lock()
     
     def was_problem_solved(
@@ -87,9 +95,9 @@ class LeetcodeManager:
         for submission in submissionList:
             if submission["titleSlug"] == problemSlug \
                 and int(submission["timestamp"]) >= lowerTimestamp:
-                self.inProgressProblems.remove(problemSlug)
                 pygame.event.post(pygame.Event(c.PROBLEM_SOLVED))
-                return
+                return True
+        return False
             
     def update(self):
         """Update to run each game loop."""

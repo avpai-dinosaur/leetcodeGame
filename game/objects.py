@@ -111,6 +111,12 @@ class Door(pygame.sprite.Sprite):
         if self.toggle:
             pygame.draw.rect(surface, (252, 3, 3), self.rect.move(offset.x, offset.y))
     
+    def handle_event(self, event: pygame.Event):
+        """Handle an event off the event queue."""
+        if event.type == pygame.KEYDOWN:
+            if self.present_button and event.key == self.open_button[1]:
+                self.door_action()
+    
     def update(self, player):
         """Updates the door based on player position.
 
@@ -121,9 +127,6 @@ class Door(pygame.sprite.Sprite):
         """
         if self.scaled_rect.colliderect(player.rect) and self.toggle:
             self.present_button = True
-            keys = pygame.key.get_pressed()
-            if (keys[self.open_button[1]]):
-                self.door_action()
         else:
             self.present_button = False
     
@@ -141,13 +144,6 @@ class LaserDoor(Door):
         """Constructor.
 
             rect: pygame.Rect representing the door's area and position.
-            text_input: The question that the door expects the player to solve 
-                before it will open.
-            url: The url to the leetcode question.
-                
-            If no text input is provided, functions as 
-            a regular door. If text is provided it shows up in a speech bubble
-            in plain text and clicking the speech bubble opens a browser at w/ url.
         """
         super().__init__(rect)
         
@@ -242,9 +238,10 @@ class LaserDoor(Door):
             f"Error: {num_problems} {computer_plural} still broken",
             (255, 0, 0)
         )
-    
+
     def door_action(self):
         if len(self.problems) > 0:
+            pygame.event.post(pygame.Event(c.CHECK_PROBLEMS))
             self.speech_bubble.toggle = True
         else:
             self.receding = True
@@ -308,7 +305,7 @@ class SpeechBubble():
     def handle_event(self, event):
         if self.url and self.mouseover and event.type == pygame.MOUSEBUTTONDOWN:
             timestamp = time.time()
-            pygame.event.post(pygame.Event(c.OPEN_PROBLEM, {"url": self.url, "timestamp": timestamp}))
+            pygame.event.post(pygame.Event(c.OPEN_PROBLEM, {"url": self.url}))
             print(f"Posted event: OPEN_PROBLEM {self.url}, {timestamp}")
     
     def draw(self, surface, offset):
