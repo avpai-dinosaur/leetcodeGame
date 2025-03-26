@@ -4,7 +4,6 @@ import requests
 import json
 import threading
 import time
-from queue import Queue
 import constants as c
 
 class LeetcodeManager:
@@ -39,6 +38,7 @@ class LeetcodeManager:
     def check_submissions(self, lowerTimestamp: int) -> None:
         """Check the user's last 50 accepted submissions."""
         LeetcodeManager.lock.acquire_lock()
+        
         url = "https://leetcode.com/graphql"
         payload = {
             "query" :
@@ -62,14 +62,16 @@ class LeetcodeManager:
         }
         
         LeetcodeManager.lock.release_lock()
+        
         response = requests.get(url, json=payload, headers=headers)
         recentSubmissions = json.loads(response.text)["data"]
         print(f"Getting {self.username}'s recent submissions")
         print(recentSubmissions)
+        
         LeetcodeManager.lock.acquire_lock()
         
+        solvedProblems = []
         if response.status_code == 200:
-            solvedProblems = []
             for problemSlug in self.inProgressProblems:
                 if self.was_problem_solved(
                     problemSlug,
@@ -78,6 +80,8 @@ class LeetcodeManager:
                 ): 
                     solvedProblems.append(problemSlug)
         [self.inProgressProblems.remove(p) for p in solvedProblems]
+        pygame.event.post(pygame.Event(c.CHECKED_PROBLEMS))
+        
         LeetcodeManager.lock.release_lock()
     
     def was_problem_solved(

@@ -150,6 +150,7 @@ class LaserDoor(Door):
         self.receding = False
         self.last_recede = pygame.time.get_ticks()
         self.recede_cooldown = 200
+        self.triedDoor = False
 
         # Question prompting
         self.speech_bubble = SpeechBubble(
@@ -231,20 +232,46 @@ class LaserDoor(Door):
         
         if self.receding:
             self.update_receding_animation()
-        
-        num_problems = len(self.problems)
-        computer_plural = "computer" if num_problems == 1 else "computers"
-        self.speech_bubble.update_text(
-            f"Error: {num_problems} {computer_plural} still broken",
-            (255, 0, 0)
-        )
-
+    
     def door_action(self):
-        if len(self.problems) > 0:
-            pygame.event.post(pygame.Event(c.CHECK_PROBLEMS))
-            self.speech_bubble.toggle = True
-        else:
+        if len(self.problems) == 0:
             self.receding = True
+        self.speech_bubble.toggle = True
+
+    def handle_event(self, event):
+        if (
+            event.type == pygame.KEYDOWN
+            and self.present_button
+            and event.key == self.open_button[1]
+        ):
+            self.triedDoor = True
+            if len(self.problems) > 0:
+                pygame.event.post(pygame.Event(c.CHECK_PROBLEMS))
+                self.speech_bubble.update_text(
+                    f"Trying to open door",
+                    (0, 0, 255)
+                )
+            else:
+                self.speech_bubble.update_text(
+                    "Door is fully operational",
+                    (0, 255, 0)
+                )
+        elif event.type == c.CHECKED_PROBLEMS and self.triedDoor:
+            self.triedDoor = False
+            num_problems = len(self.problems)
+            if num_problems > 0:
+                computer_plural = "computer" if num_problems == 1 else "computers"
+                self.speech_bubble.update_text(
+                    f"Error: {num_problems} {computer_plural} still broken",
+                    (255, 0, 0)
+                )
+            else:
+                self.speech_bubble.update_text(
+                    "Door is fully operational",
+                    (0, 255, 0)
+                )
+                self.receding = True
+        super().handle_event(event)
 
     def draw_door(self, surface, offset):
         if self.toggle:
