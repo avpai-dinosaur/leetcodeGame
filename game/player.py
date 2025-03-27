@@ -1,10 +1,7 @@
 import pygame
-import utils
 from spritesheet import SpriteSheet
 import constants as c
 import objects as o
-import requests
-import json
         
 
 class Player(pygame.sprite.Sprite):
@@ -22,8 +19,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = 4
         self.pos = pygame.Vector2(pos)
         self.spritesheet = SpriteSheet(filename, c.PLAYER_SHEET_METADATA)
-        # self.gun = o.Gun(self, "data/images/gun.png")
-        
+
         # Animation variables
         self.last_update = pygame.time.get_ticks()
         self.current_frame = 0

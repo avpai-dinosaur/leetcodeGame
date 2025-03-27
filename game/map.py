@@ -94,7 +94,7 @@ class Map():
 
     def load_json(self, filename):
         """Load JSON data for the map."""
-        f = open(filename)
+        f = open(utils.resource_path(filename))
         self.rawJson = json.load(f)
         layers = self.rawJson["layers"]
         for layer in layers:

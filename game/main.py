@@ -1,3 +1,4 @@
+import os
 import pygame
 
 # Pygame needs to be initialized before other modules can be imported
@@ -5,7 +6,6 @@ pygame.init()
 
 from manager import GameManager
 import constants as c
-
 
 def main(screen):
     pygame.display.set_caption("EscapeCodes")
@@ -30,6 +30,7 @@ def main(screen):
         clock.tick(60)  # limits FPS to 60
 
 if __name__ == "__main__":
+    print("Launching EscapeCodes from:", os.getcwd())
     screen = pygame.display.set_mode((c.SCREEN_WIDTH, c.SCREEN_HEIGHT))
     main(screen)
     pygame.quit()

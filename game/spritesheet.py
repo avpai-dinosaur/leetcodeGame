@@ -1,6 +1,5 @@
 import pygame
 import utils
-import pprint
 
 class SpriteSheet():
     """Represents a sprite sheet."""
