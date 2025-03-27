@@ -28,7 +28,7 @@ jobs:
 
       - name: Run PyInstaller
         run: |
-          pyinstaller --add-data "data:data" game/main.py
+          pyinstaller --add-data "game/data:data" game/main.py
 
       - name: List contents of dist/ directory
         run: |
