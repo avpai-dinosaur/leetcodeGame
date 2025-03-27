@@ -36,7 +36,7 @@ jobs:
           ls -l dist/
         
       - name: Upload executable as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifact
-          path: dist/  # This is where the built executable will be stored
+          path: dist/
